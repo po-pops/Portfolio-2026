@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projet 3</title>
+  <style>
+    :root { --ink: #42302e; --sky: #c1dbea; --cream: #fff1b6; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; min-height: 100vh; display: grid; place-items: center;
+      background: var(--sky); color: var(--ink); font-family: 'Manrope', sans-serif;
+    }
+    .panel {
+      max-width: 760px; width: min(88vw, 760px); background: rgba(255,255,255,0.28);
+      border: 1px solid var(--ink); border-radius: 24px; padding: 48px 40px; box-shadow: 0 18px 40px rgba(66,48,46,0.08);
+    }
+    h1 { margin: 0 0 18px; font-size: clamp(2rem, 4vw, 3.2rem); }
+    p { font-size: 1.05rem; line-height: 1.7; }
+    a {
+      display: inline-block; margin-top: 20px; padding: 12px 18px; border: 1px solid var(--ink);
+      border-radius: 999px; background: var(--cream); color: var(--ink); text-decoration: none; font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <main class="panel">
+    <h1>Projet 3</h1>
+    <p>Page dédiée au troisième projet. C’est la zone prévue pour détailler les livrables, les choix créatifs et les résultats.</p>
+    <a href="portfolio.html">← Retour au portfolio</a>
+  </main>
+</body>
+</html>
