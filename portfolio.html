@@ -6,6 +6,7 @@
 <title>Pauline — Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="icon" type="image/png" href="src/Logo.png">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
@@ -375,9 +376,44 @@
     font-size:24px;
     white-space:nowrap;
     transition:color .3s ease;
+  }
+
+  .button-component{
+    position:relative;
+    overflow:hidden;
+    isolation:isolate;
+    padding:8px 16px;
+    transition:background .45s ease, color .3s ease, border-color .3s ease, box-shadow .3s ease;
+    border-radius: 16px;
+  }
+  .button-component > *{
     position:relative;
     z-index:1;
   }
+  .button-component::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    border-radius:inherit;
+    background:radial-gradient(circle at 40% 40%, rgba(66,48,46,0.92) 0%, rgba(66,48,46,0.98) 24%, rgba(66,48,46,1) 45%, rgba(66,48,46,1) 100%);
+    transform:scale(.15);
+    transform-origin:bottom left;
+    opacity:0;
+    transition:transform .8s cubic-bezier(.2,.8,.2,1), opacity .5s ease;
+    z-index:0;
+  }
+  .button-component:hover{
+    background:transparent;
+    border-color:var(--sky);
+    box-shadow:inset 0 0 0 1px var(--sky);
+  }
+  .button-component:hover::before{
+    opacity:1;
+    transform:scale(1);
+  }
+
   /* --- modal (placeholder, pas encore designée) --- */
   .modal-overlay{
     position:fixed;
@@ -409,9 +445,363 @@
     right:16px;
     background:none;
     border:none;
-    font-size:20px;
     cursor:pointer;
     color:var(--ink);
+    padding:0;
+    width:33px;
+    height:33px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:10;
+    transition:transform .2s ease;
+  }
+  .modal-close:hover{
+    transform:scale(1.1);
+  }
+  .modal-close img{
+    width:100%;
+    height:100%;
+  }
+  
+  /* --- about modal specific styles --- */
+  .modal-box.about-modal{
+    background:transparent;
+    border:none;
+    border-radius:0;
+    padding:0;
+    max-width:900px;
+  }
+  .about-modal-container{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    grid-template-rows:max-content;
+    gap:30px;
+    align-items:stretch;
+  }
+  .about-modal-card{
+    min-width:0;
+    height:max-content;
+    padding:30px;
+    background:var(--cream);
+    border-radius:24px;
+    border:1px solid var(--ink);
+    display:flex;
+    flex-direction:column;
+    gap:30px;
+  }
+  .about-modal-card h1{
+    margin:0;
+    font-size:30px;
+    font-weight:600;
+    color:var(--ink);
+  }
+  .about-modal-content{
+    display:flex;
+    flex-direction:column;
+  }
+  .about-modal-subtitle{
+    margin:0;
+    font-size:20px;
+    font-weight:500;
+    color:var(--ink);
+  }
+  .about-modal-text{
+    margin:0;
+    font-size:18px;
+    font-weight:400;
+    color:var(--ink);
+    line-height:1.5;
+  }
+  .about-modal-badge{
+    padding:0 4px;
+    background:var(--ink);
+    color:var(--sky);
+    border-radius:0;
+    display:inline-flex;
+    width:fit-content;
+    font-size:20px;
+    font-weight:400;
+    font-family:'Manrope',sans-serif;
+    transform:rotate(-2deg);
+    transform-origin:center;
+  }
+  .about-modal-image-wrapper{
+    min-width:0;
+    min-height:0;
+    height:100%;
+    align-self:stretch;
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+    gap:30px;
+  }
+  .about-modal-controls{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+  }
+  .about-modal-image-frame{
+    position:relative;
+    height:0;
+    min-height:0;
+    flex:1 1 0;
+    overflow:hidden;
+    border-radius:24px;
+    border:1px solid var(--ink);
+  }
+  .about-modal-image{
+    display:block;
+    width:100%;
+    height:100%;
+    border-radius:24px;
+    object-fit:cover;
+  }
+  .about-modal-smiley{
+    position:absolute;
+    top:24px;
+    left:24px;
+    width:80px;
+    height:80px;
+    z-index:1;
+  }
+  .about-modal-smiley img{
+    width:100%;
+    height:100%;
+  }
+  .about-modal-close-img{
+    width:45px;
+    height:45px;
+    background:var(--cream);
+    border:1px solid var(--ink);
+    border-radius:50%;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+    padding:0;
+  }
+  .about-modal-close-img:hover{
+    color:var(--sky);
+  }
+  .about-modal-close-img img{
+    width:24px;
+    height:24px;
+    transition:filter .2s ease;
+  }
+  .about-modal-close-img:hover img{
+    filter:brightness(0) saturate(100%) invert(86%) sepia(12%) saturate(631%) hue-rotate(165deg) brightness(93%) contrast(91%);
+  }
+  .about-modal-cv-button{
+    position:relative;
+    background:var(--cream);
+    border:1px solid var(--ink);
+    border-radius:16px;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    gap:4px;
+    font-size:20px;
+    font-weight:400;
+    font-family:'Manrope',sans-serif;
+    color:var(--ink);
+    z-index:3;
+  }
+  .about-modal-cv-button:hover{
+    color:var(--sky);
+  }
+  .about-modal-cv-button img{
+    transition:transform .2s ease;
+  }
+  .about-modal-cv-button:hover img{
+    transform:translateX(4px);
+    filter:brightness(0) saturate(100%) invert(86%) sepia(12%) saturate(631%) hue-rotate(165deg) brightness(93%) contrast(91%);
+  }
+  .modal-box.contact-modal{
+    background:transparent;
+    border:0;
+    border-radius:0;
+    max-width:1100px;
+    padding:24px;
+  }
+  .contact-modal-container{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+    gap:30px;
+    align-items:stretch;
+  }
+  .contact-modal-form-card{
+    min-width:0;
+    padding:40px 48px;
+    background:var(--cream);
+    border:1px solid var(--ink);
+    border-radius:24px;
+    display:flex;
+    flex-direction:column;
+    gap:30px;
+    align-items:center;
+  }
+  .contact-modal-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin:0;
+    font-size:30px;
+    line-height:1.15;
+    font-weight:500;
+    color:var(--ink);
+    justify-content:center;
+    text-align:center;
+  }
+  .contact-modal-title img{
+    width:52px;
+    height:52px;
+    flex-shrink:0;
+  }
+  .contact-modal-title-stars{
+    width:48px;
+    height:48px;
+    object-fit:contain;
+  }
+  .contact-modal-fields{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    gap:26px;
+  }
+  .contact-modal-name-fields{
+    width:100%;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:30px;
+  }
+  .contact-modal-field{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    align-items:center;
+  }
+  .contact-modal-field label{
+    color:var(--ink);
+    font-size:20px;
+    line-height:1.2;
+    text-align:center;
+  }
+  .contact-modal-field input,
+  .contact-modal-field textarea{
+    width:100%;
+    border:0;
+    border-radius:18px;
+    padding:14px 18px;
+    background:#fffaf0;
+    color:var(--ink);
+    font:400 18px/1.4 'Manrope',sans-serif;
+    outline:1px solid transparent;
+  }
+  .contact-modal-field input:focus,
+  .contact-modal-field textarea:focus{
+    outline:1px solid var(--sky);
+  }
+  .contact-modal-field textarea{
+    min-height:190px;
+    resize:vertical;
+  }
+  .contact-modal-side{
+    min-width:0;
+    min-height:0;
+    display:flex;
+    flex-direction:column;
+    gap:30px;
+  }
+  .contact-modal-controls{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+  }
+  .contact-modal-send{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    gap:4px;
+    padding:8px 16px;
+    background:var(--cream);
+    border:1px solid var(--ink);
+    border-radius:16px;
+    color:var(--ink);
+    font-size:20px;
+    font-family:'Manrope',sans-serif;
+    font-weight:400;
+  }
+  .contact-modal-send img{
+    width:24px;
+    height:24px;
+    filter:none;
+  }
+  .contact-modal-send:hover{
+    color:var(--sky);
+  }
+  .contact-modal-send:hover img{
+    filter:brightness(0) saturate(100%) invert(86%) sepia(12%) saturate(631%) hue-rotate(165deg) brightness(93%) contrast(91%);
+  }
+  .contact-modal-close{
+    width:45px;
+    height:45px;
+    border-radius:50%;
+  }
+  .contact-modal-close img{
+    width:24px;
+    height:24px;
+  }
+  .contact-modal-image-frame{
+    position:relative;
+    min-height:460px;
+    flex:1 1 auto;
+    overflow:hidden;
+    border:1px solid var(--ink);
+    border-radius:24px;
+  }
+  .contact-modal-image{
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  }
+  .contact-modal-image-smiley{
+    position:absolute;
+    top:24px;
+    left:24px;
+    width:96px;
+    height:96px;
+  }
+  .contact-modal-image-smiley img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+  }
+  .about-modal-decoration{
+    position:absolute;
+    pointer-events:none;
+  }
+  .deco-circle{
+    width:95.01px;
+    height:95.01px;
+    background:var(--sky);
+    border-radius:9999px;
+    border:1px solid var(--ink);
+    transform:rotate(168deg);
+  }
+  .deco-line{
+    width:1.26px;
+    height:59.88px;
+    border:1px solid var(--ink);
+    transform:rotate(335deg);
+  }
+  .deco-dot{
+    width:5.76px;
+    height:5.76px;
+    background:var(--ink);
+    border-radius:9999px;
   }
 
   @media (max-width:1280px){
@@ -505,7 +895,7 @@
         </div>
       </div>
 
-      <button class="cafe-cta" id="cafeCtaBtn">
+      <button class="button-component cafe-cta" id="cafeCtaBtn">
         <span>Ça vous dit un café ?</span>
       </button>
 
@@ -515,19 +905,89 @@
 
 <!-- Modale "prise de contact" (placeholder, pas encore designée) -->
 <div class="modal-overlay" id="cafeModal">
-  <div class="modal-box">
-    <button class="modal-close" data-close>✕</button>
-    <h2>Ça vous dit un café ? ☕</h2>
-    <p>Ici viendra le formulaire de contact. Modale à designer — pour l'instant c'est un placeholder fonctionnel.</p>
+  <div class="modal-box contact-modal">
+    <div class="contact-modal-container">
+      <form class="contact-modal-form-card" id="contact-form" action="mailto:pauline.yvelin@mmibordeaux.com" method="post" enctype="text/plain">
+        <h2 class="contact-modal-title">
+          <img src="src/bleu smlley.svg" alt="">
+          <span>Créons ensemble</span>
+          <img class="contact-modal-title-stars" src="src/stars2.svg" alt="">
+        </h2>
+        <div class="contact-modal-fields">
+          <div class="contact-modal-name-fields">
+            <div class="contact-modal-field">
+              <label for="contact-first-name">Prénom</label>
+              <input id="contact-first-name" name="firstName" type="text" placeholder="Janja">
+            </div>
+            <div class="contact-modal-field">
+              <label for="contact-last-name">Nom</label>
+              <input id="contact-last-name" name="lastName" type="text" placeholder="Garnbret">
+            </div>
+          </div>
+          <div class="contact-modal-field">
+            <label for="contact-email">Email</label>
+            <input id="contact-email" name="email" type="email" placeholder="janja.garnbret@arkose.com">
+          </div>
+          <div class="contact-modal-field">
+            <label for="contact-message">Message</label>
+            <textarea id="contact-message" name="message" placeholder="Hello..."></textarea>
+          </div>
+        </div>
+      </form>
+      <div class="contact-modal-side">
+        <div class="contact-modal-controls">
+          <button class="button-component contact-modal-send" type="submit" form="contact-form">
+            <span>Envoyer le message</span>
+            <img src="src/arrow.svg" alt="">
+          </button>
+          <button class="button-component about-modal-close-img contact-modal-close" data-close aria-label="Fermer">
+            <img src="src/close button.svg" alt="Fermer">
+          </button>
+        </div>
+        <div class="contact-modal-image-frame">
+          <img class="contact-modal-image" src="src/Photo coffee.png" alt="Tasse de café sur une table">
+          <div class="contact-modal-image-smiley">
+            <img src="src/bleu smlley.svg" alt="Smiley bleu">
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- Modale "à propos" (placeholder, pas encore designée) -->
+<!-- Modale "à propos" (designée depuis Figma) -->
 <div class="modal-overlay" id="aboutModal">
-  <div class="modal-box">
-    <button class="modal-close" data-close>✕</button>
-    <h2>Plus sur moi</h2>
-    <p>Ici viendront ta photo, ton texte de présentation et le bouton de téléchargement du CV. Modale à designer — pour l'instant c'est un placeholder fonctionnel.</p>
+  <div class="modal-box about-modal">
+    <div class="about-modal-container">
+      <!-- Card jaune -->
+      <div class="about-modal-card">
+        <h1>Hello</h1>
+        <div class="about-modal-content">
+          <p class="about-modal-subtitle">Moi c'est Pauline,</p>
+          <p class="about-modal-text">une jeune designeuse franco-allemande de 20 ans, passionnée par les arts divers et variés depuis mon enfance. Je m'intéresse actuellement principalement à l'UI/UX mais aussi au branding et à la direction artistique en général.<br/><br/>De nature très curieuse et assez polyvalente, j'adore découvrir de nouvelles technologies créatives et en apprendre plus sur le monde.</p>
+        </div>
+        <div class="about-modal-badge">En recherche d'alternance</div>
+      </div>
+      
+      <!-- Image avec smiley et close button -->
+      <div class="about-modal-image-wrapper">
+        <div class="about-modal-controls">
+          <button class="button-component about-modal-cv-button" onclick="window.open('src/CV_PaulineYvelin.pdf', '_blank')">
+            <span>Voir mon CV</span>
+            <img src="src/arrow.svg" alt="" style="width:24px;height:24px;">
+          </button>
+          <button class="button-component about-modal-close-img" data-close>
+            <img src="src/close button.svg" alt="Fermer">
+          </button>
+        </div>
+        <div class="about-modal-image-frame">
+          <img class="about-modal-image" src="src/Photo.png" alt="Photo de Pauline au bord de la mer">
+          <div class="about-modal-smiley">
+            <img src="src/bleu smlley.svg" alt="Smiley">
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
