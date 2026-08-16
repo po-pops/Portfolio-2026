@@ -1,0 +1,9 @@
+{
+	"servers": {
+		"my-mcp-server-93dd83be": {
+			"url": "https://www.figma.com/design/5ln8tO8HP87GAu6222uNcM/Portfolio?m=dev",
+			"type": "http"
+		}
+	},
+	"inputs": []
+}

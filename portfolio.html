@@ -44,6 +44,7 @@
     align-items:center;
   }
   .stage{
+    justify-content:center;
     position:relative;
     width:var(--stage-w);
     height:var(--stage-h);
@@ -75,6 +76,7 @@
     gap:43.875px;
     z-index:5;
   }
+  .mobile-labels{display:none;}
   .label-chip{
     padding:0 4px;
     font-size:24px;
@@ -209,18 +211,19 @@
     user-select:none;
     transition:transform .42s cubic-bezier(.22,1,.36,1), filter .42s ease, box-shadow .42s ease;
   }
-  .float-card:hover{
-    filter:blur(0px) drop-shadow(0 16px 18px rgba(66,48,46,0.12));
-  }
   .float-card .inner{
     width:380px;
-    height:300px;
+    height:285px;
     border:1px solid var(--ink);
     border-radius:24px;
     overflow:hidden;
     position:relative;
     background:var(--ink);
     box-shadow:0 12px 20px rgba(66,48,46,0.08);
+    transition:transform .3s ease;
+  }
+  .float-card:hover .inner{
+    transform:translateY(-4px) rotate(0.6deg) scale(1.01);
   }
   .float-card .inner::after{
     content:"";
@@ -231,56 +234,12 @@
     transition:opacity .2s ease;
     pointer-events:none;
   }
-  .float-card:hover .inner::after{
-    opacity:1;
-  }
   .float-card .inner img{
     position:absolute;
-    left:-9.2%;
-    top:-27.29%;
-    width:118.38%;
-    height:200%;
-    object-fit:cover;
-  }
-  .card-hover-meta{
-    position:absolute;
-    right:18px;
-    bottom:18px;
-    display:flex;
-    flex-direction:column;
-    align-items:flex-end;
-    gap:0;
-    z-index:2;
-    opacity:0;
-    transform:translate(10px, 12px);
-    transition:opacity .2s ease, transform .2s ease;
-    pointer-events:none;
-  }
-  .float-card:hover .card-hover-meta{
-    opacity:1;
-    transform:translate(0, 0);
-  }
-  .card-hover-meta .company-name,
-  .card-hover-meta .company-specialty{
-    font-family:'Manrope',sans-serif;
-    font-weight:500;
-    line-height:1.08;
-    letter-spacing:-0.03em;
-    border-radius:0;
-  }
-  .card-hover-meta .company-name{
-    color:var(--cream);
-    font-size:24px;
-    margin-bottom:2px;
-    background:none;
-    padding:0;
-  }
-  .card-hover-meta .company-specialty{
-    color:var(--ink);
-    font-size:16px;
-    background:var(--cream);
-    padding:4px 6px;
-    border-radius:2px;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:contain;
   }
   .card-1{
     left:309px; top:501px;
@@ -291,6 +250,9 @@
     left:525.15px; top:590.65px;
     width:402.695px; height:329.323px;
     transform:translateY(24px) rotate(4.57deg);
+  }
+  .card-2 .inner{
+    height:253.333px;
   }
   .card-3{
     left:285px; top:470px;
@@ -379,6 +341,7 @@
   }
 
   .button-component{
+    width: fit-content;
     position:relative;
     overflow:hidden;
     isolation:isolate;
@@ -618,167 +581,6 @@
     transform:translateX(4px);
     filter:brightness(0) saturate(100%) invert(86%) sepia(12%) saturate(631%) hue-rotate(165deg) brightness(93%) contrast(91%);
   }
-  .modal-box.contact-modal{
-    background:transparent;
-    border:0;
-    border-radius:0;
-    max-width:1100px;
-    padding:24px;
-  }
-  .contact-modal-container{
-    display:grid;
-    grid-template-columns:minmax(0,1fr) minmax(0,1fr);
-    gap:30px;
-    align-items:stretch;
-  }
-  .contact-modal-form-card{
-    min-width:0;
-    padding:40px 48px;
-    background:var(--cream);
-    border:1px solid var(--ink);
-    border-radius:24px;
-    display:flex;
-    flex-direction:column;
-    gap:30px;
-    align-items:center;
-  }
-  .contact-modal-title{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin:0;
-    font-size:30px;
-    line-height:1.15;
-    font-weight:500;
-    color:var(--ink);
-    justify-content:center;
-    text-align:center;
-  }
-  .contact-modal-title img{
-    width:52px;
-    height:52px;
-    flex-shrink:0;
-  }
-  .contact-modal-title-stars{
-    width:48px;
-    height:48px;
-    object-fit:contain;
-  }
-  .contact-modal-fields{
-    width:100%;
-    display:flex;
-    flex-direction:column;
-    gap:26px;
-  }
-  .contact-modal-name-fields{
-    width:100%;
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:30px;
-  }
-  .contact-modal-field{
-    display:flex;
-    flex-direction:column;
-    gap:10px;
-    align-items:center;
-  }
-  .contact-modal-field label{
-    color:var(--ink);
-    font-size:20px;
-    line-height:1.2;
-    text-align:center;
-  }
-  .contact-modal-field input,
-  .contact-modal-field textarea{
-    width:100%;
-    border:0;
-    border-radius:18px;
-    padding:14px 18px;
-    background:#fffaf0;
-    color:var(--ink);
-    font:400 18px/1.4 'Manrope',sans-serif;
-    outline:1px solid transparent;
-  }
-  .contact-modal-field input:focus,
-  .contact-modal-field textarea:focus{
-    outline:1px solid var(--sky);
-  }
-  .contact-modal-field textarea{
-    min-height:190px;
-    resize:vertical;
-  }
-  .contact-modal-side{
-    min-width:0;
-    min-height:0;
-    display:flex;
-    flex-direction:column;
-    gap:30px;
-  }
-  .contact-modal-controls{
-    display:flex;
-    align-items:flex-start;
-    justify-content:space-between;
-  }
-  .contact-modal-send{
-    display:inline-flex;
-    align-items:center;
-    justify-content:center;
-    gap:4px;
-    padding:8px 16px;
-    background:var(--cream);
-    border:1px solid var(--ink);
-    border-radius:16px;
-    color:var(--ink);
-    font-size:20px;
-    font-family:'Manrope',sans-serif;
-    font-weight:400;
-  }
-  .contact-modal-send img{
-    width:24px;
-    height:24px;
-    filter:none;
-  }
-  .contact-modal-send:hover{
-    color:var(--sky);
-  }
-  .contact-modal-send:hover img{
-    filter:brightness(0) saturate(100%) invert(86%) sepia(12%) saturate(631%) hue-rotate(165deg) brightness(93%) contrast(91%);
-  }
-  .contact-modal-close{
-    width:45px;
-    height:45px;
-    border-radius:50%;
-  }
-  .contact-modal-close img{
-    width:24px;
-    height:24px;
-  }
-  .contact-modal-image-frame{
-    position:relative;
-    min-height:460px;
-    flex:1 1 auto;
-    overflow:hidden;
-    border:1px solid var(--ink);
-    border-radius:24px;
-  }
-  .contact-modal-image{
-    display:block;
-    width:100%;
-    height:100%;
-    object-fit:cover;
-  }
-  .contact-modal-image-smiley{
-    position:absolute;
-    top:24px;
-    left:24px;
-    width:96px;
-    height:96px;
-  }
-  .contact-modal-image-smiley img{
-    width:100%;
-    height:100%;
-    object-fit:contain;
-  }
   .about-modal-decoration{
     position:absolute;
     pointer-events:none;
@@ -807,6 +609,42 @@
   @media (max-width:1280px){
     .stage-outer{ height:calc(var(--stage-h) * (100vw / var(--stage-w))); }
   }
+
+  @media (max-width:640px){
+    html,body{overflow-x:hidden;overflow-y:auto;width:100%;height:auto;min-height:100%;}
+    body{display:block;}
+    .viewport{height:auto;min-height:100svh;align-items:flex-start;}
+    .stage-outer{width:390px;height:846px;flex:none;align-items:flex-start;}
+    .stage{width:390px;height:846px;transform-origin:top left;overflow:visible;}
+    .dots-row{left:16px;width:358px;height:13.09px;background-size:17.4538px 13.0909px;}
+    .dots-top{top:16px;}
+    .dots-bottom{top:824px;}
+    .labels-row{left:69px;top:27px;width:280px;height:auto;display:flex;flex-wrap:wrap;justify-content:center;gap:0 4px;z-index:8;}
+    .labels-row.desktop-labels{display:none;}
+    .mobile-labels{position:absolute;left:0;top:27px;width:390px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;z-index:8;text-align:center;}
+    .label-chip{font-size:16px;line-height:27px;padding:0 3px;}
+    .back-card{left:14px;top:48px;width:362px;height:742px;border-radius:30px;transform:rotate(-5deg);}
+    .hero-card{left:18px;top:50px;width:354px;height:742px;border-radius:30px;}
+    .hero-bg{object-position:center;}
+    .hero-lace{left:50%;top:50%;width:350px;height:580px;transform:translate(-50%,-50%) rotate(90deg);}
+    .hero-title{left:38px;top:275px;width:250px;height:103px;z-index:4;}
+    .about-cta{left:136px;top:402px;width:86px;height:86px;}
+    .about-cta .ring text{font-size:20px;letter-spacing:1px;}
+    .hero-stars{left:283px;top:254px;width:48px;height:56px;}
+    .mobile-scroll-cue{position:absolute;left:147px;top:548px;display:grid;width:48px;height:48px;place-items:center;border:1px solid var(--ink);border-radius:50%;background:transparent;z-index:7;}
+    .mobile-scroll-cue img{width:24px;height:24px;transform:rotate(90deg);}
+    .hero-card .float-card{display:flex;opacity:1;pointer-events:auto;z-index:6;filter:none;}
+    .hero-card .float-card{width:160px;height:108px;}
+    .hero-card .float-card .inner{width:160px;height:120px;border-radius:24px;box-shadow:0 7px 12px rgba(66,48,46,.12);}
+    .hero-card .float-card.card-2 .inner{height:106.667px;}
+    .hero-card .float-card .inner img{inset:0;width:100%;height:100%;object-fit:contain;}
+    .hero-card .card-1{left:47px;top:614px;transform:rotate(-8deg);}
+    .hero-card .card-2{left:150px;top:638px;transform:rotate(4deg);}
+    .hero-card .card-3{left:47px;top:758px;transform:rotate(-6deg);}
+    .hero-card .card-4{left:150px;top:782px;transform:rotate(5deg);}
+    .progress-bar{display:none;}
+    .cafe-cta{left:77px;top:768px;width:236px;height:48px;padding:8px 14px;border-radius:16px;font-size:18px;z-index:9;}
+  }
 </style>
 </head>
 <body>
@@ -818,8 +656,13 @@
       <div class="dots-row dots-top" id="dotsTop"></div>
       <div class="dots-row dots-bottom" id="dotsBottom"></div>
 
-      <div class="labels-row">
+      <div class="labels-row desktop-labels">
         <span class="label-chip light">Art direction</span>
+        <span class="label-chip dark">Product design</span>
+        <span class="label-chip light">Branding</span>
+      </div>
+      <div class="mobile-labels">
+        <span class="label-chip light">Direction artistique</span>
         <span class="label-chip dark">Product design</span>
         <span class="label-chip light">Branding</span>
       </div>
@@ -835,7 +678,7 @@
           <img id="titleImg" src="" alt="Pauline Yvelin">
         </div>
 
-        <button class="about-cta" id="aboutCtaBtn" aria-label="Plus sur moi et mon CV">
+        <a class="about-cta" id="aboutCtaBtn" href="about-me.html" aria-label="Plus sur moi et mon CV">
           <svg class="ring" viewBox="0 0 170.07 170.07">
             <defs>
               <path id="ringPath" d="M 85.035,15 A 70.035,70.035 0 1 1 84.965,15 A 70.035,70.035 0 1 1 85.035,15" fill="none"/>
@@ -847,7 +690,8 @@
           <div class="face">
             <img id="smileyImg" src="" alt="">
           </div>
-        </button>
+        </a>
+        <div class="mobile-scroll-cue" aria-hidden="true"><img src="src/arrow.svg" alt=""></div>
 
         <div class="hero-stars">
           <img id="starsImg" src="" alt="">
@@ -855,38 +699,22 @@
 
         <div class="float-card card-1">
           <div class="inner">
-            <img src="https://www.figma.com/api/mcp/asset/d61d87d6-73df-4719-8914-36493ac29c28.png" alt="">
-            <div class="card-hover-meta">
-              <div class="company-name">Tcheen</div>
-              <div class="company-specialty">Product design</div>
-            </div>
+            <img src="src/Mockup - 1.jpeg" alt="">
           </div>
         </div>
         <div class="float-card card-2">
           <div class="inner">
-            <img src="https://www.figma.com/api/mcp/asset/d61d87d6-73df-4719-8914-36493ac29c28.png" alt="">
-            <div class="card-hover-meta">
-              <div class="company-name">Tcheen</div>
-              <div class="company-specialty">Product design</div>
-            </div>
+            <img src="src/Mockup - 2.jpeg" alt="">
           </div>
         </div>
         <div class="float-card card-3">
           <div class="inner">
-            <img src="https://www.figma.com/api/mcp/asset/d61d87d6-73df-4719-8914-36493ac29c28.png" alt="">
-            <div class="card-hover-meta">
-              <div class="company-name">Tcheen</div>
-              <div class="company-specialty">Product design</div>
-            </div>
+            <img src="src/Mockup - 3.jpeg" alt="">
           </div>
         </div>
         <div class="float-card card-4">
           <div class="inner">
-            <img src="https://www.figma.com/api/mcp/asset/d61d87d6-73df-4719-8914-36493ac29c28.png" alt="">
-            <div class="card-hover-meta">
-              <div class="company-name">Tcheen</div>
-              <div class="company-specialty">Product design</div>
-            </div>
+            <img src="src/Mockup - 4.jpeg" alt="">
           </div>
         </div>
 
@@ -895,62 +723,10 @@
         </div>
       </div>
 
-      <button class="button-component cafe-cta" id="cafeCtaBtn">
+      <a class="button-component cafe-cta" href="contact.html">
         <span>Ça vous dit un café ?</span>
-      </button>
+      </a>
 
-    </div>
-  </div>
-</div>
-
-<!-- Modale "prise de contact" (placeholder, pas encore designée) -->
-<div class="modal-overlay" id="cafeModal">
-  <div class="modal-box contact-modal">
-    <div class="contact-modal-container">
-      <form class="contact-modal-form-card" id="contact-form" action="mailto:pauline.yvelin@mmibordeaux.com" method="post" enctype="text/plain">
-        <h2 class="contact-modal-title">
-          <img src="src/bleu smlley.svg" alt="">
-          <span>Créons ensemble</span>
-          <img class="contact-modal-title-stars" src="src/stars2.svg" alt="">
-        </h2>
-        <div class="contact-modal-fields">
-          <div class="contact-modal-name-fields">
-            <div class="contact-modal-field">
-              <label for="contact-first-name">Prénom</label>
-              <input id="contact-first-name" name="firstName" type="text" placeholder="Janja">
-            </div>
-            <div class="contact-modal-field">
-              <label for="contact-last-name">Nom</label>
-              <input id="contact-last-name" name="lastName" type="text" placeholder="Garnbret">
-            </div>
-          </div>
-          <div class="contact-modal-field">
-            <label for="contact-email">Email</label>
-            <input id="contact-email" name="email" type="email" placeholder="janja.garnbret@arkose.com">
-          </div>
-          <div class="contact-modal-field">
-            <label for="contact-message">Message</label>
-            <textarea id="contact-message" name="message" placeholder="Hello..."></textarea>
-          </div>
-        </div>
-      </form>
-      <div class="contact-modal-side">
-        <div class="contact-modal-controls">
-          <button class="button-component contact-modal-send" type="submit" form="contact-form">
-            <span>Envoyer le message</span>
-            <img src="src/arrow.svg" alt="">
-          </button>
-          <button class="button-component about-modal-close-img contact-modal-close" data-close aria-label="Fermer">
-            <img src="src/close button.svg" alt="Fermer">
-          </button>
-        </div>
-        <div class="contact-modal-image-frame">
-          <img class="contact-modal-image" src="src/Photo coffee.png" alt="Tasse de café sur une table">
-          <div class="contact-modal-image-smiley">
-            <img src="src/bleu smlley.svg" alt="Smiley bleu">
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 </div>
@@ -1013,13 +789,20 @@ window.__PORTFOLIO_ASSETS__ = {
 
   // Pixel-perfect scaling of the fixed 1280x832 stage
   function scaleStage(){
-    const stageW = 1280, stageH = 832;
+    const isMobile = window.innerWidth <= 640;
+    const stageW = isMobile ? 390 : 1280;
+    const stageH = isMobile ? 846 : 832;
     const outer = document.getElementById('stageOuter');
     const stage = document.getElementById('stage');
     const vw = window.innerWidth;
-    const scale = Math.min(vw / stageW, 1);
+    const vh = window.innerHeight;
+    const scale = isMobile
+      ? Math.min(vw / stageW, 1)
+      : Math.min(vw / stageW, vh / stageH, 1);
     stage.style.transform = `scale(${scale})`;
-    outer.style.height = (stageH * scale) + 'px';
+    outer.style.height = isMobile
+      ? Math.min(stageH * scale, vh) + 'px'
+      : (stageH * scale) + 'px';
     outer.style.width = (stageW * scale) + 'px';
   }
   window.addEventListener('resize', scaleStage);
@@ -1030,8 +813,6 @@ window.__PORTFOLIO_ASSETS__ = {
   function closeAllModals(){
     document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('open'));
   }
-  document.getElementById('cafeCtaBtn').addEventListener('click', () => openModal('cafeModal'));
-  document.getElementById('aboutCtaBtn').addEventListener('click', () => openModal('aboutModal'));
   document.querySelectorAll('[data-close]').forEach(btn => btn.addEventListener('click', closeAllModals));
   document.querySelectorAll('.modal-overlay').forEach(overlay => {
     overlay.addEventListener('click', (e) => { if(e.target === overlay) closeAllModals(); });
@@ -1039,7 +820,7 @@ window.__PORTFOLIO_ASSETS__ = {
   document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeAllModals(); });
 
   const floatCards = [...document.querySelectorAll('.float-card')];
-  const projectPages = ['project-1.html', 'project-2.html', 'project-3.html', 'project-4.html'];
+  const projectPages = ['project-4.html', 'project-3.html', 'project-2.html', 'project-1.html'];
   let wheelProgress = 0;
 
   function clamp(value, min, max) {
@@ -1051,6 +832,37 @@ window.__PORTFOLIO_ASSETS__ = {
   }
 
   function updateFloatCards() {
+    if (window.innerWidth <= 640) {
+      const mobileRotations = [-8, 4, -6, 5];
+
+      floatCards.forEach((card, index) => {
+        const cycle = (wheelProgress + index * 0.15) % 1;
+        let rise = 0;
+        let opacity = index < 2 ? 1 : 0;
+
+        if (cycle < 0.2) {
+          rise = 0;
+        } else if (cycle < 0.72) {
+          rise = clamp((cycle - 0.2) / 0.52, 0, 1);
+          opacity = 1;
+        } else if (cycle < 0.82) {
+          rise = 1;
+          opacity = 1 - ((cycle - 0.72) / 0.1);
+        } else {
+          rise = clamp((1 - cycle) / 0.18, 0, 1);
+          opacity = 0;
+        }
+
+        const lift = rise * 1100;
+        card.style.transform = `translate(0, ${-lift}px) rotate(${mobileRotations[index]}deg)`;
+        card.style.opacity = opacity.toFixed(3);
+        card.style.filter = 'none';
+        card.style.pointerEvents = opacity > 0.2 ? 'auto' : 'none';
+        card.style.zIndex = String(20 - index);
+      });
+      return;
+    }
+
     const cardDefs = [
       { startX: 0, startY: 68, startR: -9.93, endX: 0, endY: -900, endR: -18 },
       { startX: 0, startY: 78, startR: 4.57, endX: 0, endY: -1050, endR: 12 },

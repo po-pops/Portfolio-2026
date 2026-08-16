@@ -3,31 +3,118 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Projet 2</title>
-  <style>
-    :root { --ink: #42302e; --sky: #c1dbea; --cream: #fff1b6; }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0; min-height: 100vh; display: grid; place-items: center;
-      background: var(--sky); color: var(--ink); font-family: 'Manrope', sans-serif;
-    }
-    .panel {
-      max-width: 760px; width: min(88vw, 760px); background: rgba(255,255,255,0.28);
-      border: 1px solid var(--ink); border-radius: 24px; padding: 48px 40px; box-shadow: 0 18px 40px rgba(66,48,46,0.08);
-    }
-    h1 { margin: 0 0 18px; font-size: clamp(2rem, 4vw, 3.2rem); }
-    p { font-size: 1.05rem; line-height: 1.7; }
-    a {
-      display: inline-block; margin-top: 20px; padding: 12px 18px; border: 1px solid var(--ink);
-      border-radius: 999px; background: var(--cream); color: var(--ink); text-decoration: none; font-weight: 600;
-    }
-  </style>
+  <title>Aki tu penses - Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="src/Project.css" />
 </head>
 <body>
-  <main class="panel">
-    <h1>Projet 2</h1>
-    <p>Page dédiée au deuxième projet. Tu peux remplacer ce placeholder par la présentation complète, la direction artistique et les éléments visuels.</p>
-    <a href="portfolio.html">← Retour au portfolio</a>
+  <main class="viewport">
+    <div class="stage-outer">
+      <div class="stage">
+        <div class="dots-row dots-top" aria-hidden="true"></div>
+        <div class="dots-row dots-bottom" aria-hidden="true"></div>
+        <div class="back-card" aria-hidden="true"></div>
+        <section class="hero-card" aria-label="Projet Aki tu penses">
+          <nav class="topbar" aria-label="Navigation du projet">
+            <a class="button back-link" href="portfolio.html" aria-label="Retour au portfolio"><img src="src/close button.svg" alt=""></a>
+            <a class="button site-link" href="https://aki-tu-penses.netlify.app" target="_blank" rel="noreferrer"><span class="site-label">Voir le site</span><img src="src/link arrow.svg" alt=""></a>
+          </nav>
+          <article class="info-card" aria-labelledby="project-name">
+            <div class="card-scroll" tabindex="0">
+              <h1 id="project-name" class="card-title">Aki tu penses</h1>
+              <div class="tags"><span class="tag">Aki tu penses</span><span class="tag">Product Design</span><span class="tag">Direction artistique</span><span class="tag">2026</span></div>
+              <div class="dots-row card-dots" aria-hidden="true"></div>
+              <h2 class="project-title">Le projet</h2>
+              <p class="card-copy">Dans le cadre de la Bacchanight, nocturne étudiante organisée par le Musée des Beaux-Arts de Bordeaux, notre mission était de concevoir une expérience interactive, capable de transformer la posture traditionnelle du visiteur souvent passive en une expérience participative.</p>
+              <p class="card-copy">Il fallait créer un outil à la fois pédagogique, ludique et adapté aux usages numériques des étudiants.</p>
+              <section class="conception" aria-labelledby="conception-title">
+                <div class="dots-row card-dots" aria-hidden="true"></div>
+                <h2 id="conception-title" class="conception-title">La conception</h2>
+                <div class="steps">
+                  <article class="step"><img class="step-number" src="src/project-step-1.svg" alt="1" /><div class="step-copy"><h3>Analyse des besoins et du public</h3><p>Nous avons d’abord identifié les attentes du public étudiant : interactivité, rapidité, dimension sociale et récompense. L’expérience devait être intuitive, immersive et accessible.</p></div></article>
+                  <article class="step"><img class="step-number" src="src/project-step-2.svg" alt="2" /><div class="step-copy"><h3>Adaptation du mécanisme de jeu au contexte</h3><p>Nous avons sélectionné des personnages issus des œuvres exposées et conçu une arborescence de questions basée sur des critères visuels.</p></div></article>
+                  <article class="step"><img class="step-number" src="src/project-step-3.svg" alt="3" /><div class="step-copy"><h3>Double expérience : physique et digitale</h3><p>Le jeu a été pensé pour être : Accessible en ligne sur PC, permettant de prolonger la médiation au-delà des murs du musée. Vécu pleinement au musée, lors de la soirée à Bordeaux, où l’expérience devenait immersive et collective.</p></div></article>
+                  <article class="step"><img class="step-number" src="src/project-step-4.svg" alt="4" /><div class="step-copy"><h3>Dimension expérientielle et engagement</h3><p>Le dispositif encourageait les visiteurs à circuler dans la salle, à observer les détails des tableaux et à comparer les personnages pour affiner leurs réponses. Une mécanique de récompense sous forme de stickers renforçait l’identité du projet et son côté mémorable.</p></div></article>
+                </div>
+              </section>
+            </div>
+            <a class="down-button" href="#project-name" aria-expanded="false" aria-label="Afficher la suite du projet"><img class="down-icon" src="src/Project-arrow.svg" alt=""></a>
+          </article>
+          <section class="bento" aria-label="Aperçus du site Tcheen">
+            <div class="preview hero"><img src="src/Aki/Image Aki - 1.png" alt="Aperçu de la page d'accueil Tcheen" /></div>
+            <div class="preview-row">
+              <div class="preview tall"><img src="src/Aki/Image Aki - 2.png" alt="Aperçu d'une page Tcheen" /></div>
+              <div class="preview tall"><img src="src/Aki/Image Aki - 3.png" alt="Aperçu d'une autre page Tcheen" /></div>
+            </div>
+          </section>
+        </section>
+      </div>
+    </div>
   </main>
+  <script>
+    (() => {
+      const stage = document.querySelector('.stage');
+      const outer = document.querySelector('.stage-outer');
+      const desktopWidth = 1280;
+      const desktopHeight = 832;
+      const mobileWidth = 389;
+      const mobileHeight = 1347;
+
+      function fitStage() {
+        const isMobile = window.innerWidth <= 640;
+        const stageWidth = isMobile ? mobileWidth : desktopWidth;
+        const mobileStageHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--mobile-stage-height')) || mobileHeight;
+        const stageHeight = isMobile ? mobileStageHeight : desktopHeight;
+        stage.classList.toggle('is-mobile', isMobile);
+        const scale = isMobile
+          ? Math.min(window.innerWidth / stageWidth, 1)
+          : Math.min(window.innerWidth / stageWidth, window.innerHeight / stageHeight);
+        stage.style.transform = `scale(${scale})`;
+        outer.style.width = `${stageWidth * scale}px`;
+        outer.style.height = `${stageHeight * scale}px`;
+      }
+
+      window.addEventListener('resize', fitStage);
+      fitStage();
+      window.fitTcheenStage = fitStage;
+    })();
+
+    document.querySelectorAll('.button').forEach((button) => {
+      button.addEventListener('pointerenter', () => button.classList.add('is-hovered'));
+      button.addEventListener('pointerleave', () => button.classList.remove('is-hovered'));
+    });
+
+    (() => {
+      const card = document.querySelector('.info-card');
+      const scrollArea = document.querySelector('.card-scroll');
+      const button = document.querySelector('.down-button');
+
+      button.addEventListener('click', (event) => {
+        event.preventDefault();
+        const expanded = card.classList.toggle('is-expanded');
+        button.setAttribute('aria-expanded', String(expanded));
+        button.setAttribute('aria-label', expanded ? 'Masquer la suite du projet' : 'Afficher la suite du projet');
+
+        if (expanded && window.innerWidth <= 640) {
+          requestAnimationFrame(() => {
+            document.documentElement.style.setProperty('--mobile-card-height', `${card.offsetHeight}px`);
+            document.documentElement.style.setProperty('--mobile-stage-height', `${card.offsetHeight + 861}px`);
+            window.fitTcheenStage();
+          });
+        } else if (expanded) {
+          scrollArea.focus({ preventScroll: true });
+        } else {
+          scrollArea.scrollTop = 0;
+          if (window.innerWidth <= 640) {
+            window.scrollTo(0, 0);
+            document.documentElement.style.setProperty('--mobile-card-height', '486px');
+            document.documentElement.style.setProperty('--mobile-stage-height', '1347px');
+            window.fitTcheenStage();
+          }
+        }
+      });
+    })();
+  </script>
 </body>
 </html>
