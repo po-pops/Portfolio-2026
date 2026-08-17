@@ -101,7 +101,7 @@ body {
   overflow: hidden;
   border: var(--card-border);
   border-radius: 30px;
-  background: var(--sky) url('sky.png') center / cover;
+  background: var(--sky) url('background-ciel.webp') center / cover;
 }
 
 .topbar {
@@ -458,7 +458,7 @@ body {
   .viewport { height: auto; min-height: 100svh; align-items: flex-start; }
   .stage-outer,
   .stage { width: 389px; height: calc(var(--mobile-card-height) + 861px); }
-  .stage.is-mobile { overflow: visible; transform-origin: top left; }
+  .stage.is-mobile { overflow: hidden; transform-origin: top center; }
   .dots-row { left: 16px; width: 357px; }
   .dots-top { top: 10px; }
   .dots-bottom { top: calc(var(--mobile-card-height) + 843px); }
