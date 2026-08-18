@@ -397,18 +397,18 @@ body {
   body { overflow-x: visible; overflow-y: auto; }
   .viewport { height: auto; min-height: 100svh; align-items: flex-start; }
   .stage-outer,
-  .stage { width: 389px; height: calc(var(--mobile-card-height) + 861px); }
+  .stage { width: 389px; height: calc(var(--mobile-card-height) + 822px); }
   .stage.is-mobile { overflow: hidden; transform-origin: top center; }
   .dots-row { left: 16px; width: 357px; }
   .dots-top { top: 10px; }
-  .dots-bottom { top: calc(var(--mobile-card-height) + 843px); }
+  .dots-bottom { top: calc(var(--mobile-card-height) + 804px); }
   .back-card,
-  .hero-card { top: 24px; left: 10px; width: 369px; height: calc(var(--mobile-card-height) + 813px); border-radius: 30px; }
-  .back-card { top: 24px; left: 10px; width: 369px; height: calc(var(--mobile-card-height) + 813px); border-radius: 30px; }
+  .hero-card { top: 24px; left: 10px; width: 369px; height: calc(var(--mobile-card-height) + 774px); border-radius: 30px; }
+  .back-card { top: 24px; left: 10px; width: 369px; height: calc(var(--mobile-card-height) + 774px); border-radius: 30px; }
   .topbar { top: 16px; left: 16px; width: 337px; gap: 30px; }
   .back-link { width: 45px; height: 45px; }
   .site-link { width: 262px; height: 45px; padding: 0 16px; border-radius: 16px; font-size: 18px; }
-  .info-card { top: 296px; left: 16px; width: 337px; height: var(--mobile-card-height); padding: 30px; border-radius: 24px; overflow: hidden; }
+  .info-card { top: 296px; left: 16px; width: 337px; height: fit-content; padding: 30px; border-radius: 24px; overflow: hidden; }
   .card-scroll { max-height: 385px; }
   .card-title { font-size: 60px; }
   .tags { gap: 8px; margin-bottom: 24px; font-size: 18px; }
@@ -416,9 +416,9 @@ body {
   .conception-title { font-size: 30px; }
   .card-copy { font-size: 18px; }
   .conception { display: block; }
-  .bento { top: 91px; left: 16px; width: 337px; height: calc(var(--mobile-card-height) + 722px); display: block; }
+  .bento { top: 91px; left: 16px; width: 337px; height: calc(var(--mobile-card-height) + 683px); display: block; }
   .preview { border-radius: 24px; }
   .preview.hero { width: 337px; height: 175px; }
-  .preview-row { position: absolute; top: calc(var(--mobile-card-height) + 235px); left: 0; display: flex; width: 337px; height: 457px; flex-direction: column; gap: 30px; }
+  .preview-row { position: absolute; top: calc(var(--mobile-card-height) + 196px); left: 0; display: flex; width: 337px; height: 457px; flex-direction: column; gap: 30px; }
   .preview.tall { width: 337px; height: 213.5px; flex: 1; }
 }
