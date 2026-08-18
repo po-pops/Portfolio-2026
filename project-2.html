@@ -39,13 +39,12 @@
                 </div>
               </section>
             </div>
-            <a class="down-button" href="#project-name" aria-expanded="false" aria-label="Afficher la suite du projet"><img class="down-icon" src="src/Project-arrow.svg" alt=""></a>
           </article>
           <section class="bento" aria-label="Aperçus du site Tcheen">
-            <div class="preview hero"><img src="src/Aki/Image Aki - 1.png" alt="Aperçu de la page d'accueil Tcheen" /></div>
+            <div class="preview hero"><img src="src/Aki/Image Aki - 1.webp" alt="Aperçu de la page d'accueil Tcheen" /></div>
             <div class="preview-row">
-              <div class="preview tall"><img src="src/Aki/Image Aki - 2.png" alt="Aperçu d'une page Tcheen" /></div>
-              <div class="preview tall"><img src="src/Aki/Image Aki - 3.png" alt="Aperçu d'une autre page Tcheen" /></div>
+              <div class="preview tall"><img src="src/Aki/Image Aki - 2.webp" alt="Aperçu d'une page Tcheen" /></div>
+              <div class="preview tall"><img src="src/Aki/Image Aki - 3.webp" alt="Aperçu d'une autre page Tcheen" /></div>
             </div>
           </section>
         </section>
@@ -85,36 +84,6 @@
       button.addEventListener('pointerleave', () => button.classList.remove('is-hovered'));
     });
 
-    (() => {
-      const card = document.querySelector('.info-card');
-      const scrollArea = document.querySelector('.card-scroll');
-      const button = document.querySelector('.down-button');
-
-      button.addEventListener('click', (event) => {
-        event.preventDefault();
-        const expanded = card.classList.toggle('is-expanded');
-        button.setAttribute('aria-expanded', String(expanded));
-        button.setAttribute('aria-label', expanded ? 'Masquer la suite du projet' : 'Afficher la suite du projet');
-
-        if (expanded && window.innerWidth <= 640) {
-          requestAnimationFrame(() => {
-            document.documentElement.style.setProperty('--mobile-card-height', `${card.offsetHeight}px`);
-            document.documentElement.style.setProperty('--mobile-stage-height', `${card.offsetHeight + 861}px`);
-            window.fitTcheenStage();
-          });
-        } else if (expanded) {
-          scrollArea.focus({ preventScroll: true });
-        } else {
-          scrollArea.scrollTop = 0;
-          if (window.innerWidth <= 640) {
-            window.scrollTo(0, 0);
-            document.documentElement.style.setProperty('--mobile-card-height', '486px');
-            document.documentElement.style.setProperty('--mobile-stage-height', '1347px');
-            window.fitTcheenStage();
-          }
-        }
-      });
-    })();
   </script>
 </body>
 </html>

@@ -6,7 +6,7 @@
 <title>Pauline — Portfolio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="icon" type="image/png" href="src/Logo.png">
+<link rel="icon" type="image/webp" href="src/Logo.webp">
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
@@ -199,6 +199,26 @@
   }
   .hero-stars img{width:100%;height:100%;display:block;}
 
+  .mobile-scroll-cue{
+    position:absolute;
+    left:582.152px;
+    top:550px;
+    display:grid;
+    width:72px;
+    height:72px;
+    place-items:center;
+    border:1px solid var(--ink);
+    border-radius:50%;
+    background:transparent;
+    z-index:6;
+  }
+  .mobile-scroll-cue img{width:36px;height:36px;transform:rotate(90deg);animation:scroll-cue-float 1.6s ease-in-out infinite;}
+
+  @keyframes scroll-cue-float{
+    0%,100%{transform:rotate(90deg) translateX(0);}
+    50%{transform:rotate(90deg) translateX(6px);}
+  }
+
   .float-card{
     position:absolute;
     display:flex;
@@ -230,10 +250,13 @@
     content:"";
     position:absolute;
     inset:0;
-    background:linear-gradient(135deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.04) 35%, rgba(0,0,0,0.14) 62%, rgba(0,0,0,0.21) 100%);
+    background:rgba(0,0,0,0.15);
     opacity:0;
     transition:opacity .2s ease;
     pointer-events:none;
+  }
+  .float-card:hover .inner::after{
+    opacity:1;
   }
   .float-card .inner img{
     position:absolute;
@@ -242,6 +265,39 @@
     height:100%;
     object-fit:contain;
   }
+
+  /* --- cursor follower badge for project cards --- */
+  .cursor-badge{
+    position:fixed;
+    top:0;
+    left:0;
+    width:90px;
+    height:90px;
+    pointer-events:none;
+    transform:translate(-50%,-50%) scale(0);
+    opacity:0;
+    transition:transform .25s ease, opacity .25s ease;
+    z-index:9999;
+  }
+  .cursor-badge.is-active{
+    transform:translate(-50%,-50%) scale(1);
+    opacity:1;
+  }
+  .cursor-badge-ring{
+    width:100%;
+    height:100%;
+    overflow:visible;
+    animation:spin-ring 14s linear infinite;
+  }
+  .cursor-badge-ring text{
+    font-family:'Manrope',sans-serif;
+    font-size:20px;
+    font-weight:600;
+    letter-spacing:0.5px;
+    text-transform:uppercase;
+    fill:#fff;
+  }
+
   .card-1{
     left:309px; top:501px;
     width:426.041px; height:361.035px;
@@ -611,9 +667,9 @@
   }
 
   @media (max-width:640px){
-    html,body{overflow-x:hidden;overflow-y:auto;width:100%;height:auto;min-height:100%;}
+    html,body{overflow:hidden;width:100%;height:100%;}
     body{display:block;}
-    .viewport{height:auto;min-height:100svh;align-items:flex-start;}
+    .viewport{height:100svh;min-height:100svh;align-items:flex-start;justify-content:center;overflow:hidden;}
     .stage-outer{width:390px;height:846px;flex:none;align-items:flex-start;}
     .stage{width:390px;height:846px;transform-origin:top left;overflow:visible;}
     .dots-row{left:16px;width:358px;height:13.09px;background-size:17.4538px 13.0909px;}
@@ -631,8 +687,8 @@
     .about-cta{left:136px;top:402px;width:86px;height:86px;}
     .about-cta .ring text{font-size:20px;letter-spacing:1px;}
     .hero-stars{left:283px;top:254px;width:48px;height:56px;}
-    .mobile-scroll-cue{position:absolute;left:147px;top:548px;display:grid;width:48px;height:48px;place-items:center;border:1px solid var(--ink);border-radius:50%;background:transparent;z-index:7;}
-    .mobile-scroll-cue img{width:24px;height:24px;transform:rotate(90deg);}
+    .mobile-scroll-cue{position:absolute;left:153px;top:548px;display:grid;width:48px;height:48px;place-items:center;border:1px solid var(--ink);border-radius:50%;background:transparent;z-index:7;}
+    .mobile-scroll-cue img{width:24px;height:24px;}
     .hero-card .float-card{display:flex;opacity:1;pointer-events:auto;z-index:6;filter:none;}
     .hero-card .float-card{width:160px;height:108px;}
     .hero-card .float-card .inner{width:160px;height:auto;border-radius:24px;box-shadow:0 7px 12px rgba(66,48,46,.12);}
@@ -730,40 +786,15 @@
   </div>
 </div>
 
-<!-- Modale "à propos" (designée depuis Figma) -->
-<div class="modal-overlay" id="aboutModal">
-  <div class="modal-box about-modal">
-    <div class="about-modal-container">
-      <!-- Card jaune -->
-      <div class="about-modal-card">
-        <h1>Hello</h1>
-        <div class="about-modal-content">
-          <p class="about-modal-subtitle">Moi c'est Pauline,</p>
-          <p class="about-modal-text">une jeune designeuse franco-allemande de 20 ans, passionnée par les arts divers et variés depuis mon enfance. Je m'intéresse actuellement principalement à l'UI/UX mais aussi au branding et à la direction artistique en général.<br/><br/>De nature très curieuse et assez polyvalente, j'adore découvrir de nouvelles technologies créatives et en apprendre plus sur le monde.</p>
-        </div>
-        <div class="about-modal-badge">En recherche d'alternance</div>
-      </div>
-      
-      <!-- Image avec smiley et close button -->
-      <div class="about-modal-image-wrapper">
-        <div class="about-modal-controls">
-          <button class="button-component about-modal-cv-button" onclick="window.open('src/CV_PaulineYvelin.pdf', '_blank')">
-            <span>Voir mon CV</span>
-            <img src="src/arrow.svg" alt="" style="width:24px;height:24px;">
-          </button>
-          <button class="button-component about-modal-close-img" data-close>
-            <img src="src/close button.svg" alt="Fermer">
-          </button>
-        </div>
-        <div class="about-modal-image-frame">
-          <img class="about-modal-image" src="src/Photo.png" alt="Photo de Pauline au bord de la mer">
-          <div class="about-modal-smiley">
-            <img src="src/bleu smlley.svg" alt="Smiley">
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="cursor-badge" id="cursorBadge" aria-hidden="true">
+  <svg class="cursor-badge-ring" viewBox="0 0 90 90">
+    <defs>
+      <path id="cursorBadgePath" d="M 45,8 A 37,37 0 1 1 44.95,8 A 37,37 0 1 1 45.05,8" fill="none"/>
+    </defs>
+    <text>
+      <textPath id="cursorBadgeTextPath" href="#cursorBadgePath" startOffset="0%"></textPath>
+    </text>
+  </svg>
 </div>
 
 <script>
@@ -794,17 +825,14 @@ window.__PORTFOLIO_ASSETS__ = {
     const outer = document.getElementById('stageOuter');
     const stage = document.getElementById('stage');
     const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    const scale = isMobile
-      ? Math.min(vw / stageW, 1)
-      : Math.min(vw / stageW, vh / stageH, 1);
+    const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+    const scale = Math.min(vw / stageW, vh / stageH, 1);
     stage.style.transform = `scale(${scale})`;
-    outer.style.height = isMobile
-      ? Math.min(stageH * scale, vh) + 'px'
-      : (stageH * scale) + 'px';
+    outer.style.height = (stageH * scale) + 'px';
     outer.style.width = (stageW * scale) + 'px';
   }
   window.addEventListener('resize', scaleStage);
+  if(window.visualViewport){ window.visualViewport.addEventListener('resize', scaleStage); }
   scaleStage();
 
   // Modal wiring
@@ -820,6 +848,7 @@ window.__PORTFOLIO_ASSETS__ = {
 
   const floatCards = [...document.querySelectorAll('.float-card')];
   const projectPages = ['project-4.html', 'project-3.html', 'project-2.html', 'project-1.html'];
+  const projectNames = ['Molière', 'Klutch', 'Aki tu penses', 'Tcheen'];
   let wheelProgress = 0;
 
   function fitProjectCardToImage(card) {
@@ -972,6 +1001,75 @@ window.__PORTFOLIO_ASSETS__ = {
   }
 
   requestAnimationFrame(animate);
+
+  // Cursor badge following the mouse over project cards
+  const cursorBadge = document.getElementById('cursorBadge');
+  const cursorBadgeTextPath = document.getElementById('cursorBadgeTextPath');
+  const supportsHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  if (supportsHover && cursorBadge) {
+    let mouseX = 0, mouseY = 0, badgeX = 0, badgeY = 0;
+    const ringRadius = 37;
+    const ringCircumference = 2 * Math.PI * ringRadius;
+
+    function computeGapSpaces(targetWidth, spaceWidth) {
+      const count = Math.max(1, Math.round(targetWidth / spaceWidth));
+      return '\u00A0'.repeat(count);
+    }
+
+    function fillCursorBadgeText(label) {
+      const fixedUnit = `${label} *`;
+      const minUnit = `${fixedUnit}\u00A0`;
+
+      // Find the max number of "label *" units (with a minimal gap) that actually fit,
+      // measuring the real rendered length rather than estimating it.
+      cursorBadgeTextPath.textContent = minUnit;
+      const minUnitLength = cursorBadgeTextPath.getComputedTextLength() || 1;
+      let repeats = Math.max(1, Math.floor(ringCircumference / minUnitLength));
+      cursorBadgeTextPath.textContent = minUnit.repeat(repeats);
+      while (repeats > 1 && cursorBadgeTextPath.getComputedTextLength() > ringCircumference) {
+        repeats -= 1;
+        cursorBadgeTextPath.textContent = minUnit.repeat(repeats);
+      }
+
+      // Measure a single space, then stretch every gap to consume the remaining circumference.
+      cursorBadgeTextPath.textContent = '\u00A0';
+      const spaceWidth = cursorBadgeTextPath.getComputedTextLength() || 1;
+      cursorBadgeTextPath.textContent = fixedUnit;
+      const fixedLength = cursorBadgeTextPath.getComputedTextLength() || 1;
+
+      // Redistribute the remaining space evenly so the text neither overflows nor falls short.
+      const gapWidth = Math.max(spaceWidth, (ringCircumference - repeats * fixedLength) / repeats);
+      const gap = computeGapSpaces(gapWidth, spaceWidth);
+
+      cursorBadgeTextPath.textContent = `${fixedUnit}${gap}`.repeat(repeats);
+    }
+
+    document.addEventListener('mousemove', (event) => {
+      mouseX = event.clientX;
+      mouseY = event.clientY;
+    });
+
+    floatCards.forEach((card, index) => {
+      card.addEventListener('mouseenter', () => {
+        fillCursorBadgeText(projectNames[index]);
+        cursorBadge.classList.add('is-active');
+      });
+      card.addEventListener('mouseleave', () => {
+        cursorBadge.classList.remove('is-active');
+      });
+    });
+
+    function animateCursorBadge() {
+      badgeX = lerp(badgeX, mouseX, 0.2);
+      badgeY = lerp(badgeY, mouseY, 0.2);
+      cursorBadge.style.left = `${badgeX}px`;
+      cursorBadge.style.top = `${badgeY}px`;
+      requestAnimationFrame(animateCursorBadge);
+    }
+
+    requestAnimationFrame(animateCursorBadge);
+  }
 </script>
 
 </body>
