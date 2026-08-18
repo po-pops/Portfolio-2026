@@ -54,13 +54,13 @@
       .dots { left:16px; width:358px; } .dots.top { top:16px; } .dots.bottom { top:824px; }
       .back-card { top:48px; left:14px; width:362px; height:742px; }
       .frame { top:50px; left:18px; width:354px; height:742px; }
-      .contact-layout { top:90px; left:50%; display:block; width:334px; height:auto; transform:translateX(-50%); }
-      .form-card { width:334px; height:auto; min-height:410px; padding:24px; }
+      .contact-layout { top:90px; left:50%; display:flex; flex-direction:column; width:334px; height:auto; gap:24px; transform:translateX(-50%); }
+      .form-card { order:2; width:334px; height:auto; min-height:410px; padding:24px; }
       .form-card h1 { margin-bottom:26px; font-size:26px; }
       .name-fields { gap:12px; } label { font-size:15px; } input,textarea { font-size:14px; } textarea { height:130px; }
-      .media { width:334px; height:auto; margin-top:24px; }
+      .media { order:1; width:334px; height:auto; margin-top:0; }
       .controls { height:42px; gap:16px; } .send { font-size:17px; } .close { flex-basis:42px; width:42px; height:42px; }
-      .photo-frame { width:334px; height:300px; }
+      .photo-frame { display:none; }
     }
   </style>
 </head>
@@ -107,6 +107,10 @@
     });
 
     function syncMediaHeight() {
+      if (innerWidth <= 640) {
+        media.style.height = '';
+        return;
+      }
       media.style.height = `${formCard.offsetHeight}px`;
     }
 
