@@ -1,0 +1,73 @@
+:root { --cream:#fff1b6; --ink:#42302e; --sky:#c1dbea; }
+    * { box-sizing:border-box; }
+    @font-face { font-family:'CS Melanie Demo'; src:url('CsMelanieDiscoRegularDemo-m247a.otf') format('opentype'); font-display:swap; }
+    html,body { width:100%; height:100%; margin:0; background:var(--sky); }
+    body { overflow:hidden; color:var(--ink); font-family:'Manrope',sans-serif; }
+    .viewport { display:flex; width:100%; height:100vh; align-items:center; justify-content:center; }
+    .stage-outer,.stage { width:1280px; height:832px; flex:none; }
+    .stage { position:relative; transform-origin:top left; }
+    .dots { position:absolute; left:92px; width:1095px; height:13px; background:url('flower.svg') repeat-x left center / 17.45px 13.09px; opacity:.75; }
+    .dots.top { top:30px; } .dots.bottom { top:787px; }
+    .back-card { position:absolute; z-index:1; top:57px; left:22px; width:1236px; height:719px; border-radius:30px; background:var(--ink); transform:rotate(-2.2deg); }
+    .frame { position:absolute; z-index:2; top:57px; left:22px; width:1236px; height:719px; overflow:hidden; border:1px solid var(--ink); border-radius:30px; background:var(--sky) url('background-ciel.webp') center/cover; }
+    .layout { position:absolute; top:20%; left:50%; display:flex; width:870px; height:476px; gap:30px; transform:translateX(-50%); }
+    .copy { width:420px; height:476px; padding:30px; border:1px solid var(--ink); border-radius:24px; background:var(--sky); }
+    h1 { margin:0 0 8px; font-size:30px; line-height:1.1; }
+    h2 { margin:0 0 4px; font-size:20px; line-height:1.2; font-weight:500; }
+    .copy p { margin:0; font-size:18px; line-height:1.28; }
+    .copy .body { margin-top:24px; }
+    .badge { display:inline-block; margin-top:25px; padding:2px 4px; background:var(--cream); font-size:18px; transform:rotate(-2deg); }
+    .media { display:flex; width:420px; height:476px; flex-direction:column; gap:30px; }
+    .controls { display:flex; height:46px; gap:30px; }
+    .button { position:relative; display:flex; overflow:hidden; isolation:isolate; align-items:center; justify-content:space-between; border:1px solid var(--ink); border-radius:16px; background:var(--cream); color:var(--ink); text-decoration:none; }
+    .button::before { position:absolute; inset:0; z-index:0; border-radius:inherit; background:var(--ink); content:''; opacity:0; transform:scale(.15); transform-origin:bottom left; transition:transform .8s ease,opacity .5s ease; }
+    .button:hover { border-color:var(--sky); color:var(--sky); box-shadow:inset 0 0 0 1px var(--sky); }
+    .button:hover::before { opacity:1; transform:scale(1); }
+    .button > * { position:relative; z-index:1; }
+    .button img { width:24px; height:24px; transition:filter .2s ease,transform .2s ease; }
+    .button:hover img { filter:brightness(0) saturate(100%) invert(86%) sepia(12%) saturate(631%) hue-rotate(165deg) brightness(93%) contrast(91%); }
+    .cv { flex:1; padding:8px 16px; font-size:20px; }
+    .cv-label { position:relative; z-index:1; color:inherit; transition:color .3s ease; }
+    .cv:hover .cv-label { color:var(--sky); }
+    .cv:hover img { transform:translateX(4px); }
+    .music-label { position:relative; z-index:1; color:inherit; transition:color .3s ease; }
+    .music-link:hover .music-label { color:var(--sky); }
+    .close { width:46px; justify-content:center; border-radius:50%; }
+    .photo-frame { position:relative; width:420px; height:400px; overflow:hidden; border:1px solid var(--ink); border-radius:24px; }
+    .photo { width:100%; height:100%; object-fit:cover; object-position:center; }
+    .smiley { position:absolute; top:20px; left:20px; width:96px; height:96px; object-fit:contain; transform:rotate(180deg) scaleY(-1); }
+    .music { position:absolute; z-index:4; left:50%; top:80%; width:533px; height:254px; transform:translateX(-50%); }
+    .music-card { position:absolute; overflow:hidden; border:1px solid var(--ink); border-radius:21px; transition:transform .55s cubic-bezier(.22,1,.36,1),box-shadow .55s ease; }
+    .music-card img { display:block; width:100%; height:100%; object-fit:cover; transition:transform .55s cubic-bezier(.22,1,.36,1); }
+    .music-card.one { left:30px; top:39px; width:311px; height:243px; transform:rotate(-9.93deg); }
+    .music-card.two { right:30px; top:108px; width:311px; height:243px; transform:rotate(4.57deg); }
+    .music-card.one:hover,.music-card.one.is-hovered { transform:translate(-4px,-5px) rotate(-12.69deg) scale(1.015); box-shadow:0 10px 18px rgba(66,48,46,.16); }
+    .music-card.two:hover,.music-card.two.is-hovered { transform:translate(4px,-5px) rotate(8.79deg) scale(1.015); box-shadow:0 10px 18px rgba(66,48,46,.16); }
+    .music-link { position:absolute; z-index:5; left:50%; top:754px; width:255px; height:45px; justify-content:center; gap:4px; padding:8px 16px; font-size:18px; transform:translateX(-50%); }
+    .music-link img { width:24px; height:24px; }
+    @media (max-width:640px) {
+      html,body { height:auto; min-height:100%; overflow-x:hidden; overflow-y:auto; }
+      .viewport { height:auto; min-height:100svh; align-items:flex-start; }
+      .stage-outer,.stage { width:390px; height:1024px; }
+      .stage { transform-origin:top left; }
+      .dots { left:16px; width:358px; } .dots.top { top:16px; } .dots.bottom { top:982px; }
+      .back-card { top:29px; left:23px; width:344px; height:920px; border-radius:30px; transform:rotate(-5deg); }
+      .frame { top:38px; left:16px; width:353px; height:910px; border-radius:30px; }
+      .layout { position:static; display:block; width:390px; height:1024px; transform:none; }
+      .copy { position:absolute; top:100px; left:24px; width:303px; height:415px; min-height:0; padding:30px; border-radius:24px; }
+      .copy h1 { font-size:25px; }
+      .copy h2 { font-size:20px; }
+      .copy p { font-size:15px; line-height:1.28; }
+      .copy .body { margin-top:22px; }
+      .badge { margin-top:24px; font-size:18px; }
+      .media { position:static; display:block; width:390px; height:0; margin:0; }
+      .controls { position:absolute; top:24px; left:24px; width:303px; height:43px; gap:30px; }
+      .cv { height:43px; font-size:18px; }
+      .close { width:45px; height:45px; flex-basis:45px; order:-1; }
+      .photo-frame { position:absolute; top:546px; left:24px; width:303px; height:220px; border-radius:24px; }
+      .smiley { top:20px; left:20px; width:96px; height:96px; }
+      .music { left:50%; top:825px; width:300px; height:145px; transform:translateX(-50%); }
+      .music-card.one { left:0; top:20px; width:175px; height:137px; }
+      .music-card.two { right:0; top:55px; width:175px; height:137px; }
+      .music-link { left:50%; top:927px; width:254px; height:44px; font-size:18px; transform:translateX(-50%); }
+    }

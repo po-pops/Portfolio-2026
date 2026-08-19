@@ -8,62 +8,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="icon" type="image/webp" href="src/Logo.webp">
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <style>
-    :root { --cream:#fff1b6; --ink:#42302e; --sky:#c1dbea; }
-    * { box-sizing:border-box; }
-    html,body { width:100%; height:100%; margin:0; background:var(--sky); }
-    body { overflow:hidden; color:var(--ink); font-family:'Manrope',sans-serif; }
-    .viewport { display:flex; width:100%; height:100vh; align-items:center; justify-content:center; }
-    .stage-outer,.stage { width:1280px; height:832px; flex:none; }
-    .stage { position:relative; transform-origin:top left; }
-    .dots { position:absolute; left:92px; width:1095px; height:13px; background:url('src/flower.svg') repeat-x left center / 17.45px 13.09px; opacity:.75; }
-    .dots.top { top:30px; } .dots.bottom { top:787px; }
-    .back-card { position:absolute; z-index:1; top:57px; left:22px; width:1236px; height:719px; border-radius:30px; background:var(--ink); transform:rotate(-2.2deg); }
-    .frame { position:absolute; z-index:2; top:57px; left:22px; width:1236px; height:719px; overflow:hidden; border:1px solid var(--ink); border-radius:30px; background:var(--sky) url('src/background-ciel.webp') center/cover; }
-    .contact-layout { position:absolute; top:88px; left:50%; display:flex; width:870px; height:fit-content; align-items:stretch; gap:30px; transform:translateX(-50%); }
-    .form-card { width:420px; height:fit-content; padding:30px; border:1px solid var(--ink); border-radius:24px; background:var(--sky); }
-    .form-card h1 { margin:0 0 36px; font-size:30px; line-height:1.1; }
-    .name-fields { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
-    .form-field { margin-bottom:20px; }
-    label { display:block; margin-bottom:8px; font-size:18px; }
-    input,textarea { width:100%; border:0; border-radius:14px; padding:12px; color:var(--ink); background:#fff; font:16px 'Manrope',sans-serif; outline:none; }
-    input { height:42px; } textarea { height:171px; resize:none; }
-    .media { display:flex; width:420px; height:auto; min-height:0; flex:0 0 auto; align-self:flex-start; overflow:hidden; flex-direction:column; gap:30px; }
-    .controls { display:flex; height:46px; align-items:center; gap:30px; }
-    .button { position:relative; display:flex; overflow:hidden; isolation:isolate; align-items:center; justify-content:space-between; border:1px solid var(--ink); border-radius:16px; background:var(--cream); color:var(--ink); text-decoration:none; transition:color .3s ease,border-color .3s ease,box-shadow .3s ease; }
-    .button::before { position:absolute; inset:0; z-index:0; border-radius:inherit; background:var(--ink); content:''; opacity:0; transform:scale(.15); transform-origin:bottom left; transition:transform .8s ease,opacity .5s ease; }
-    .button:hover { border-color:var(--sky); color:var(--sky); box-shadow:inset 0 0 0 1px var(--sky); }
-    .button:hover::before { opacity:1; transform:scale(1); }
-    .button > * { position:relative; z-index:1; }
-    .send { display:inline-flex; flex:1 1 auto; width:auto; min-width:0; padding:8px 16px; border:1px solid var(--ink); font:20px 'Manrope',sans-serif; cursor:pointer; }
-    .send-label { position:relative; z-index:1; color:inherit; transition:color .3s ease; }
-    .send:hover .send-label { color:var(--sky); }
-    .close { position:static; flex:0 0 46px; width:46px; height:46px; justify-content:center; border-radius:50%; }
-    .close::before { display:none; }
-    .close:hover { background:var(--ink); }
-    .button img { width:24px; height:24px; transition:filter .2s ease,transform .2s ease; }
-    .button:hover img { filter:brightness(0) saturate(100%) invert(86%) sepia(12%) saturate(631%) hue-rotate(165deg) brightness(93%) contrast(91%); }
-    .send:hover img { transform:translateX(4px); }
-    .photo-frame { position:relative; width:420px; height:auto; min-height:0; flex:1 1 auto; overflow:hidden; border:1px solid var(--ink); border-radius:24px; }
-    .photo { display:block; width:100%; height:100%; min-height:0; object-fit:cover; }
-    .smiley { position:absolute; top:20px; left:20px; width:96px; height:96px; object-fit:contain; transform:rotate(180deg) scaleY(-1); }
-    @media (max-width:640px) {
-      html,body { height:auto; min-height:100%; overflow-x:hidden; overflow-y:auto; }
-      .viewport { height:auto; min-height:100svh; align-items:flex-start; }
-      .stage-outer,.stage { width:390px; height:846px; }
-      .stage { transform-origin:top left; }
-      .dots { left:16px; width:358px; } .dots.top { top:16px; } .dots.bottom { top:824px; }
-      .back-card { top:48px; left:14px; width:362px; height:742px; }
-      .frame { top:50px; left:18px; width:354px; height:742px; }
-      .contact-layout { top:90px; left:50%; display:flex; flex-direction:column; width:334px; height:auto; gap:24px; transform:translateX(-50%); }
-      .form-card { order:2; width:334px; height:auto; min-height:410px; padding:24px; }
-      .form-card h1 { margin-bottom:26px; font-size:26px; }
-      .name-fields { gap:12px; } label { font-size:15px; } input,textarea { font-size:14px; } textarea { height:130px; }
-      .media { order:1; width:334px; height:auto; margin-top:0; }
-      .controls { height:42px; gap:16px; } .send { font-size:17px; } .close { flex-basis:42px; width:42px; height:42px; }
-      .photo-frame { display:none; }
-    }
-  </style>
+  <link rel="stylesheet" href="src/contact.css">
 </head>
 <body>
   <main class="viewport"><div class="stage-outer"><div class="stage">
