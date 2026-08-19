@@ -43,7 +43,7 @@
     .music-card.two { right:30px; top:108px; width:311px; height:243px; transform:rotate(4.57deg); }
     .music-card.one:hover,.music-card.one.is-hovered { transform:translate(-4px,-5px) rotate(-12.69deg) scale(1.015); box-shadow:0 10px 18px rgba(66,48,46,.16); }
     .music-card.two:hover,.music-card.two.is-hovered { transform:translate(4px,-5px) rotate(8.79deg) scale(1.015); box-shadow:0 10px 18px rgba(66,48,46,.16); }
-    .music-link { position:absolute; z-index:5; left:50%; top:754px; width:255px; height:45px; justify-content:center; gap:4px; padding:8px 16px; font-size:18px; transform:translateX(-50%); }
+    .music-link { position:absolute; z-index:5; left:50%; top:754px; width:fit-content  ; height:45px; justify-content:center; gap:4px; padding:8px 16px; font-size:18px; transform:translateX(-50%); }
     .music-link img { width:24px; height:24px; }
     @media (max-width:640px) {
       html,body { height:auto; min-height:100%; overflow-x:hidden; overflow-y:auto; }
