@@ -40,6 +40,36 @@
                 </div>
               </section>
             </div>
+        </article>
+          <section class="bento" aria-label="Aperçus du site Klutch">
+            <div class="preview hero"><img src="src/Klutch/klutch - 1.webp" alt="Aperçu de la page d'accueil Tcheen" /></div>
+            <div class="preview-row">
+              <div class="preview tall"><img src="src/Klutch/klutch - 2.webp" alt="Aperçu d'une page klutch" /></div>
+              <div class="preview tall"><img src="src/Klutch/klutch - 3.webp" alt="Aperçu d'une autre page klutch" /></div>
+            </div>
+          </section>
+        </section>
+      </div>
+    </div>
+  </main>
+  <script>
+    (() => {
+      const stage = document.querySelector('.stage');
+      const outer = document.querySelector('.stage-outer');
+      const desktopWidth = 1280;
+      const desktopHeight = 832;
+      const mobileWidth = 389;
+      const mobileHeight = 1347;
+
+      function fitStage() {
+        const isMobile = window.innerWidth <= 640;
+        const stageWidth = isMobile ? mobileWidth : desktopWidth;
+        const mobileStageHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--mobile-stage-height')) || mobileHeight;
+        const stageHeight = isMobile ? mobileStageHeight : desktopHeight;
+        stage.classList.toggle('is-mobile', isMobile);
+        const scale = isMobile
+          ? Math.min(window.innerWidth / stageWidth, 1)
+          : Math.min(window.innerWidth / stageWidth, window.innerHeight / stageHeight);
         stage.style.transform = `scale(${scale})`;
         outer.style.width = `${stageWidth * scale}px`;
         outer.style.height = `${stageHeight * scale}px`;
@@ -47,7 +77,7 @@
 
       window.addEventListener('resize', fitStage);
       fitStage();
-      window.fitKlutchStage = fitStage;
+      window.fitTcheenStage = fitStage;
     })();
 
     document.querySelectorAll('.button').forEach((button) => {
