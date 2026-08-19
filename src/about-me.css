@@ -16,7 +16,7 @@
     h2 { margin:0 0 4px; font-size:20px; line-height:1.2; font-weight:500; }
     .copy p { margin:0; font-size:18px; line-height:1.28; }
     .copy .body { margin-top:24px; }
-    .badge { display:inline-block; margin-top:25px; padding:2px 4px; background:var(--cream); font-size:18px; transform:rotate(-2deg); }
+    .badge { display:inline-block; margin-bottom:25px; padding:2px 4px; background:var(--cream); font-size:18px; transform:rotate(-2deg); }
     .media { display:flex; width:420px; height:476px; flex-direction:column; gap:30px; }
     .controls { display:flex; height:46px; gap:30px; }
     .button { position:relative; display:flex; overflow:hidden; isolation:isolate; align-items:center; justify-content:space-between; border:1px solid var(--ink); border-radius:16px; background:var(--cream); color:var(--ink); text-decoration:none; }
