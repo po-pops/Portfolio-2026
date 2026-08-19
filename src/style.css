@@ -673,7 +673,7 @@
     .hero-bg{object-position:center;}
     .hero-lace{left:50%;top:50%;width:350px;height:580px;transform:translate(-50%,-50%) rotate(90deg);}
     .hero-title{left:38px;top:275px;width:250px;height:103px;z-index:4;}
-    .about-cta{left:136px;top:402px;width:86px;height:86px;}
+    .about-cta{left:120px;top:402px;width:120px;height:120px;}
     .about-cta .ring text{font-size:20px;letter-spacing:1px;}
     .hero-stars{left:283px;top:254px;width:48px;height:56px;}
     .mobile-scroll-cue{position:absolute;left:153px;top:548px;display:grid;width:48px;height:48px;place-items:center;border:1px solid var(--ink);border-radius:50%;background:transparent;z-index:7;}
