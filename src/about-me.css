@@ -45,6 +45,13 @@
     .music-card.two:hover,.music-card.two.is-hovered { transform:translate(4px,-5px) rotate(8.79deg) scale(1.015); box-shadow:0 10px 18px rgba(66,48,46,.16); }
     .music-link { position:absolute; z-index:5; left:50%; top:754px; width:fit-content  ; height:45px; justify-content:center; gap:4px; padding:8px 16px; font-size:18px; transform:translateX(-50%); }
     .music-link img { width:24px; height:24px; }
+
+    .brownhighlight::selection { background: #42302e; color: #c1dbea; }
+    .brownhighlight::-moz-selection { background: #42302e; color: #c1dbea; }
+
+    .lighthighlight::selection { background: #FFF1B6; color: #42302e; }
+    .lighthighlight::-moz-selection { background: #FFF1B6; color: #42302e; }
+    
     @media (max-width:640px) {
       html,body { height:auto; min-height:100%; overflow-x:hidden; overflow-y:auto; }
       .viewport { height:auto; min-height:100svh; align-items:flex-start; }

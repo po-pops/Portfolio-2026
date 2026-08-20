@@ -56,7 +56,7 @@
   /* --- labels row --- */
   .labels-row{
     position:absolute;
-    left:342px;
+    left:320px;
     top:36px;
     width:595.75px;
     height:39px;
@@ -651,6 +651,12 @@
     border-radius:9999px;
   }
 
+    .brownhighlight::selection { background: #42302e; color: #c1dbea; }
+    .brownhighlight::-moz-selection { background: #42302e; color: #c1dbea; }
+
+    .lighthighlight::selection { background: #FFF1B6; color: #42302e; }
+    .lighthighlight::-moz-selection { background: #FFF1B6; color: #42302e; }
+  
   @media (max-width:1280px){
     .stage-outer{ height:calc(var(--stage-h) * (100vw / var(--stage-w))); }
   }

@@ -390,6 +390,9 @@ body {
 .preview.tall { height: 303px; }
 .preview-link { position: absolute; inset: 0; z-index: 2; }
 
+.brownhighlight::selection { background: #42302e; color: #c1dbea; }
+.brownhighlight::-moz-selection { background: #42302e; color: #c1dbea; }
+
 @media (max-width: 640px) {
   :root { --mobile-card-height: 486px; }
   html,
