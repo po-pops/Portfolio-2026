@@ -316,7 +316,7 @@
     transform:translateY(-50%);
     width:2px;
     height:400px;
-    background:rgba(66,48,46,0.15);
+    background:rgba(66,48,46,0.4);
     border-radius:1px;
     overflow:hidden;
     z-index:10;
