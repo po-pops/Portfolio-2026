@@ -1,6 +1,6 @@
 # Modifier le portfolio — guide du Studio
 
-Le Studio : https://pauline-yvelin.sanity.studio
+Le Studio : https://pauline-yvelin.sanity.studio (raccourci : ajouter `/studio` à l'adresse du site)
 
 Tu t'y connectes avec le compte qui a reçu l'invitation Sanity. Une modification n'apparaît sur le site qu'après avoir cliqué sur **Publier** (en bas à droite). Le site la reprend tout seul en moins d'une minute : pas besoin de toucher au code ni à GitHub.
 
