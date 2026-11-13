@@ -139,12 +139,11 @@
     const on = (t, type, fn, opts = {}) => t.addEventListener(type, fn, { ...opts, signal: ac.signal });
 
     // Trajets d'origine, cartes en quinconce (gauche / droite), décalées de 0,15.
-    // Un tour dure 0,6 = 4 × 0,15 : entrée en bas (0,08) puis montée (0,52). Dès qu'une carte
+    // Un tour dure 0,6 = 4 × 0,15 : la carte entre en fondu par le bas puis monte d.un seul trait. Dès qu’une carte
     // sort en haut, elle revient en bas : l'écart reste de 0,15 entre toutes les cartes.
     const OFFSET = 0.15;
     const PERIOD = 0.6;
     const ENTER = 0.08;
-    const RISE = 0.52;
     const defs = [
       { y0: 68, y1: -900, r0: -9.93, r1: -18 },
       { y0: 78, y1: -1050, r0: 4.57, r1: 12 },
@@ -173,23 +172,19 @@
 
       cards.forEach((card, i) => {
         const local = (((current + i * OFFSET) % PERIOD) + PERIOD) % PERIOD;
-        let rise = 0;
-        let opacity = 0;
-        let drop = 1;
-        if (local < ENTER) {
-          // entre par le bas en glissant
-          opacity = easeOut(local / ENTER);
-          drop = 1 - opacity;
-        } else if (local < ENTER + RISE) {
-          rise = (local - ENTER) / RISE;
-          opacity = mobile && rise > 0.85 ? 1 - (rise - 0.85) / 0.15 : 1;
-          drop = 0;
-        }
+        // Une seule trajectoire continue, sans arrêt en bas : la carte part de sous le cadre,
+        // apparaît en fondu pendant l'entrée, puis continue de monter à la même vitesse.
+        const t = local / PERIOD;                         // 0 → 1 sur tout le trajet
+        const enter = ENTER / PERIOD;                     // part du trajet en fondu
+        let opacity = t < enter ? easeOut(t / enter) : 1;
+        if (mobile && t > 0.9) opacity = 1 - (t - 0.9) / 0.1;
+        const rise = clamp((t - enter) / (1 - enter), 0, 1);
         if (mobile) {
-          card.style.transform = `translate(0, ${-rise * 1100 + drop * 90}px) rotate(${mobileRot[i % 4]}deg)`;
+          const y = lerp(90, -1100, t);
+          card.style.transform = `translate(0, ${y}px) rotate(${mobileRot[i % 4]}deg)`;
         } else {
           const d = defs[i % defs.length];
-          const y = lerp(d.y0, d.y1, rise) - rise * 40 + drop * 160;
+          const y = lerp(d.y0 + 160, d.y1 - 40, t);
           card.style.transform = `translate(0, ${y}px) rotate(${lerp(d.r0, d.r1, rise)}deg) scale(${lerp(0.82, 1.04, rise)})`;
         }
         card.style.opacity = opacity.toFixed(3);
