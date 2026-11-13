@@ -319,7 +319,8 @@
       sync();
       page.classList.add('is-sent');
       timer = setTimeout(() => {
-        window.location.href = `mailto:${TO}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        const to = (window.CMS && window.CMS.data && window.CMS.data.contact && window.CMS.data.contact.email) || TO;
+        window.location.href = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
       }, Number(form.dataset.sendDelay || 900));
     });
     page.querySelectorAll('[data-reset]').forEach((b) => b.addEventListener('click', () => {
@@ -335,6 +336,7 @@
     const page = document.getElementById('page');
     const extra = document.getElementById('page-extra');
     root.dataset.page = page.dataset.page;
+    if (window.CMS) window.CMS.apply(page, extra); // contenu publié dans Sanity (src/cms.js)
     setupButtons(page);
     if (extra) setupButtons(extra);
     const fn = MOUNTS[page.dataset.page];

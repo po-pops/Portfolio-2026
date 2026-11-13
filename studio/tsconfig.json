@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "target": "ES2022", "module": "Preserve", "moduleResolution": "bundler", "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "jsx": "preserve", "strict": true, "skipLibCheck": true, "noEmit": true, "isolatedModules": true, "esModuleInterop": true
+  },
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules", "dist"]
+}
