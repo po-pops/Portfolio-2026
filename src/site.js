@@ -165,7 +165,8 @@
     });
 
     function frame() {
-      current += (target - current) * 0.075;
+      // glisse longue et douce vers la cible (inertie)
+      current += (target - current) * 0.05;
       if (Math.abs(target - current) < 1e-5) current = target;
       const progress = ((current % PERIOD) + PERIOD) % PERIOD;
       const mobile = isMobile();
