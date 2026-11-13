@@ -153,8 +153,10 @@
     const mobileRot = [-8, 4, -6, 5];
     const easeOut = (t) => 1 - Math.pow(1 - t, 3);
 
-    let target = 0;
-    let current = 0;
+    // Au départ, le nom se lit en entier : seule Tcheen dépasse en bas, la suivante arrive au défilement.
+    const START = 0.6;
+    let target = START;
+    let current = START;
     const nudge = (d) => { target += d; };
 
     cards.forEach((card) => {
@@ -167,7 +169,7 @@
       // glisse longue et douce vers la cible (inertie)
       current += (target - current) * 0.05;
       if (Math.abs(target - current) < 1e-5) current = target;
-      const progress = ((current % PERIOD) + PERIOD) % PERIOD;
+      const progress = (((current - START) % PERIOD) + PERIOD) % PERIOD;
       const mobile = isMobile();
 
       cards.forEach((card, i) => {
