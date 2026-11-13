@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-page="project">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -28,57 +28,68 @@
   <meta name="twitter:title" content="Product Designer & UI/UX Specialist | Pauline Yvelin">
   <meta name="twitter:description" content="Portfolio de Pauline Yvelin, Product Designer spécialisée en UI/UX.">
   <meta name="twitter:image" content="https://paulineyvelin.net/vignette.jpg">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="src/Project.css" />
-  <link rel="stylesheet" href="src/site.css" />
   <link rel="icon" type="image/webp" href="src/Logo.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preload" href="src/ciel.webp" as="image">
+  <link rel="stylesheet" href="src/site.css">
+  <link rel="stylesheet" href="src/pages.css">
 </head>
 <body>
   <main class="viewport">
     <div class="stage-outer">
-      <div class="stage" data-mobile-w="389" data-mobile-h="1347">
-        <div class="dots-row dots-top" aria-hidden="true"></div>
-        <div class="dots-row dots-bottom" aria-hidden="true"></div>
+      <div class="stage" id="stage">
+        <div class="deco-dots deco-top" aria-hidden="true"></div>
+        <div class="deco-dots deco-bottom" aria-hidden="true"></div>
         <div class="back-card" aria-hidden="true"></div>
-        <section class="hero-card" aria-label="Projet Klutch">
-          <nav class="topbar reveal" style="--i:0" aria-label="Navigation du projet">
-            <a class="button back-link" href="index.html" aria-label="Retour au portfolio"><img src="src/close button.svg" alt=""></a>
-            <a class="button site-link" href="https://www.figma.com/proto/RvC1HOJrnbW2I4GN5GEAA7/Klutch?node-id=378-745&viewport=-429%2C-3512%2C0.33&t=f6ouF9uRhOYEffXi-0&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=378%3A745" target="_blank" rel="noreferrer"><span class="site-label">Voir le prototype</span><img src="src/link arrow.svg" alt=""></a>
-          </nav>
-          <article style="--i:1" class="reveal info-card" aria-labelledby="project-name">
+        <div class="frame" id="frame">
+          <div class="page page-project" id="page" data-page="project" data-mobile-h="1345">
+            <nav class="topbar reveal" style="--i:0" aria-label="Navigation du projet">
+            <a class="btn btn-round back-link" href="index.html" aria-label="Retour au portfolio"><img src="src/close button.svg" alt=""></a>
+            <a class="btn site-link" href="https://www.figma.com/proto/RvC1HOJrnbW2I4GN5GEAA7/Klutch?node-id=378-745&viewport=-429%2C-3512%2C0.33&t=f6ouF9uRhOYEffXi-0&scaling=min-zoom&content-scaling=fixed&starting-point-node-id=378%3A745" target="_blank" rel="noreferrer"><span class="site-label">Voir le prototype</span><img src="src/link arrow.svg" alt=""></a>
+            </nav>
+            <article class="info-card reveal" style="--i:1"" aria-labelledby="project-name">
             <div class="card-scroll" tabindex="0">
-              <h1 id="project-name" class="card-title">Klutch</h1>
-              <div class="tags"><span class="tag">Direction artistique</span><span class="tag">Product Design</span><span class="tag">2026</span></div>
-              <div class="dots-row card-dots" aria-hidden="true"></div>
-              <h2 class="project-title">Le projet</h2>
-              <p class="card-copy">Klutch, c’est une appli pensée pour aider les lieux indépendants de Bordeaux méconnus ou en difficulté en leur apportant de la visibilité.</a> souhaitait moderniser son site web afin de mieux refléter sa nouvelle stratégie et toucher une cible plus professionnelle.</p>
-              <p class="card-copy">Lors du workshop, nous avons pu travaillé sur la création du concept, son identité visuelle et l’interface utilisateur, avec une idée simple : permettre aux jeunes de découvrir des adresses uniques tout en soutenant concrètement celles qui font vivre la ville.</p>
-              <section class="conception" aria-labelledby="conception-title">
-                <div class="dots-row card-dots" aria-hidden="true"></div>
-                <h2 id="conception-title" class="conception-title">La conception</h2>
-                <div class="steps">
-                  <article class="step"><img class="step-number" src="src/project-step-1.svg" alt="1" /><div class="step-copy"><h3>Trouver une idée porteuse de sens</h3><p>Au début du workshop, nous avons exploré plusieurs pistes avant de revenir à une expérience personnelle : la fermeture d’un bar que nous aimions beaucoup. Ce souvenir commun a fait émerger une problématique réelle, la disparition progressive des lieux indépendants et l’envie de découvrir et d’aider des endroits niches et peu connus. Ce qui est devenue le point de départ du projet Klutch.</p></div></article>
-                  <article class="step"><img class="step-number" src="src/project-step-2.svg" alt="2" /><div class="step-copy"><h3>Définir la cible</h3><p>Nous avons ensuite identifié notre cible principale : les jeunes adultes et étudiants. À travers la création d’un persona, nous avons cherché à comprendre leurs usages, leurs habitudes numériques et leur rapport aux lieux culturels afin d’imaginer une solution adaptée.</p></div></article>
-                  <article class="step"><img class="step-number" src="src/project-step-3.svg" alt="3" /><div class="step-copy"><h3>Penser le livrable</h3><p>Cette phase a été marquée par de nombreuses hésitations : choix du positionnement, ton à adopter ou encore rôle réel de l’application. Le projet s’est finalement orienté vers la création d’une application mobile, accompagnée d’une communication sur les réseaux sociaux, pensée comme un outil à destination d’une association ayant le même objectif.</p></div></article>
-                  <article class="step"><img class="step-number" src="src/project-step-4.svg" alt="4" /><div class="step-copy"><h3>Ajuster le concept</h3><p>Cette phase a été marquée par de nombreuses hésitations : choix du positionnement, ton à adopter ou encore rôle réel de l’application. Ces ajustements nous ont permis d’affiner progressivement une approche communautaire centrée sur la découverte et le soutien local.</p></div></article>
-                </div>
-              </section>
+            <h1 id="project-name" class="card-title">Klutch</h1>
+            <div class="tags"><span class="tag">Direction artistique</span><span class="tag">Product Design</span><span class="tag">2026</span></div>
+            <div class="dots-row card-dots" aria-hidden="true"></div>
+            <h2 class="project-title">Le projet</h2>
+            <p class="card-copy">Klutch, c’est une appli pensée pour aider les lieux indépendants de Bordeaux méconnus ou en difficulté en leur apportant de la visibilité.</a> souhaitait moderniser son site web afin de mieux refléter sa nouvelle stratégie et toucher une cible plus professionnelle.</p>
+            <p class="card-copy">Lors du workshop, nous avons pu travaillé sur la création du concept, son identité visuelle et l’interface utilisateur, avec une idée simple : permettre aux jeunes de découvrir des adresses uniques tout en soutenant concrètement celles qui font vivre la ville.</p>
+            <section class="conception" aria-labelledby="conception-title">
+            <div class="dots-row card-dots" aria-hidden="true"></div>
+            <h2 id="conception-title" class="conception-title">La conception</h2>
+            <div class="steps">
+            <article class="step"><img class="step-number" src="src/project-step-1.svg" alt="1" /><div class="step-copy"><h3>Trouver une idée porteuse de sens</h3><p>Au début du workshop, nous avons exploré plusieurs pistes avant de revenir à une expérience personnelle : la fermeture d’un bar que nous aimions beaucoup. Ce souvenir commun a fait émerger une problématique réelle, la disparition progressive des lieux indépendants et l’envie de découvrir et d’aider des endroits niches et peu connus. Ce qui est devenue le point de départ du projet Klutch.</p></div></article>
+            <article class="step"><img class="step-number" src="src/project-step-2.svg" alt="2" /><div class="step-copy"><h3>Définir la cible</h3><p>Nous avons ensuite identifié notre cible principale : les jeunes adultes et étudiants. À travers la création d’un persona, nous avons cherché à comprendre leurs usages, leurs habitudes numériques et leur rapport aux lieux culturels afin d’imaginer une solution adaptée.</p></div></article>
+            <article class="step"><img class="step-number" src="src/project-step-3.svg" alt="3" /><div class="step-copy"><h3>Penser le livrable</h3><p>Cette phase a été marquée par de nombreuses hésitations : choix du positionnement, ton à adopter ou encore rôle réel de l’application. Le projet s’est finalement orienté vers la création d’une application mobile, accompagnée d’une communication sur les réseaux sociaux, pensée comme un outil à destination d’une association ayant le même objectif.</p></div></article>
+            <article class="step"><img class="step-number" src="src/project-step-4.svg" alt="4" /><div class="step-copy"><h3>Ajuster le concept</h3><p>Cette phase a été marquée par de nombreuses hésitations : choix du positionnement, ton à adopter ou encore rôle réel de l’application. Ces ajustements nous ont permis d’affiner progressivement une approche communautaire centrée sur la découverte et le soutien local.</p></div></article>
             </div>
-        </article>
-          <section class="bento reveal" style="--i:2" aria-label="Aperçus du site Klutch">
+            </section>
+            </div>
+            </article>
+            <section class="bento reveal" style="--i:2" aria-label="Aperçus du site Klutch">
             <div class="preview hero"><img src="src/Klutch/klutch1.webp" alt="Aperçu de la page d'accueil Tcheen" /></div>
             <div class="preview-row">
-              <div class="preview tall"><img src="src/Klutch/klutch2.webp" alt="Aperçu d'une page klutch" /></div>
-              <div class="preview tall"><img src="src/Klutch/klutch3.webp" alt="Aperçu d'une autre page klutch" /></div>
+            <div class="preview tall"><img src="src/Klutch/klutch2.webp" alt="Aperçu d'une page klutch" /></div>
+            <div class="preview tall"><img src="src/Klutch/klutch3.webp" alt="Aperçu d'une autre page klutch" /></div>
             </div>
-          </section>
-        </section>
+            </section>
+          </div>
+        </div>
+        <div class="page-extra page-project" id="page-extra">
+
+        </div>
       </div>
     </div>
   </main>
+  <div class="cursor-badge" id="cursorBadge" aria-hidden="true">
+    <svg class="cursor-badge-ring" viewBox="0 0 90 90">
+      <defs><path id="cursorBadgePath" d="M 45,8 A 37,37 0 1 1 44.95,8 A 37,37 0 1 1 45.05,8" fill="none"/></defs>
+      <text><textPath id="cursorBadgeTextPath" href="#cursorBadgePath" startOffset="0%"></textPath></text>
+    </svg>
+  </div>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js"></script>
   <script src="src/site.js"></script>
 </body>

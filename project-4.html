@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-page="project">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -28,56 +28,67 @@
   <meta name="twitter:title" content="Product Designer & UI/UX Specialist | Pauline Yvelin">
   <meta name="twitter:description" content="Portfolio de Pauline Yvelin, Product Designer spécialisée en UI/UX.">
   <meta name="twitter:image" content="https://paulineyvelin.net/vignette.jpg">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="src/Project.css" />
-  <link rel="stylesheet" href="src/site.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preload" href="src/ciel.webp" as="image">
+  <link rel="stylesheet" href="src/site.css">
+  <link rel="stylesheet" href="src/pages.css">
 </head>
 <body>
   <main class="viewport">
     <div class="stage-outer">
-      <div class="stage" data-mobile-w="389" data-mobile-h="1347">
-        <div class="dots-row dots-top" aria-hidden="true"></div>
-        <div class="dots-row dots-bottom" aria-hidden="true"></div>
+      <div class="stage" id="stage">
+        <div class="deco-dots deco-top" aria-hidden="true"></div>
+        <div class="deco-dots deco-bottom" aria-hidden="true"></div>
         <div class="back-card" aria-hidden="true"></div>
-        <section class="hero-card" aria-label="Projet Molière">
-          <nav class="topbar reveal" style="--i:0" aria-label="Navigation du projet">
-            <a class="button back-link" href="index.html" aria-label="Retour au portfolio"><img src="src/close button.svg" alt=""></a>
-            <a class="button site-link" href="https://www.figma.com/proto/nYC4K3kUkqXOzdHk3367Ih/Cin%C3%A9ma-%E2%80%94-Le-moli%C3%A8re?node-id=26-1013&viewport=-645%2C-587%2C0.33&t=gji2raAxni5cFpRP-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=26%3A1013&page-id=26%3A878" target="_blank" rel="noreferrer"><span class="site-label">Voir le prototype</span><img src="src/link arrow.svg" alt=""></a>
-          </nav>
-          <article style="--i:1" class="reveal info-card" aria-labelledby="project-name">
+        <div class="frame" id="frame">
+          <div class="page page-project" id="page" data-page="project" data-mobile-h="1345">
+            <nav class="topbar reveal" style="--i:0" aria-label="Navigation du projet">
+            <a class="btn btn-round back-link" href="index.html" aria-label="Retour au portfolio"><img src="src/close button.svg" alt=""></a>
+            <a class="btn site-link" href="https://www.figma.com/proto/nYC4K3kUkqXOzdHk3367Ih/Cin%C3%A9ma-%E2%80%94-Le-moli%C3%A8re?node-id=26-1013&viewport=-645%2C-587%2C0.33&t=gji2raAxni5cFpRP-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=26%3A1013&page-id=26%3A878" target="_blank" rel="noreferrer"><span class="site-label">Voir le prototype</span><img src="src/link arrow.svg" alt=""></a>
+            </nav>
+            <article class="info-card reveal" style="--i:1"" aria-labelledby="project-name">
             <div class="card-scroll" tabindex="0">
-              <h1 id="project-name" class="card-title" aria-label="Cinéma Le Molière"><span aria-hidden="true"><span class="nw">Cin<span class="acc">e</span>ma</span> Le <span class="nw">Moli<span class="acc acc-grave">e</span>re</span></span></h1>
-              <div class="tags"><span class="tag">Cinéma Le Molière</span><span class="tag">Product Design</span><span class="tag">Branding</span><span class="tag">2026</span></div>
-              <div class="dots-row card-dots" aria-hidden="true"></div>
-              <h2 class="project-title">Le projet</h2>
-              <p class="card-copy">Le cinéma Le Molière, c'est une salle où j'ai grandi, où mon père va encore chaque semaine, et où j'ai vu s'éteindre peu à peu la file d'attente au profit des grandes chaînes.</p>
-              <p class="card-copy">Le jour où un proche, habitué de toujours, n'a plus su comment consulter le programme ni réserver sa place, j'ai compris qu'il fallait agir. En une semaine, par attachement pour ce lieu chargé d'histoire, chaleureux et unique en son genre, je me suis lancé un défi personnel : lui offrir le rebranding et le site qu'il méritait, pour qu'il continue à faire vivre le cinéma à Pézenas, la ville de Molière.</p>
-              <section class="conception" aria-labelledby="conception-title">
-                <div class="dots-row card-dots" aria-hidden="true"></div>
-                <h2 id="conception-title" class="conception-title">La conception</h2>
-                <div class="steps">
-                  <article class="step"><img class="step-number" src="src/project-step-1.svg" alt="1" /><div class="step-copy"><h3>Analyse du contexte et des besoins utilisateurs</h3><p>J'ai identifié deux cibles aux attentes différentes : les habitués, attachés au cinéma mais en difficulté avec le digital, et les jeunes, moins familiers du lieu et peu attirés par son image actuelle.</p></div></article>
-                  <article class="step"><img class="step-number" src="src/project-step-2.svg" alt="2" /><div class="step-copy"><h3>Recherche de références et d'inspiration</h3><p>J'ai exploré l'identité de Molière et son ancrage à Pézenas, ainsi que les tendances UI/UX des sites de cinémas, pour nourrir une direction artistique à la fois locale et contemporaine..</p></div></article>
-                  <article class="step"><img class="step-number" src="src/project-step-3.svg" alt="3" /><div class="step-copy"><h3>Création d'une identité de marque</h3><p>Après plusieurs itérations, j'ai défini un logo, une palette de couleurs et une direction artistique capables de faire cohabiter l'héritage historique du lieu avec une image plus fraîche et moderne.</p></div></article>
-                  <article class="step"><img class="step-number" src="src/project-step-4.svg" alt="4" /><div class="step-copy"><h3>Conception de l'expérience utilisateur du site</h3><p>J'ai enfin conçu les maquettes pensées pour être accessibles et ergonomiques pour les habitués, tout en séduisant un public plus jeune, avec un parcours utilisateur simplifié pour trouver la programmation et acheter ses billets.</p></div></article>
-                </div>
-              </section>
+            <h1 id="project-name" class="card-title" aria-label="Cinéma Le Molière"><span aria-hidden="true"><span class="nw">Cin<span class="acc">e</span>ma</span> Le <span class="nw">Moli<span class="acc acc-grave">e</span>re</span></span></h1>
+            <div class="tags"><span class="tag">Cinéma Le Molière</span><span class="tag">Product Design</span><span class="tag">Branding</span><span class="tag">2026</span></div>
+            <div class="dots-row card-dots" aria-hidden="true"></div>
+            <h2 class="project-title">Le projet</h2>
+            <p class="card-copy">Le cinéma Le Molière, c'est une salle où j'ai grandi, où mon père va encore chaque semaine, et où j'ai vu s'éteindre peu à peu la file d'attente au profit des grandes chaînes.</p>
+            <p class="card-copy">Le jour où un proche, habitué de toujours, n'a plus su comment consulter le programme ni réserver sa place, j'ai compris qu'il fallait agir. En une semaine, par attachement pour ce lieu chargé d'histoire, chaleureux et unique en son genre, je me suis lancé un défi personnel : lui offrir le rebranding et le site qu'il méritait, pour qu'il continue à faire vivre le cinéma à Pézenas, la ville de Molière.</p>
+            <section class="conception" aria-labelledby="conception-title">
+            <div class="dots-row card-dots" aria-hidden="true"></div>
+            <h2 id="conception-title" class="conception-title">La conception</h2>
+            <div class="steps">
+            <article class="step"><img class="step-number" src="src/project-step-1.svg" alt="1" /><div class="step-copy"><h3>Analyse du contexte et des besoins utilisateurs</h3><p>J'ai identifié deux cibles aux attentes différentes : les habitués, attachés au cinéma mais en difficulté avec le digital, et les jeunes, moins familiers du lieu et peu attirés par son image actuelle.</p></div></article>
+            <article class="step"><img class="step-number" src="src/project-step-2.svg" alt="2" /><div class="step-copy"><h3>Recherche de références et d'inspiration</h3><p>J'ai exploré l'identité de Molière et son ancrage à Pézenas, ainsi que les tendances UI/UX des sites de cinémas, pour nourrir une direction artistique à la fois locale et contemporaine..</p></div></article>
+            <article class="step"><img class="step-number" src="src/project-step-3.svg" alt="3" /><div class="step-copy"><h3>Création d'une identité de marque</h3><p>Après plusieurs itérations, j'ai défini un logo, une palette de couleurs et une direction artistique capables de faire cohabiter l'héritage historique du lieu avec une image plus fraîche et moderne.</p></div></article>
+            <article class="step"><img class="step-number" src="src/project-step-4.svg" alt="4" /><div class="step-copy"><h3>Conception de l'expérience utilisateur du site</h3><p>J'ai enfin conçu les maquettes pensées pour être accessibles et ergonomiques pour les habitués, tout en séduisant un public plus jeune, avec un parcours utilisateur simplifié pour trouver la programmation et acheter ses billets.</p></div></article>
             </div>
-        </article>
-          <section class="bento reveal" style="--i:2" aria-label="Aperçus du site Cinema Le Moliere">
+            </section>
+            </div>
+            </article>
+            <section class="bento reveal" style="--i:2" aria-label="Aperçus du site Cinema Le Moliere">
             <div class="preview hero"><img src="src/Molière/molière1.webp" alt="Aperçu de la page d'accueil Cinema Le Moliere" /></div>
             <div class="preview-row">
-              <div class="preview tall"><img src="src/Molière/molière2.webp" alt="Aperçu d'une page Molière" /></div>
-              <div class="preview tall"><img src="src/Molière/molière3.webp" alt="Aperçu d'une autre page Molière" /></div>
+            <div class="preview tall"><img src="src/Molière/molière2.webp" alt="Aperçu d'une page Molière" /></div>
+            <div class="preview tall"><img src="src/Molière/molière3.webp" alt="Aperçu d'une autre page Molière" /></div>
             </div>
-          </section>
-        </section>
+            </section>
+          </div>
+        </div>
+        <div class="page-extra page-project" id="page-extra">
+
+        </div>
       </div>
     </div>
   </main>
+  <div class="cursor-badge" id="cursorBadge" aria-hidden="true">
+    <svg class="cursor-badge-ring" viewBox="0 0 90 90">
+      <defs><path id="cursorBadgePath" d="M 45,8 A 37,37 0 1 1 44.95,8 A 37,37 0 1 1 45.05,8" fill="none"/></defs>
+      <text><textPath id="cursorBadgeTextPath" href="#cursorBadgePath" startOffset="0%"></textPath></text>
+    </svg>
+  </div>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js"></script>
   <script src="src/site.js"></script>
 </body>

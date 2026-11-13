@@ -1,58 +1,81 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-page="contact">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contact - Pauline Yvelin</title>
   <meta name="description" content="Écrire à Pauline Yvelin, Product Designer : un projet, une alternance ou juste un café.">
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="icon" type="image/webp" href="src/Logo.webp">
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="src/contact.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preload" href="src/ciel.webp" as="image">
   <link rel="stylesheet" href="src/site.css">
+  <link rel="stylesheet" href="src/pages.css">
 </head>
 <body>
-  <main class="viewport"><div class="stage-outer"><div class="stage" data-mobile-w="390" data-mobile-h="1120">
-    <div class="dots top" aria-hidden="true"></div><div class="dots bottom" aria-hidden="true"></div><div class="back-card" aria-hidden="true"></div>
-    <section class="frame" aria-labelledby="contact-title">
-      <a class="button close reveal" href="index.html" aria-label="Retour à l’accueil"><img src="src/close button.svg" alt=""></a>
+  <main class="viewport">
+    <div class="stage-outer">
+      <div class="stage" id="stage">
+        <div class="deco-dots deco-top" aria-hidden="true"></div>
+        <div class="deco-dots deco-bottom" aria-hidden="true"></div>
+        <div class="back-card" aria-hidden="true"></div>
+        <div class="frame" id="frame">
+          <div class="page page-contact" id="page" data-page="contact" data-mobile-h="1120">
+            <a class="btn btn-round close reveal" style="--i:0" href="index.html" aria-label="Retour à l’accueil"><img src="src/close button.svg" alt=""></a>
 
-      <div class="postcard-wrap reveal" style="--i:1">
-        <div class="postcard-back" aria-hidden="true"></div>
-        <form class="postcard" id="contact-form" data-send-delay="1300">
-          <div class="pc-left brownhighlight">
+            <div class="postcard-wrap reveal" style="--i:1">
+            <div class="postcard-back" aria-hidden="true"></div>
+            <form class="postcard" id="contact-form" data-send-delay="1300">
+            <div class="pc-left">
             <h1 id="contact-title" class="pc-title" aria-label="Créons ensemble"><span aria-hidden="true"><span class="nw">Cr<span class="acc">e</span>ons</span> ensemble</span></h1>
             <label class="pc-label" for="message">Votre message</label>
             <textarea class="pc-message" id="message" name="message" placeholder="Hello Pauline, &#10;j’ai un projet qui pourrait vous plaire…" required></textarea>
-          </div>
+            </div>
 
-          <div class="pc-divider" aria-hidden="true"></div>
+            <div class="pc-divider" aria-hidden="true"></div>
 
-          <div class="pc-right brownhighlight">
+            <div class="pc-right">
             <div class="pc-stamp-zone" aria-hidden="true">
-              <div class="stamp"><img src="src/photo contact.webp" alt=""></div>
+            <svg class="waves" viewBox="0 0 220 60" preserveAspectRatio="none">
+            <path d="M0 10 Q 13.75 0 27.5 10 T 55 10 T 82.5 10 T 110 10 T 137.5 10 T 165 10 T 192.5 10 T 220 10" />
+            <path d="M0 30 Q 13.75 20 27.5 30 T 55 30 T 82.5 30 T 110 30 T 137.5 30 T 165 30 T 192.5 30 T 220 30" />
+            <path d="M0 50 Q 13.75 40 27.5 50 T 55 50 T 82.5 50 T 110 50 T 137.5 50 T 165 50 T 192.5 50 T 220 50" />
+            </svg>
+            <div class="stamp"><img src="src/photo contact.webp" alt=""></div>
             </div>
 
             <p class="pc-to">À&nbsp;: <strong>Pauline Yvelin</strong>, Product designer</p>
             <div class="pc-line"><label for="first-name">De la part de</label><div class="pc-inline"><input id="first-name" name="firstName" placeholder="Prénom" autocomplete="given-name" required><input id="last-name" name="lastName" placeholder="Nom" autocomplete="family-name" required></div></div>
             <div class="pc-line"><label for="email">Pour vous répondre</label><input id="email" name="email" type="email" placeholder="janja.garnbret@arkose.com" autocomplete="email" required></div>
 
-            <button class="button pc-send" type="submit"><span>Poster la carte</span><img src="src/link arrow.svg" alt=""></button>
+            <button class="btn pc-send" type="submit"><span>Poster la carte</span><img src="src/link arrow.svg" alt=""></button>
+            </div>
+
+            <img class="pc-smiley" src="src/bleu smlley.svg" alt="">
+            </form>
+
+            <div class="pc-sent" role="status">
+            <p class="pc-sent-title" aria-label="Carte postée !"><span aria-hidden="true">Carte <span class="nw">post<span class="acc">e</span>e</span>&nbsp;!</span></p>
+            <p>Merci <span data-bind="firstName" data-empty=""></span>, votre boîte mail s’ouvre avec la carte prête à partir.</p>
+            <button type="button" class="btn pc-again" data-reset><span>Écrire une autre carte</span></button>
+            </div>
+            </div>
           </div>
+        </div>
+        <div class="page-extra page-contact" id="page-extra">
 
-          <img class="pc-smiley" src="src/bleu smlley.svg" alt="">
-        </form>
-
-        <div class="pc-sent" role="status">
-          <p class="pc-sent-title" aria-label="Carte postée !"><span aria-hidden="true">Carte <span class="nw">post<span class="acc">e</span>e</span>&nbsp;!</span></p>
-          <p>Merci <span data-bind="firstName" data-empty=""></span>, votre boîte mail s’ouvre avec la carte prête à partir.</p>
-          <button type="button" class="button pc-again" data-reset><span>Écrire une autre carte</span></button>
         </div>
       </div>
-    </section>
-  </div></div></main>
+    </div>
+  </main>
+  <div class="cursor-badge" id="cursorBadge" aria-hidden="true">
+    <svg class="cursor-badge-ring" viewBox="0 0 90 90">
+      <defs><path id="cursorBadgePath" d="M 45,8 A 37,37 0 1 1 44.95,8 A 37,37 0 1 1 45.05,8" fill="none"/></defs>
+      <text><textPath id="cursorBadgeTextPath" href="#cursorBadgePath" startOffset="0%"></textPath></text>
+    </svg>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js"></script>
   <script src="src/site.js"></script>
-  <script src="src/contact-form.js"></script>
 </body>
 </html>

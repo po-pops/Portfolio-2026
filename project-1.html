@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-page="project">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -28,57 +28,68 @@
 <meta name="twitter:title" content="Product Designer & UI/UX Specialist | Pauline Yvelin">
 <meta name="twitter:description" content="Portfolio de Pauline Yvelin, Product Designer spécialisée en UI/UX.">
 <meta name="twitter:image" content="https://paulineyvelin.net/vignette.jpg">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="src/Project.css" />
-  <link rel="stylesheet" href="src/site.css" />
   <link rel="icon" type="image/webp" href="src/Logo.webp">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preload" href="src/ciel.webp" as="image">
+  <link rel="stylesheet" href="src/site.css">
+  <link rel="stylesheet" href="src/pages.css">
 </head>
 <body>
   <main class="viewport">
     <div class="stage-outer">
-      <div class="stage" data-mobile-w="389" data-mobile-h="1347">
-        <div class="dots-row dots-top" aria-hidden="true"></div>
-        <div class="dots-row dots-bottom" aria-hidden="true"></div>
+      <div class="stage" id="stage">
+        <div class="deco-dots deco-top" aria-hidden="true"></div>
+        <div class="deco-dots deco-bottom" aria-hidden="true"></div>
         <div class="back-card" aria-hidden="true"></div>
-        <section class="hero-card" aria-label="Projet Tcheen">
-          <nav class="topbar reveal" style="--i:0" aria-label="Navigation du projet">
-            <a class="button back-link" href="index.html" aria-label="Retour au portfolio"><img src="src/close button.svg" alt=""></a>
-            <a class="button site-link" href="https://tcheen.com" target="_blank" rel="noreferrer"><span class="site-label">Voir le site</span><img src="src/link arrow.svg" alt=""></a>
-          </nav>
-          <article style="--i:1" class="reveal info-card brownhighlight" aria-labelledby="project-name">
+        <div class="frame" id="frame">
+          <div class="page page-project" id="page" data-page="project" data-mobile-h="1345">
+            <nav class="topbar reveal" style="--i:0" aria-label="Navigation du projet">
+            <a class="btn btn-round back-link" href="index.html" aria-label="Retour au portfolio"><img src="src/close button.svg" alt=""></a>
+            <a class="btn site-link" href="https://tcheen.com" target="_blank" rel="noreferrer"><span class="site-label">Voir le site</span><img src="src/link arrow.svg" alt=""></a>
+            </nav>
+            <article class="info-card reveal" style="--i:1"" aria-labelledby="project-name">
             <div class="card-scroll" tabindex="0">
-              <h1 id="project-name" class="card-title">Tcheen</h1>
-              <div class="tags"><span class="tag">Tcheen</span><span class="tag">Product Design</span><span class="tag">2026</span></div>
-              <div class="dots-row card-dots" aria-hidden="true"></div>
-              <h2 class="project-title">Le projet</h2>
-              <p class="card-copy">Suite à une évolution de son positionnement, <a href="https://tcheen.com" target="_blank" rel="noreferrer">Tcheen</a> souhaitait moderniser son site web afin de mieux refléter sa nouvelle stratégie et toucher une cible plus professionnelle.</p>
-              <p class="card-copy">Réalisée en collaboration avec Hyperrealist et Fière Allure, j’ai conçu les maquettes Figma en m’appuyant sur le branding et les besoins des utilisateurs cibles, afin de concevoir une expérience digitale capable de renforcer leur crédibilité chez une cible plus précise.</p>
-              <section class="conception" aria-labelledby="conception-title">
-                <div class="dots-row card-dots" aria-hidden="true"></div>
-                <h2 id="conception-title" class="conception-title">La conception</h2>
-                <div class="steps">
-                  <article class="step"><img class="step-number" src="src/project-step-1.svg" alt="1" /><div class="step-copy"><h3>Analyse du positionnement et du branding</h3><p>J’ai d’abord analysé le rebranding réalisé par Hyperrealist afin de comprendre les principes graphiques et le nouveau positionnement de Tcheen.</p></div></article>
-                  <article class="step"><img class="step-number" src="src/project-step-2.svg" alt="2" /><div class="step-copy"><h3>Structuration de l’arborescence du site</h3><p>J’ai ensuite travaillé sur l’arborescence et l’organisation des contenus afin de structurer l’information de manière claire pour une cible professionnelle.</p></div></article>
-                  <article class="step"><img class="step-number" src="src/project-step-3.svg" alt="3" /><div class="step-copy"><h3>Création d’un design system modulaire</h3><p>J’ai conçu un ensemble de composants réutilisables dans Figma afin de faciliter la conception des différentes pages du site et d’assurer une cohérence visuelle globale.</p></div></article>
-                  <article class="step"><img class="step-number" src="src/project-step-4.svg" alt="4" /><div class="step-copy"><h3>Conception des interactions et préparation au développement</h3><p>Enfin, j’ai prototypé la maquette en imaginant plusieurs micro-interactions et animations afin de dynamiser l’expérience de navigation. Les maquettes ont été pensées pour être facilement intégrées sur WordPress, en collaboration avec l’équipe en charge du développement et du SEO.</p></div></article>
-                </div>
-              </section>
+            <h1 id="project-name" class="card-title">Tcheen</h1>
+            <div class="tags"><span class="tag">Tcheen</span><span class="tag">Product Design</span><span class="tag">2026</span></div>
+            <div class="dots-row card-dots" aria-hidden="true"></div>
+            <h2 class="project-title">Le projet</h2>
+            <p class="card-copy">Suite à une évolution de son positionnement, <a href="https://tcheen.com" target="_blank" rel="noreferrer">Tcheen</a> souhaitait moderniser son site web afin de mieux refléter sa nouvelle stratégie et toucher une cible plus professionnelle.</p>
+            <p class="card-copy">Réalisée en collaboration avec Hyperrealist et Fière Allure, j’ai conçu les maquettes Figma en m’appuyant sur le branding et les besoins des utilisateurs cibles, afin de concevoir une expérience digitale capable de renforcer leur crédibilité chez une cible plus précise.</p>
+            <section class="conception" aria-labelledby="conception-title">
+            <div class="dots-row card-dots" aria-hidden="true"></div>
+            <h2 id="conception-title" class="conception-title">La conception</h2>
+            <div class="steps">
+            <article class="step"><img class="step-number" src="src/project-step-1.svg" alt="1" /><div class="step-copy"><h3>Analyse du positionnement et du branding</h3><p>J’ai d’abord analysé le rebranding réalisé par Hyperrealist afin de comprendre les principes graphiques et le nouveau positionnement de Tcheen.</p></div></article>
+            <article class="step"><img class="step-number" src="src/project-step-2.svg" alt="2" /><div class="step-copy"><h3>Structuration de l’arborescence du site</h3><p>J’ai ensuite travaillé sur l’arborescence et l’organisation des contenus afin de structurer l’information de manière claire pour une cible professionnelle.</p></div></article>
+            <article class="step"><img class="step-number" src="src/project-step-3.svg" alt="3" /><div class="step-copy"><h3>Création d’un design system modulaire</h3><p>J’ai conçu un ensemble de composants réutilisables dans Figma afin de faciliter la conception des différentes pages du site et d’assurer une cohérence visuelle globale.</p></div></article>
+            <article class="step"><img class="step-number" src="src/project-step-4.svg" alt="4" /><div class="step-copy"><h3>Conception des interactions et préparation au développement</h3><p>Enfin, j’ai prototypé la maquette en imaginant plusieurs micro-interactions et animations afin de dynamiser l’expérience de navigation. Les maquettes ont été pensées pour être facilement intégrées sur WordPress, en collaboration avec l’équipe en charge du développement et du SEO.</p></div></article>
             </div>
-          </article>
-          <section class="bento reveal" style="--i:2" aria-label="Aperçus du site Tcheen">
+            </section>
+            </div>
+            </article>
+            <section class="bento reveal" style="--i:2" aria-label="Aperçus du site Tcheen">
             <div class="preview hero"><img src="src/Tcheen/tcheen1.webp" alt="Aperçu de la page d'accueil Tcheen" /></div>
             <div class="preview-row">
-              <div class="preview tall"><img src="src/Tcheen/tcheen2.webp" alt="Aperçu d'une page Tcheen" /></div>
-              <div class="preview tall"><img src="src/Tcheen/tcheen3.webp" alt="Aperçu d'une autre page Tcheen" /></div>
+            <div class="preview tall"><img src="src/Tcheen/tcheen2.webp" alt="Aperçu d'une page Tcheen" /></div>
+            <div class="preview tall"><img src="src/Tcheen/tcheen3.webp" alt="Aperçu d'une autre page Tcheen" /></div>
             </div>
-          </section>
-        </section>
+            </section>
+          </div>
+        </div>
+        <div class="page-extra page-project" id="page-extra">
+
+        </div>
       </div>
     </div>
   </main>
+  <div class="cursor-badge" id="cursorBadge" aria-hidden="true">
+    <svg class="cursor-badge-ring" viewBox="0 0 90 90">
+      <defs><path id="cursorBadgePath" d="M 45,8 A 37,37 0 1 1 44.95,8 A 37,37 0 1 1 45.05,8" fill="none"/></defs>
+      <text><textPath id="cursorBadgeTextPath" href="#cursorBadgePath" startOffset="0%"></textPath></text>
+    </svg>
+  </div>
   <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js"></script>
   <script src="src/site.js"></script>
 </body>

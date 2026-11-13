@@ -1,219 +1,242 @@
 /* ==========================================================================
-   Socle commun du portfolio – à charger APRÈS la feuille de chaque page
+   Portfolio Pauline Yvelin – socle commun
+   Le cadre (ciel, carte brune, points) est le même sur toutes les pages :
+   seul le contenu de #page et #page-extra change (voir site.js).
    ========================================================================== */
 
+@font-face {
+  font-family: 'CS Melanie Demo';
+  src: url('../CsMelanieDiscoRegularDemo-m247a.otf') format('opentype');
+  font-display: swap;
+}
+
 :root {
+  --cream: #fff1b6;
+  --ink: #42302e;
+  --sky: #c1dbea;
+  --paper: #fffaea;
+  --black: #1e1e1e;
   --stage-w: 1280px;
+  --stage-h: 832px;
   --ease-out: cubic-bezier(.16, 1, .3, 1);
   --ease-in-out: cubic-bezier(.65, 0, .35, 1);
 }
 
-/* ---------- Cadre mis à l'échelle (taille calculée par site.js) ---------- */
-.viewport { overflow: hidden; }
-.stage-outer {
-  position: relative !important;
-  display: block !important;
-  flex: none !important;
+* { box-sizing: border-box; }
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background: var(--sky);
+  color: var(--ink);
+  font-family: 'Manrope', sans-serif;
 }
+body { overflow: hidden; overscroll-behavior: none; }
+::selection { background: var(--ink); color: var(--sky); }
+img { -webkit-user-drag: none; }
+
+/* ---------- Cadre ---------- */
+.viewport {
+  display: flex;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.stage-outer { position: relative; flex: none; }
 .stage {
-  position: absolute !important;
+  position: absolute;
   top: 0;
   left: 0;
-  transform-origin: top left !important;
+  width: var(--stage-w);
+  height: var(--stage-h);
+  transform-origin: top left;
 }
 
-/* Le cadre « ciel » et le cadre brun suivent la largeur (ordinateur) */
-@media (min-width: 641px) {
-  .dots-row:not(.card-dots),
-  .dots {
-    width: calc(var(--stage-w) - 185.7px) !important;
-  }
-  .back-card,
-  .hero-card,
-  .frame {
-    width: calc(var(--stage-w) - 43.7px) !important;
-  }
-  .stage { width: var(--stage-w) !important; }
+/* Les petits points passent au-dessus de la carte brune */
+.deco-dots {
+  position: absolute;
+  z-index: 4;
+  left: 92.86px;
+  width: calc(var(--stage-w) - 185.7px);
+  height: 13.09px;
+  background: url('flower.svg') repeat-x left center / 17.45px 13.09px;
+  opacity: .8;
+  pointer-events: none;
 }
+.deco-top { top: 27px; }
+.deco-bottom { top: 804px; }
 
-/* ---------- Transitions entre les pages ---------- */
-@view-transition { navigation: auto; }
-
-.back-card { view-transition-name: back-card; }
-.hero-card,
-.frame { view-transition-name: main-card; }
-.dots-top, .dots.top { view-transition-name: dots-top; }
-.dots-bottom, .dots.bottom { view-transition-name: dots-bottom; }
-
-::view-transition-group(*) {
-  animation-duration: .7s;
-  animation-timing-function: var(--ease-out);
+.back-card {
+  position: absolute;
+  z-index: 1;
+  top: 57px;
+  left: 21.85px;
+  width: calc(var(--stage-w) - 43.7px);
+  height: 719px;
+  border-radius: 30px;
+  background: var(--ink);
+  transform: rotate(-2.2deg);
 }
-::view-transition-old(main-card) { animation: .35s ease both vt-fade-out; }
-::view-transition-new(main-card) { animation: .7s var(--ease-out) .08s both vt-rise-in; }
-
-@keyframes vt-fade-out { to { opacity: 0; } }
-@keyframes vt-rise-in {
-  from { opacity: 0; transform: translateY(18px) scale(.985); }
-  to { opacity: 1; transform: none; }
+.frame {
+  position: absolute;
+  z-index: 2;
+  top: 57px;
+  left: 21.85px;
+  width: calc(var(--stage-w) - 43.7px);
+  height: 719px;
+  overflow: hidden;
+  border: 1px solid var(--ink);
+  border-radius: 30px;
+  background: var(--sky) url('ciel.webp') center / cover;
 }
+.page { position: absolute; inset: 0; }
+.page-extra { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
+.page-extra > * { pointer-events: auto; }
 
-/* Contenu qui entre doucement au chargement */
+/* ---------- Changement de page : le cadre reste, le contenu change ---------- */
+.page.is-leaving,
+.page-extra.is-leaving {
+  animation: page-out .26s ease-in forwards;
+  pointer-events: none;
+}
+@keyframes page-out { to { opacity: 0; translate: 0 -10px; } }
+
 .reveal {
-  animation: reveal .9s var(--ease-out) both;
-  animation-delay: calc(var(--i, 0) * 90ms + 120ms);
+  animation: reveal .8s var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 80ms + 60ms);
 }
 @keyframes reveal {
-  from { opacity: 0; translate: 0 22px; }
+  from { opacity: 0; translate: 0 18px; }
   to { opacity: 1; translate: 0 0; }
 }
 
 /* ---------- Boutons : remplissage qui part de la souris ---------- */
-.fx-btn {
+.btn {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 8px 16px;
   overflow: hidden;
   isolation: isolate;
-  background: var(--cream) !important;
-  border: 1px solid var(--ink, #42302e) !important;
-  box-shadow: none !important;
-  color: var(--ink, #42302e);
+  border: 1px solid var(--ink);
+  border-radius: 16px;
+  background: var(--cream);
+  color: var(--ink);
+  font: 400 20px/1.2 'Manrope', sans-serif;
+  text-decoration: none;
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
-  transition: color .45s var(--ease-out), border-color .45s var(--ease-out), translate .5s var(--ease-out) !important;
+  transition: color .45s var(--ease-out);
 }
-.fx-btn::before { display: none !important; }
-.fx-btn > :not(.fx-circle) { position: relative; z-index: 1; }
-
+.btn > :not(.fx-circle) { position: relative; z-index: 1; }
+.btn img {
+  width: 24px;
+  height: 24px;
+  flex: none;
+  transition: filter .45s var(--ease-out), transform .6s var(--ease-out);
+}
+.btn-round {
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  justify-content: center;
+  border-radius: 50%;
+}
 .fx-circle {
-  position: absolute !important;
-  z-index: 0 !important;
+  position: absolute;
+  z-index: 0;
   left: 50%;
   top: 50%;
   width: 0;
   height: 0;
   border-radius: 50%;
-  background: var(--ink, #42302e);
+  background: var(--ink);
   transform: translate(-50%, -50%) scale(0);
   pointer-events: none;
   will-change: transform;
 }
-
-.fx-btn:hover,
-.fx-btn.is-hovered,
-.fx-btn:focus-visible {
-  color: var(--sky) !important;
-  border-color: var(--ink, #42302e) !important;
-}
-.fx-btn span,
-.fx-btn .site-label,
-.fx-btn .send-label,
-.fx-btn .cv-label,
-.fx-btn .music-label {
-  color: inherit !important;
-  transition: color .45s var(--ease-out);
-}
-.fx-btn img {
-  transition: filter .45s var(--ease-out), transform .6s var(--ease-out) !important;
-}
-.fx-btn.is-hovered img,
-.fx-btn:focus-visible img {
+.btn.is-hovered,
+.btn:focus-visible { color: var(--sky); }
+.btn.is-hovered img,
+.btn:focus-visible img {
   filter: brightness(0) saturate(100%) invert(86%) sepia(12%) saturate(631%) hue-rotate(165deg) brightness(93%) contrast(91%);
 }
-/* la flèche part en diagonale, comme sur la référence */
-.fx-btn.is-hovered img[src*="arrow"]:not([src*="close"]) { transform: translate(3px, -3px); }
-.fx-btn.is-hovered img[src*="arrow.svg"]:not([src*="link"]) { transform: translateX(4px); }
-.fx-btn:active { translate: 0 1px; }
-.fx-btn:focus-visible { outline: 2px solid var(--ink, #42302e); outline-offset: 3px; }
+.btn.is-hovered img[src*="link"] { transform: translate(3px, -3px); }
+.btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 
-@media (hover: none) {
-  .fx-btn:active .fx-circle { transform: translate(-50%, -50%) scale(1); }
-}
-
-/* ---------- Étiquettes du haut : une bande de scotch, pas des boutons ---------- */
-.labels-row.desktop-labels {
-  left: 50% !important;
-  top: 34px !important;
-  width: auto !important;
-  height: auto !important;
-  translate: -50% 0;
-  gap: 0 !important;
-}
+/* ---------- Bande de scotch (accueil) : crème pleine ---------- */
 .tape {
   position: relative;
   display: flex;
   align-items: center;
   gap: 14px;
+  margin: 0;
   padding: 7px 30px 8px;
   rotate: -1.4deg;
   cursor: default;
-  filter: drop-shadow(0 2px 3px rgba(66, 48, 46, .08));
 }
 .tape::before {
-  /* le scotch : crème un peu translucide, bords déchirés */
   content: '';
   position: absolute;
   inset: 0;
   z-index: -1;
-  /* même crème, mais translucide comme un vrai scotch : le ciel passe un peu au travers */
-  background: rgba(255, 241, 182, .62);
-  backdrop-filter: blur(1.5px);
+  background: var(--cream);
   clip-path: polygon(
     0 6%, 2% 0, 4% 9%, 1.5% 22%, 3.5% 36%, 1% 50%, 3% 64%, 1% 78%, 3.5% 90%, 1.5% 100%,
     98.5% 100%, 96.5% 91%, 99% 80%, 97% 66%, 99.5% 52%, 97% 38%, 99% 24%, 96.8% 10%, 99% 0, 97% 4%
   );
 }
 .tape .label-chip {
-  padding: 0 !important;
-  background: none !important;
-  color: var(--ink) !important;
-  font-size: 22px !important;
-  line-height: 30px !important;
+  color: var(--ink);
+  font-size: 22px;
+  line-height: 30px;
+  white-space: nowrap;
   user-select: none;
 }
-.tape .tape-sep {
-  width: 11px;
-  height: 11px;
-  flex: none;
-  opacity: .9;
-}
+.tape .tape-sep { width: 11px; height: 11px; flex: none; opacity: .9; }
 
-/* ---------- Barres de défilement aux couleurs du site ---------- */
-html { scrollbar-color: var(--ink, #42302e) transparent; }
-/* Chrome/Edge/Safari : barre fine en pilule, sans flèches */
-.card-scroll {
-  scrollbar-width: auto !important;
-  scrollbar-color: auto !important;
-  overscroll-behavior: contain;
-}
+/* ---------- Barre de défilement aux couleurs du site ---------- */
+.card-scroll { overscroll-behavior: contain; }
+.card-scroll::-webkit-scrollbar { width: 5px; }
 .card-scroll::-webkit-scrollbar-button { display: none; height: 0; }
-/* Firefox */
+.card-scroll::-webkit-scrollbar-track { margin: 26px 0; border-radius: 999px; background: rgba(66, 48, 46, .12); }
+.card-scroll::-webkit-scrollbar-thumb { border-radius: 999px; background: var(--ink); }
 @supports not selector(::-webkit-scrollbar) {
-  .card-scroll {
-    scrollbar-width: thin !important;
-    scrollbar-color: var(--ink, #42302e) rgba(66, 48, 46, .12) !important;
-  }
+  .card-scroll { scrollbar-width: thin; scrollbar-color: var(--ink) rgba(66, 48, 46, .12); }
 }
-.card-scroll::-webkit-scrollbar { width: 5px !important; }
-.card-scroll::-webkit-scrollbar-track {
-  background: rgba(66, 48, 46, .12) !important;
-  border-radius: 999px;
-}
-.card-scroll::-webkit-scrollbar-thumb {
-  background: var(--ink, #42302e) !important;
-  border-radius: 999px !important;
-}
-.card-scroll::-webkit-scrollbar-thumb:hover { background: #2c1f1d !important; }
 
-/* Lenis */
-html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
 .lenis.lenis-stopped { overflow: hidden; }
 
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+/* ---------- Badge qui suit la souris sur les cartes projet ---------- */
+.cursor-badge {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  width: 90px;
+  height: 90px;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform .25s ease, opacity .25s ease;
 }
+.cursor-badge.is-active { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+.cursor-badge-ring { width: 100%; height: 100%; overflow: visible; animation: spin 14s linear infinite; }
+.cursor-badge-ring text {
+  fill: #fff;
+  font: 600 20px 'Manrope', sans-serif;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
 
-/* Accent aigu pour la police CS Melanie (la démo n'a pas les lettres accentuées) */
+/* ---------- Accents pour la police CS Melanie (la démo n'a pas les lettres accentuées) ---------- */
 .acc { position: relative; display: inline-block; }
 .acc::after {
   content: '';
@@ -226,20 +249,31 @@ html.lenis, html.lenis body { height: auto; }
   rotate: -40deg;
   transform-origin: left center;
 }
-.nw { white-space: nowrap; }
 .acc-grave::after { left: 18%; top: .05em; rotate: 40deg; }
+.nw { white-space: nowrap; }
 
-/* Étiquettes sur téléphone : même scotch, sur deux lignes */
+/* ---------- Téléphone : chaque page a sa hauteur, le cadre s'y ajuste ---------- */
 @media (max-width: 640px) {
-  .mobile-labels .tape {
-    flex-wrap: wrap;
-    justify-content: center;
-    max-width: 330px;
-    margin: 0;
-    padding: 6px 20px 7px;
-    gap: 2px 10px;
-  }
-  .mobile-labels .tape .label-chip { font-size: 18px !important; line-height: 26px !important; }
-  .mobile-labels .tape-sep:nth-of-type(2) { display: none; }
+  html:not([data-page="home"]),
+  html:not([data-page="home"]) body { height: auto; min-height: 100%; }
+  html:not([data-page="home"]) body { overflow-x: hidden; overflow-y: auto; }
+  .viewport { height: auto; min-height: 100svh; align-items: flex-start; }
+  html[data-page="home"] .viewport { height: 100svh; }
+
+  .deco-dots { left: 16px; width: 358px; }
+  .deco-top { top: 16px; }
+  .deco-bottom { top: calc(var(--stage-h) - 22px); }
+  .back-card { top: 48px; left: 14px; width: 362px; height: calc(var(--stage-h) - 104px); transform: rotate(-4deg); }
+  .frame { top: 50px; left: 18px; width: 354px; height: calc(var(--stage-h) - 104px); }
+  html[data-page="project"] .back-card { top: 24px; left: 10px; width: 369px; height: calc(var(--stage-h) - 48px); transform: rotate(-2.2deg); }
+  html[data-page="project"] .frame { top: 24px; left: 10px; width: 369px; height: calc(var(--stage-h) - 48px); }
+  html[data-page="project"] .deco-top { top: 8px; }
+  html[data-page="project"] .deco-bottom { top: calc(var(--stage-h) - 14px); }
+
+  .btn { font-size: 18px; }
+  .btn-round { width: 45px; height: 45px; }
 }
-.card-scroll { overflow-x: hidden !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}

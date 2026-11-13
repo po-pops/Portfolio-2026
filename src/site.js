@@ -1,120 +1,121 @@
 /* ==========================================================================
-   Socle commun du portfolio
-   1. Mise à l'échelle unique du cadre (même taille sur toutes les pages)
-   2. Boutons : remplissage qui part de la souris (comme thomas-riquier.viturna.fr)
-   3. Smooth scroll (Lenis) sur les zones qui défilent
-   4. Indice de défilement des fiches projet
+   Portfolio Pauline Yvelin – script commun
+   1. Mise à l'échelle du cadre (même taille sur toutes les pages)
+   2. Navigation : le cadre reste, seul le contenu change (pas de rechargement)
+   3. Boutons : remplissage qui part de la souris
+   4. Pages : accueil (cartes à la molette), projet (défilement), contact (envoi)
    ========================================================================== */
 (() => {
   const root = document.documentElement;
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isMobile = () => window.innerWidth <= 640;
+  const clamp = (v, min, max) => Math.min(Math.max(v, min), max);
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 
-  /* ---------- 1. Cadre : largeur qui suit l'écran, hauteur fixe ----------
-     Le dessin fait 832 px de haut. Sa largeur s'adapte au format de l'écran
-     (entre 1280 et 1520 px de dessin) pour éviter les grosses bandes vides
-     à gauche et à droite, sans déformer le contenu. */
+  /* ------------------------------------------------------------------
+     1. Cadre : hauteur de dessin fixe (832), largeur qui suit le format
+     de l'écran entre 1280 et 1520 px, pour éviter les grosses bandes vides.
+     ------------------------------------------------------------------ */
   const DESIGN_H = 832;
   const MIN_W = 1280;
   const MAX_W = 1520;
   const MAX_SCALE = 1.6;
 
   function fitStage() {
-    const stage = document.querySelector('.stage');
-    const outer = document.querySelector('.stage-outer');
-    if (!stage || !outer) return;
-
+    const stage = document.getElementById('stage');
+    const outer = stage && stage.parentElement;
+    const page = document.getElementById('page');
+    if (!stage || !page) return;
     const vw = window.innerWidth;
     const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
-    const mobile = vw <= 640;
-    stage.classList.toggle('is-mobile', mobile);
-
     let w, h, scale;
-    if (mobile) {
-      w = Number(stage.dataset.mobileW || 390);
-      const cssH = parseFloat(getComputedStyle(root).getPropertyValue('--mobile-stage-height'));
-      h = Number(stage.dataset.mobileH || cssH || 846);
-      scale = stage.dataset.mobileFit === 'screen'
-        ? Math.min(vw / w, vh / h, 1)
-        : Math.min(vw / w, 1);
+    if (isMobile()) {
+      w = 390;
+      h = Number(page.dataset.mobileH || 846);
+      scale = page.dataset.mobileFit === 'screen' ? Math.min(vw / w, vh / h, 1) : Math.min(vw / w, 1);
     } else {
-      w = Math.min(MAX_W, Math.max(MIN_W, DESIGN_H * (vw / vh)));
+      w = clamp(DESIGN_H * (vw / vh), MIN_W, MAX_W);
       h = DESIGN_H;
       scale = Math.min(vw / w, vh / h, MAX_SCALE);
     }
-
     root.style.setProperty('--stage-w', `${w}px`);
     root.style.setProperty('--stage-h', `${h}px`);
-    root.style.setProperty('--stage-scale', scale);
     stage.style.transform = `scale(${scale})`;
     outer.style.width = `${w * scale}px`;
     outer.style.height = `${h * scale}px`;
-    window.dispatchEvent(new CustomEvent('stage:fit', { detail: { w, h, scale, mobile } }));
+    window.dispatchEvent(new CustomEvent('stage:fit'));
   }
-
-  window.fitStage = fitStage;
   window.addEventListener('resize', fitStage);
   if (window.visualViewport) window.visualViewport.addEventListener('resize', fitStage);
-  fitStage();
 
-  /* ---------- 2. Boutons ---------- */
-  const EASE_OUT = 'cubic-bezier(.16, 1, .3, 1)'; // ≈ power4.out
-  const FX_SELECTOR = '.button, .cafe-cta, .button-component, .about-modal-cv-button, .fx-btn';
-
-  function currentScale(el) {
-    const m = getComputedStyle(el).transform;
-    if (!m || m === 'none') return 0;
-    const v = m.match(/matrix\(([^)]+)\)/);
-    if (!v) return 0;
-    const [a, b] = v[1].split(',').map(Number);
-    return Math.hypot(a, b);
+  /* ------------------------------------------------------------------
+     Smooth scroll (Lenis) – une seule boucle pour toutes les instances
+     ------------------------------------------------------------------ */
+  const lenisSet = new Set();
+  let lenisLoop = false;
+  function makeLenis(options) {
+    if (typeof window.Lenis !== 'function' || reduceMotion) return null;
+    const lenis = new window.Lenis({ lerp: 0.085, wheelMultiplier: 0.9, smoothWheel: true, ...options });
+    lenisSet.add(lenis);
+    if (!lenisLoop) {
+      lenisLoop = true;
+      const raf = (t) => { lenisSet.forEach((l) => l.raf(t)); requestAnimationFrame(raf); };
+      requestAnimationFrame(raf);
+    }
+    return lenis;
+  }
+  function dropLenis(lenis) {
+    if (!lenis) return;
+    lenis.destroy();
+    lenisSet.delete(lenis);
   }
 
+  /* ------------------------------------------------------------------
+     3. Boutons : remplissage brun qui part de l'endroit où entre la souris
+     et se résorbe vers l'endroit où elle sort (≈ power4.out)
+     ------------------------------------------------------------------ */
+  const EASE_OUT = 'cubic-bezier(.16, 1, .3, 1)';
+  function currentScale(el) {
+    const m = getComputedStyle(el).transform.match(/matrix\(([^)]+)\)/);
+    if (!m) return 0;
+    const [a, b] = m[1].split(',').map(Number);
+    return Math.hypot(a, b);
+  }
   function setupButton(btn) {
-    if (btn.dataset.fx === 'on') return;
+    if (btn.dataset.fx) return;
     btn.dataset.fx = 'on';
-    btn.classList.add('fx-btn');
     const circle = document.createElement('i');
     circle.className = 'fx-circle';
     circle.setAttribute('aria-hidden', 'true');
     btn.prepend(circle);
-
     let enter = { x: 0, y: 0 };
-
-    const localPoint = (e) => {
+    const local = (e) => {
       const r = btn.getBoundingClientRect();
-      // le cadre est mis à l'échelle : on ramène la souris dans le repère du bouton
       const sx = r.width / btn.offsetWidth || 1;
       const sy = r.height / btn.offsetHeight || 1;
       return { x: (e.clientX - r.left) / sx, y: (e.clientY - r.top) / sy };
     };
-
     btn.addEventListener('pointerenter', (e) => {
       if (e.pointerType === 'touch') return;
-      const p = localPoint(e);
+      const p = local(e);
       enter = p;
-      const size = Math.hypot(btn.offsetWidth, btn.offsetHeight) * 2.2;
       const from = currentScale(circle);
       circle.getAnimations().forEach((a) => a.cancel());
-      circle.style.width = circle.style.height = `${size}px`;
-      circle.style.left = `${p.x}px`;
-      circle.style.top = `${p.y}px`;
+      const size = Math.hypot(btn.offsetWidth, btn.offsetHeight) * 2.2;
+      Object.assign(circle.style, { width: `${size}px`, height: `${size}px`, left: `${p.x}px`, top: `${p.y}px` });
       btn.classList.add('is-hovered');
       circle.animate(
-        [
-          { transform: `translate(-50%, -50%) scale(${from})` },
-          { transform: 'translate(-50%, -50%) scale(1)' }
-        ],
+        [{ transform: `translate(-50%, -50%) scale(${from})` }, { transform: 'translate(-50%, -50%) scale(1)' }],
         { duration: reduceMotion ? 1 : 900, easing: EASE_OUT, fill: 'forwards' }
       );
     });
-
     btn.addEventListener('pointerleave', (e) => {
       if (e.pointerType === 'touch') return;
-      const p = localPoint(e);
+      const p = local(e);
       const from = currentScale(circle);
       circle.getAnimations().forEach((a) => a.cancel());
       btn.classList.remove('is-hovered');
-      // le cercle se résorbe vers l'endroit où la souris est sortie
       circle.animate(
         [
           { transform: `translate(-50%, -50%) scale(${from})` },
@@ -124,37 +125,149 @@
       );
     });
   }
+  const setupButtons = (scope) => scope.querySelectorAll('.btn').forEach(setupButton);
 
-  function setupButtons(scope = document) {
-    scope.querySelectorAll(FX_SELECTOR).forEach(setupButton);
+  /* ------------------------------------------------------------------
+     4a. Accueil : les cartes projet montent au fil de la molette
+     ------------------------------------------------------------------ */
+  function mountHome(page) {
+    const cards = [...page.querySelectorAll('.float-card')];
+    const fill = page.querySelector('.progress-bar-fill');
+    const badge = document.getElementById('cursorBadge');
+    const badgePath = document.getElementById('cursorBadgeTextPath');
+    const ac = new AbortController();
+    const on = (t, type, fn, opts = {}) => t.addEventListener(type, fn, { ...opts, signal: ac.signal });
+
+    // Les 4 cartes sont réparties à intervalles égaux sur le cycle
+    const COUNT = cards.length;
+    const SPACING = 1 / COUNT;
+    // Cycle d'une carte : apparition en bas → montée → disparition en haut → retour caché
+    const APPEAR = 0.12;  // remontée depuis le bas en fondu
+    const RISE_END = 0.72;
+    // même départ et même trajet pour toutes : l'écart entre deux cartes reste constant
+    const defs = [
+      { y0: 20, y1: -960, r0: -9.93, r1: -18 },
+      { y0: 20, y1: -960, r0: 4.57, r1: 12 },
+      { y0: 20, y1: -960, r0: -8, r1: -16 },
+      { y0: 20, y1: -960, r0: 10, r1: 18 }
+    ];
+    const mobileRot = [-8, 4, -6, 5];
+    const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+
+    let target = 0.06;
+    let current = target;
+    const nudge = (d) => { target += d; };
+
+    cards.forEach((card) => {
+      const img = card.querySelector('img');
+      const ratio = () => img.naturalWidth && card.style.setProperty('--image-ratio', `${img.naturalWidth} / ${img.naturalHeight}`);
+      img.complete ? ratio() : img.addEventListener('load', ratio, { once: true });
+    });
+
+    function frame() {
+      current += (target - current) * 0.075;
+      if (Math.abs(target - current) < 1e-5) current = target;
+      const progress = ((current % 1) + 1) % 1;
+
+      cards.forEach((card, i) => {
+        const cycle = (((progress + i * SPACING) % 1) + 1) % 1;
+        let appear = 0;
+        let rise = 0;
+        if (cycle < APPEAR) {
+          appear = easeOut(cycle / APPEAR);
+        } else if (cycle < RISE_END) {
+          appear = 1;
+          rise = (cycle - APPEAR) / (RISE_END - APPEAR);
+        } else if (cycle < RISE_END + 0.06) {
+          // s'efface en haut
+          rise = 1;
+          appear = 1 - (cycle - RISE_END) / 0.06;
+        }
+        const d = defs[i % defs.length];
+        if (isMobile()) {
+          const y = -rise * 1100 + (1 - appear) * 90;
+          card.style.transform = `translate(0, ${y}px) rotate(${mobileRot[i % 4]}deg)`;
+        } else {
+          const y = lerp(d.y0, d.y1, rise) - rise * 40 + (1 - appear) * 140;
+          card.style.transform = `translate(0, ${y}px) rotate(${lerp(d.r0, d.r1, rise)}deg) scale(${lerp(0.82, 1.04, rise)})`;
+        }
+        card.style.opacity = appear.toFixed(3);
+        card.style.pointerEvents = appear > 0.3 ? 'auto' : 'none';
+        card.style.zIndex = String(10 + Math.round((1 - cycle) * 10));
+      });
+      if (fill) fill.style.height = `${(progress * 100).toFixed(2)}%`;
+      raf = requestAnimationFrame(frame);
+    }
+    let raf = requestAnimationFrame(frame);
+
+    on(window, 'wheel', (e) => {
+      e.preventDefault();
+      const dy = e.deltaMode === 1 ? e.deltaY * 32 : e.deltaY;
+      nudge(clamp(dy, -140, 140) * 0.0006);
+    }, { passive: false });
+    let touchY = null;
+    on(window, 'touchstart', (e) => { touchY = e.touches[0].clientY; }, { passive: true });
+    on(window, 'touchmove', (e) => {
+      if (touchY === null) return;
+      e.preventDefault();
+      const y = e.touches[0].clientY;
+      nudge((touchY - y) * 0.0022);
+      touchY = y;
+    }, { passive: false });
+    on(window, 'touchend', () => { touchY = null; });
+    on(window, 'keydown', (e) => {
+      const step = { ArrowDown: 0.05, PageDown: 0.12, ' ': 0.12, ArrowUp: -0.05, PageUp: -0.12 }[e.key];
+      if (step !== undefined) { e.preventDefault(); nudge(step); }
+    });
+
+    // Badge qui suit la souris au survol d'une carte
+    const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (fine && badge && badgePath) {
+      let mx = 0, my = 0, bx = 0, by = 0;
+      const circ = 2 * Math.PI * 37;
+      const fillBadge = (label) => {
+        const unit = `${label} * `;
+        badgePath.textContent = unit;
+        const len = badgePath.getComputedTextLength() || 1;
+        const reps = Math.max(1, Math.floor(circ / len));
+        badgePath.textContent = ' ';
+        const space = badgePath.getComputedTextLength() || 1;
+        badgePath.textContent = `${label} *`;
+        const fixed = badgePath.getComputedTextLength() || 1;
+        const gap = ' '.repeat(Math.max(1, Math.round(Math.max(space, (circ - reps * fixed) / reps) / space)));
+        badgePath.textContent = `${label} *${gap}`.repeat(reps);
+      };
+      on(document, 'mousemove', (e) => { mx = e.clientX; my = e.clientY; });
+      cards.forEach((card) => {
+        on(card, 'mouseenter', () => { fillBadge(card.dataset.name || ''); badge.classList.add('is-active'); });
+        on(card, 'mouseleave', () => badge.classList.remove('is-active'));
+      });
+      let braf;
+      const follow = () => {
+        bx = lerp(bx, mx, 0.2);
+        by = lerp(by, my, 0.2);
+        badge.style.left = `${bx}px`;
+        badge.style.top = `${by}px`;
+        braf = requestAnimationFrame(follow);
+      };
+      braf = requestAnimationFrame(follow);
+      ac.signal.addEventListener('abort', () => cancelAnimationFrame(braf));
+    }
+
+    return () => {
+      ac.abort();
+      cancelAnimationFrame(raf);
+      if (badge) badge.classList.remove('is-active');
+    };
   }
-  window.setupButtons = setupButtons;
-  setupButtons();
 
-  /* ---------- 3. Smooth scroll ---------- */
-  const lenisInstances = [];
-
-  function rafLoop(time) {
-    lenisInstances.forEach((l) => l.raf(time));
-    requestAnimationFrame(rafLoop);
-  }
-
-  function makeLenis(options) {
-    if (typeof window.Lenis !== 'function' || reduceMotion) return null;
-    const lenis = new window.Lenis({ lerp: 0.085, wheelMultiplier: 0.9, smoothWheel: true, ...options });
-    if (!lenisInstances.length) requestAnimationFrame(rafLoop);
-    lenisInstances.push(lenis);
-    return lenis;
-  }
-
-  // Page entière (pages qui défilent sur téléphone / tablette)
-  if (document.body.dataset.smooth === 'page') {
-    window.pageLenis = makeLenis({});
-  }
-
-  /* ---------- 4. Fiches projet : on doit voir qu'on peut défiler ---------- */
-  document.querySelectorAll('.card-scroll').forEach((wrapper) => {
-    // Lenis a besoin d'un conteneur intérieur
+  /* ------------------------------------------------------------------
+     4b. Projet : défilement doux de la fiche + bouton « Défiler »
+     ------------------------------------------------------------------ */
+  function mountProject(page) {
+    const card = page.querySelector('.info-card');
+    const wrapper = page.querySelector('.card-scroll');
+    if (!card || !wrapper) return () => {};
     let content = wrapper.querySelector(':scope > .card-scroll-content');
     if (!content) {
       content = document.createElement('div');
@@ -162,65 +275,168 @@
       while (wrapper.firstChild) content.appendChild(wrapper.firstChild);
       wrapper.appendChild(content);
     }
-
-    const card = wrapper.closest('.info-card');
     const lenis = makeLenis({ wrapper, content, eventsTarget: wrapper });
 
-    // Bouton rond « défiler » avec anneau de progression (composant « Scroll down » du Figma)
     const hint = document.createElement('button');
     hint.type = 'button';
     hint.className = 'scroll-hint';
-    hint.setAttribute('aria-label', 'Lire la suite');
     hint.innerHTML = `
+      <span class="scroll-hint-label">Défiler</span>
       <svg viewBox="0 0 48 48" aria-hidden="true">
         <circle class="scroll-hint-track" cx="24" cy="24" r="22" />
         <circle class="scroll-hint-ring" cx="24" cy="24" r="22" pathLength="100" />
         <path class="scroll-hint-arrow" d="M24 15v17m-7-7 7 7 7-7" />
-      </svg>
-      <span class="scroll-hint-label">Défiler</span>`;
-    (card || wrapper.parentElement).appendChild(hint);
+      </svg>`;
+    card.appendChild(hint);
 
     const max = () => Math.max(0, wrapper.scrollHeight - wrapper.clientHeight);
-
-    function update() {
+    const update = () => {
       const m = max();
       const y = wrapper.scrollTop;
-      const p = m ? y / m : 1;
-      hint.style.setProperty('--progress', p.toFixed(4));
       const atEnd = m < 4 || y >= m - 4;
-      card && card.classList.toggle('is-scrolled', y > 120);
-      card && card.classList.toggle('is-at-end', atEnd);
-      card && card.classList.toggle('is-scrollable', m > 4);
+      hint.style.setProperty('--progress', (m ? y / m : 1).toFixed(4));
+      card.classList.toggle('is-scrollable', m > 4);
+      card.classList.toggle('is-scrolled-a-bit', y > 6);
+      card.classList.toggle('is-scrolled', y > 120);
+      card.classList.toggle('is-at-end', atEnd);
       hint.classList.toggle('is-up', atEnd && m > 4);
       hint.setAttribute('aria-label', atEnd ? 'Revenir en haut' : 'Lire la suite');
-    }
-
+    };
     wrapper.addEventListener('scroll', update, { passive: true });
     window.addEventListener('stage:fit', update);
-    window.addEventListener('load', update);
+    page.querySelectorAll('img').forEach((img) => img.addEventListener('load', update, { once: true }));
     update();
 
     hint.addEventListener('click', () => {
       const m = max();
       const atEnd = wrapper.scrollTop >= m - 4;
-      const target = atEnd ? 0 : Math.min(m, wrapper.scrollTop + wrapper.clientHeight * 0.75);
-      if (lenis) lenis.scrollTo(target, { duration: 1.1 });
-      else wrapper.scrollTo({ top: target, behavior: 'smooth' });
+      const to = atEnd ? 0 : Math.min(m, wrapper.scrollTop + wrapper.clientHeight * 0.75);
+      if (lenis) lenis.scrollTo(to, { duration: 1.1 });
+      else wrapper.scrollTo({ top: to, behavior: 'smooth' });
     });
 
-    // Petit « coucou » à l'arrivée : le texte monte un peu puis redescend
-    if (!reduceMotion && !window.matchMedia('(max-width: 640px)').matches) {
-      let touched = false;
-      wrapper.addEventListener('wheel', () => { touched = true; }, { once: true, passive: true });
-      setTimeout(() => {
-        if (touched || wrapper.scrollTop > 0 || max() < 40) return;
-        if (lenis) {
-          lenis.scrollTo(70, {
-            duration: 0.9,
-            onComplete: () => setTimeout(() => !touched && lenis.scrollTo(0, { duration: 0.9 }), 250)
-          });
-        }
-      }, 1400);
+    return () => {
+      window.removeEventListener('stage:fit', update);
+      dropLenis(lenis);
+    };
+  }
+
+  /* ------------------------------------------------------------------
+     4c. Contact : le message part par la messagerie du visiteur
+     ------------------------------------------------------------------ */
+  function mountContact(page) {
+    const form = page.querySelector('#contact-form');
+    if (!form) return () => {};
+    const TO = 'pauline.yvelin@mmibordeaux.com';
+    let timer;
+    const sync = () => {
+      const data = new FormData(form);
+      page.querySelectorAll('[data-bind]').forEach((el) => {
+        el.textContent = (data.get(el.dataset.bind) || '').toString().trim() || el.dataset.empty || '';
+      });
+    };
+    form.addEventListener('input', sync);
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+      const d = new FormData(form);
+      const get = (k) => (d.get(k) || '').toString().trim();
+      const subject = `Message de ${get('firstName')} ${get('lastName')}`.trim();
+      const body = [`Prénom : ${get('firstName')}`, `Nom : ${get('lastName')}`, `Email : ${get('email')}`, '', 'Message :', get('message')].join('\n');
+      sync();
+      page.classList.add('is-sent');
+      timer = setTimeout(() => {
+        window.location.href = `mailto:${TO}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      }, Number(form.dataset.sendDelay || 900));
+    });
+    page.querySelectorAll('[data-reset]').forEach((b) => b.addEventListener('click', () => {
+      page.classList.remove('is-sent');
+      form.reset();
+    }));
+    return () => clearTimeout(timer);
+  }
+
+  const MOUNTS = { home: mountHome, project: mountProject, contact: mountContact };
+  let unmount = () => {};
+  function mount() {
+    const page = document.getElementById('page');
+    const extra = document.getElementById('page-extra');
+    root.dataset.page = page.dataset.page;
+    setupButtons(page);
+    if (extra) setupButtons(extra);
+    const fn = MOUNTS[page.dataset.page];
+    unmount = fn ? fn(page) || (() => {}) : () => {};
+  }
+
+  /* ------------------------------------------------------------------
+     2. Navigation sans rechargement : le cadre ciel reste en place
+     ------------------------------------------------------------------ */
+  const cache = new Map();
+  const loadDoc = (url) => {
+    const key = url.split('#')[0];
+    if (!cache.has(key)) {
+      cache.set(key, fetch(key)
+        .then((r) => { if (!r.ok) throw new Error(r.status); return r.text(); })
+        .then((html) => new DOMParser().parseFromString(html, 'text/html'))
+        .catch((err) => { cache.delete(key); throw err; }));
     }
+    return cache.get(key);
+  };
+  const isInternalPage = (a) => {
+    if (!a || a.target === '_blank' || a.hasAttribute('download')) return false;
+    const url = new URL(a.href, location.href);
+    return url.origin === location.origin && /(\.html|\/)$/.test(url.pathname) && !url.pathname.endsWith('.pdf');
+  };
+
+  let busy = false;
+  async function go(href, push) {
+    if (busy) return;
+    const target = new URL(href, location.href);
+    if (target.pathname === location.pathname && push) return;
+    busy = true;
+    try {
+      const docPromise = loadDoc(target.href);
+      const page = document.getElementById('page');
+      const extra = document.getElementById('page-extra');
+      page.classList.add('is-leaving');
+      extra.classList.add('is-leaving');
+      const [doc] = await Promise.all([docPromise, wait(reduceMotion ? 0 : 260)]);
+      const nextPage = doc.getElementById('page');
+      const nextExtra = doc.getElementById('page-extra');
+      if (!nextPage) throw new Error('page introuvable');
+
+      unmount();
+      page.replaceWith(document.importNode(nextPage, true));
+      extra.replaceWith(document.importNode(nextExtra || document.createElement('div'), true));
+      document.title = doc.title;
+      const desc = doc.querySelector('meta[name="description"]');
+      const here = document.querySelector('meta[name="description"]');
+      if (desc && here) here.setAttribute('content', desc.getAttribute('content'));
+      if (push) history.pushState({}, '', target.href);
+      window.scrollTo(0, 0);
+      fitStage();
+      mount();
+    } catch (err) {
+      window.location.href = target.href; // en cas de souci, on charge la page normalement
+    } finally {
+      busy = false;
+    }
+  }
+
+  document.addEventListener('click', (e) => {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    const a = e.target.closest('a');
+    if (!isInternalPage(a)) return;
+    e.preventDefault();
+    go(a.href, true);
   });
+  // on prépare la page suivante dès le survol d'un lien
+  document.addEventListener('pointerover', (e) => {
+    const a = e.target.closest && e.target.closest('a');
+    if (isInternalPage(a)) loadDoc(new URL(a.href, location.href).href).catch(() => {});
+  });
+  window.addEventListener('popstate', () => go(location.href, false));
+
+  fitStage();
+  mount();
 })();
