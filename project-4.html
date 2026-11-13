@@ -31,23 +31,25 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="src/Project.css" />
+  <link rel="stylesheet" href="src/site.css" />
 </head>
 <body>
   <main class="viewport">
     <div class="stage-outer">
-      <div class="stage">
+      <div class="stage" data-mobile-w="389" data-mobile-h="1347">
         <div class="dots-row dots-top" aria-hidden="true"></div>
         <div class="dots-row dots-bottom" aria-hidden="true"></div>
         <div class="back-card" aria-hidden="true"></div>
         <section class="hero-card" aria-label="Projet Molière">
-          <nav class="topbar" aria-label="Navigation du projet">
+          <nav class="topbar reveal" style="--i:0" aria-label="Navigation du projet">
             <a class="button back-link" href="index.html" aria-label="Retour au portfolio"><img src="src/close button.svg" alt=""></a>
             <a class="button site-link" href="https://www.figma.com/proto/nYC4K3kUkqXOzdHk3367Ih/Cin%C3%A9ma-%E2%80%94-Le-moli%C3%A8re?node-id=26-1013&viewport=-645%2C-587%2C0.33&t=gji2raAxni5cFpRP-1&scaling=scale-down&content-scaling=fixed&starting-point-node-id=26%3A1013&page-id=26%3A878" target="_blank" rel="noreferrer"><span class="site-label">Voir le prototype</span><img src="src/link arrow.svg" alt=""></a>
           </nav>
-          <article class="info-card" aria-labelledby="project-name">
+          <article style="--i:1" class="reveal info-card" aria-labelledby="project-name">
             <div class="card-scroll" tabindex="0">
-              <h1 id="project-name" class="card-title">Cinema Le Moliere</h1>
+              <h1 id="project-name" class="card-title" aria-label="Cinéma Le Molière"><span aria-hidden="true"><span class="nw">Cin<span class="acc">e</span>ma</span> Le <span class="nw">Moli<span class="acc acc-grave">e</span>re</span></span></h1>
               <div class="tags"><span class="tag">Cinéma Le Molière</span><span class="tag">Product Design</span><span class="tag">Branding</span><span class="tag">2026</span></div>
               <div class="dots-row card-dots" aria-hidden="true"></div>
               <h2 class="project-title">Le projet</h2>
@@ -65,7 +67,7 @@
               </section>
             </div>
         </article>
-          <section class="bento" aria-label="Aperçus du site Cinema Le Moliere">
+          <section class="bento reveal" style="--i:2" aria-label="Aperçus du site Cinema Le Moliere">
             <div class="preview hero"><img src="src/Molière/molière1.webp" alt="Aperçu de la page d'accueil Cinema Le Moliere" /></div>
             <div class="preview-row">
               <div class="preview tall"><img src="src/Molière/molière2.webp" alt="Aperçu d'une page Molière" /></div>
@@ -76,39 +78,7 @@
       </div>
     </div>
   </main>
-  <script>
-    (() => {
-      const stage = document.querySelector('.stage');
-      const outer = document.querySelector('.stage-outer');
-      const desktopWidth = 1280;
-      const desktopHeight = 832;
-      const mobileWidth = 389;
-      const mobileHeight = 1347;
-
-      function fitStage() {
-        const isMobile = window.innerWidth <= 640;
-        const stageWidth = isMobile ? mobileWidth : desktopWidth;
-        const mobileStageHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--mobile-stage-height')) || mobileHeight;
-        const stageHeight = isMobile ? mobileStageHeight : desktopHeight;
-        stage.classList.toggle('is-mobile', isMobile);
-        const scale = isMobile
-          ? Math.min(window.innerWidth / stageWidth, 1)
-          : Math.min(window.innerWidth / stageWidth, window.innerHeight / stageHeight);
-        stage.style.transform = `scale(${scale})`;
-        outer.style.width = `${stageWidth * scale}px`;
-        outer.style.height = `${stageHeight * scale}px`;
-      }
-
-      window.addEventListener('resize', fitStage);
-      fitStage();
-      window.fitTcheenStage = fitStage;
-    })();
-
-    document.querySelectorAll('.button').forEach((button) => {
-      button.addEventListener('pointerenter', () => button.classList.add('is-hovered'));
-      button.addEventListener('pointerleave', () => button.classList.remove('is-hovered'));
-    });
-
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js"></script>
+  <script src="src/site.js"></script>
 </body>
 </html>

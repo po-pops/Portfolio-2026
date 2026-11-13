@@ -108,7 +108,7 @@ body {
   position: absolute;
   z-index: 5;
   top: 39px;
-  left: 40px;
+  left: calc(50% - 578px);
   display: flex;
   align-items: center;
   gap: 31px;
@@ -208,7 +208,7 @@ body {
   position: absolute;
   z-index: 4;
   top: 117px;
-  left: 41px;
+  left: calc(50% - 577px);
   display: flex;
   width: 562px;
   height: var(--card-height);
@@ -362,7 +362,7 @@ body {
   position: absolute;
   z-index: 3;
   top: 39px;
-  left: 632px;
+  left: calc(50% + 14px);
   display: grid;
   width: 562px;
   grid-template-rows: 305px 303px;
@@ -424,4 +424,108 @@ body {
   .preview.hero { width: 337px; height: 175px; }
   .preview-row { position: absolute; top: calc(var(--mobile-card-height) + 196px); left: 0; display: flex; width: 337px; height: 457px; flex-direction: column; gap: 30px; }
   .preview.tall { width: 337px; height: 213.5px; flex: 1; }
+}
+
+
+/* ==========================================================================
+   On doit voir que la fiche défile
+   ========================================================================== */
+.info-card { overflow: hidden; }
+
+/* fondu en bas du texte : la phrase coupée invite à descendre */
+.info-card::after {
+  content: '';
+  position: absolute;
+  left: 1px;
+  right: 22px;
+  bottom: 1px;
+  height: 110px;
+  border-radius: 0 0 0 var(--card-radius);
+  background: linear-gradient(to bottom, rgba(193, 219, 234, 0) 0%, rgba(193, 219, 234, .85) 55%, var(--sky) 85%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .5s var(--ease-out, ease);
+  z-index: 2;
+}
+.info-card.is-scrollable::after { opacity: 1; }
+.info-card.is-at-end::after { opacity: 0; }
+
+/* le texte va jusqu'au bord bas de la fiche : pas de marge en bas */
+.info-card { padding-bottom: 0 !important; }
+.card-scroll { max-height: none !important; flex: 1 1 auto; padding-bottom: 0; }
+.card-scroll-content { padding-bottom: 30px; }
+.card-scroll-content { padding-right: 18px; }
+
+/* bouton rond « défiler » (composant Scroll down du Figma) */
+.scroll-hint {
+  position: absolute;
+  right: 34px;
+  bottom: 24px;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--brown);
+  font: 500 16px 'Manrope', sans-serif;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .5s var(--ease-out, ease);
+}
+.info-card.is-scrollable .scroll-hint { opacity: 1; pointer-events: auto; }
+.scroll-hint svg {
+  order: 2;
+  width: 52px;
+  height: 52px;
+  overflow: visible;
+  transition: transform .6s var(--ease-out, ease);
+}
+.scroll-hint-track { fill: var(--cream); stroke: rgba(66, 48, 46, .2); stroke-width: 1.5; }
+.scroll-hint-ring {
+  fill: none;
+  stroke: var(--brown);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-dasharray: calc(var(--progress, 0) * 100) 100;
+  transform: rotate(-90deg);
+  transform-origin: 24px 24px;
+}
+.scroll-hint-arrow {
+  fill: none;
+  stroke: var(--brown);
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  animation: hint-bob 1.6s var(--ease-in-out, ease-in-out) infinite;
+}
+.scroll-hint-label {
+  order: 1;
+  padding: 1px 6px;
+  background: var(--cream);
+  rotate: -3deg;
+  transition: opacity .4s ease, translate .5s var(--ease-out, ease);
+}
+.info-card.is-scrolled .scroll-hint-label { opacity: 0; translate: 6px 0; }
+.scroll-hint:hover svg { transform: scale(1.08); }
+.scroll-hint.is-up svg { transform: rotate(180deg); }
+.scroll-hint.is-up:hover svg { transform: rotate(180deg) scale(1.08); }
+.scroll-hint.is-up .scroll-hint-arrow { animation: none; }
+.scroll-hint:focus-visible { outline: 2px solid var(--brown); outline-offset: 4px; border-radius: 30px; }
+
+@keyframes hint-bob {
+  0%, 100% { transform: translateY(-2px); }
+  50% { transform: translateY(3px); }
+}
+
+
+@media (max-width: 640px) {
+  .info-card::after { right: 18px; height: 100px; }
+  .scroll-hint { right: 26px; bottom: 18px; }
+  .scroll-hint svg { width: 44px; height: 44px; }
+}
+@media (max-width: 640px) {
+  .card-scroll { max-height: 415px !important; }
 }

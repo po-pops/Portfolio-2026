@@ -1,0 +1,245 @@
+/* ==========================================================================
+   Socle commun du portfolio – à charger APRÈS la feuille de chaque page
+   ========================================================================== */
+
+:root {
+  --stage-w: 1280px;
+  --ease-out: cubic-bezier(.16, 1, .3, 1);
+  --ease-in-out: cubic-bezier(.65, 0, .35, 1);
+}
+
+/* ---------- Cadre mis à l'échelle (taille calculée par site.js) ---------- */
+.viewport { overflow: hidden; }
+.stage-outer {
+  position: relative !important;
+  display: block !important;
+  flex: none !important;
+}
+.stage {
+  position: absolute !important;
+  top: 0;
+  left: 0;
+  transform-origin: top left !important;
+}
+
+/* Le cadre « ciel » et le cadre brun suivent la largeur (ordinateur) */
+@media (min-width: 641px) {
+  .dots-row:not(.card-dots),
+  .dots {
+    width: calc(var(--stage-w) - 185.7px) !important;
+  }
+  .back-card,
+  .hero-card,
+  .frame {
+    width: calc(var(--stage-w) - 43.7px) !important;
+  }
+  .stage { width: var(--stage-w) !important; }
+}
+
+/* ---------- Transitions entre les pages ---------- */
+@view-transition { navigation: auto; }
+
+.back-card { view-transition-name: back-card; }
+.hero-card,
+.frame { view-transition-name: main-card; }
+.dots-top, .dots.top { view-transition-name: dots-top; }
+.dots-bottom, .dots.bottom { view-transition-name: dots-bottom; }
+
+::view-transition-group(*) {
+  animation-duration: .7s;
+  animation-timing-function: var(--ease-out);
+}
+::view-transition-old(main-card) { animation: .35s ease both vt-fade-out; }
+::view-transition-new(main-card) { animation: .7s var(--ease-out) .08s both vt-rise-in; }
+
+@keyframes vt-fade-out { to { opacity: 0; } }
+@keyframes vt-rise-in {
+  from { opacity: 0; transform: translateY(18px) scale(.985); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Contenu qui entre doucement au chargement */
+.reveal {
+  animation: reveal .9s var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 90ms + 120ms);
+}
+@keyframes reveal {
+  from { opacity: 0; translate: 0 22px; }
+  to { opacity: 1; translate: 0 0; }
+}
+
+/* ---------- Boutons : remplissage qui part de la souris ---------- */
+.fx-btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  background: var(--cream) !important;
+  border: 1px solid var(--ink, #42302e) !important;
+  box-shadow: none !important;
+  color: var(--ink, #42302e);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: color .45s var(--ease-out), border-color .45s var(--ease-out), translate .5s var(--ease-out) !important;
+}
+.fx-btn::before { display: none !important; }
+.fx-btn > :not(.fx-circle) { position: relative; z-index: 1; }
+
+.fx-circle {
+  position: absolute !important;
+  z-index: 0 !important;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: var(--ink, #42302e);
+  transform: translate(-50%, -50%) scale(0);
+  pointer-events: none;
+  will-change: transform;
+}
+
+.fx-btn:hover,
+.fx-btn.is-hovered,
+.fx-btn:focus-visible {
+  color: var(--sky) !important;
+  border-color: var(--ink, #42302e) !important;
+}
+.fx-btn span,
+.fx-btn .site-label,
+.fx-btn .send-label,
+.fx-btn .cv-label,
+.fx-btn .music-label {
+  color: inherit !important;
+  transition: color .45s var(--ease-out);
+}
+.fx-btn img {
+  transition: filter .45s var(--ease-out), transform .6s var(--ease-out) !important;
+}
+.fx-btn.is-hovered img,
+.fx-btn:focus-visible img {
+  filter: brightness(0) saturate(100%) invert(86%) sepia(12%) saturate(631%) hue-rotate(165deg) brightness(93%) contrast(91%);
+}
+/* la flèche part en diagonale, comme sur la référence */
+.fx-btn.is-hovered img[src*="arrow"]:not([src*="close"]) { transform: translate(3px, -3px); }
+.fx-btn.is-hovered img[src*="arrow.svg"]:not([src*="link"]) { transform: translateX(4px); }
+.fx-btn:active { translate: 0 1px; }
+.fx-btn:focus-visible { outline: 2px solid var(--ink, #42302e); outline-offset: 3px; }
+
+@media (hover: none) {
+  .fx-btn:active .fx-circle { transform: translate(-50%, -50%) scale(1); }
+}
+
+/* ---------- Étiquettes du haut : une bande de scotch, pas des boutons ---------- */
+.labels-row.desktop-labels {
+  left: 50% !important;
+  top: 34px !important;
+  width: auto !important;
+  height: auto !important;
+  translate: -50% 0;
+  gap: 0 !important;
+}
+.tape {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 7px 30px 8px;
+  rotate: -1.4deg;
+  cursor: default;
+  filter: drop-shadow(0 2px 3px rgba(66, 48, 46, .08));
+}
+.tape::before {
+  /* le scotch : crème un peu translucide, bords déchirés */
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  /* même crème, mais translucide comme un vrai scotch : le ciel passe un peu au travers */
+  background: rgba(255, 241, 182, .62);
+  backdrop-filter: blur(1.5px);
+  clip-path: polygon(
+    0 6%, 2% 0, 4% 9%, 1.5% 22%, 3.5% 36%, 1% 50%, 3% 64%, 1% 78%, 3.5% 90%, 1.5% 100%,
+    98.5% 100%, 96.5% 91%, 99% 80%, 97% 66%, 99.5% 52%, 97% 38%, 99% 24%, 96.8% 10%, 99% 0, 97% 4%
+  );
+}
+.tape .label-chip {
+  padding: 0 !important;
+  background: none !important;
+  color: var(--ink) !important;
+  font-size: 22px !important;
+  line-height: 30px !important;
+  user-select: none;
+}
+.tape .tape-sep {
+  width: 11px;
+  height: 11px;
+  flex: none;
+  opacity: .9;
+}
+
+/* ---------- Barres de défilement aux couleurs du site ---------- */
+html { scrollbar-color: var(--ink, #42302e) transparent; }
+/* Chrome/Edge/Safari : barre fine en pilule, sans flèches */
+.card-scroll {
+  scrollbar-width: auto !important;
+  scrollbar-color: auto !important;
+  overscroll-behavior: contain;
+}
+.card-scroll::-webkit-scrollbar-button { display: none; height: 0; }
+/* Firefox */
+@supports not selector(::-webkit-scrollbar) {
+  .card-scroll {
+    scrollbar-width: thin !important;
+    scrollbar-color: var(--ink, #42302e) rgba(66, 48, 46, .12) !important;
+  }
+}
+.card-scroll::-webkit-scrollbar { width: 5px !important; }
+.card-scroll::-webkit-scrollbar-track {
+  background: rgba(66, 48, 46, .12) !important;
+  border-radius: 999px;
+}
+.card-scroll::-webkit-scrollbar-thumb {
+  background: var(--ink, #42302e) !important;
+  border-radius: 999px !important;
+}
+.card-scroll::-webkit-scrollbar-thumb:hover { background: #2c1f1d !important; }
+
+/* Lenis */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+/* Accent aigu pour la police CS Melanie (la démo n'a pas les lettres accentuées) */
+.acc { position: relative; display: inline-block; }
+.acc::after {
+  content: '';
+  position: absolute;
+  left: 40%;
+  top: .2em;
+  width: .27em;
+  height: .085em;
+  background: radial-gradient(circle, currentColor 44%, transparent 50%) 0 0 / .085em .085em repeat-x;
+  rotate: -40deg;
+  transform-origin: left center;
+}
+.nw { white-space: nowrap; }
+.acc-grave::after { left: 18%; top: .05em; rotate: 40deg; }
+
+/* Étiquettes sur téléphone : même scotch, sur deux lignes */
+@media (max-width: 640px) {
+  .mobile-labels .tape {
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 330px;
+    margin: 0;
+    padding: 6px 20px 7px;
+    gap: 2px 10px;
+  }
+  .mobile-labels .tape .label-chip { font-size: 18px !important; line-height: 26px !important; }
+  .mobile-labels .tape-sep:nth-of-type(2) { display: none; }
+}
+.card-scroll { overflow-x: hidden !important; }

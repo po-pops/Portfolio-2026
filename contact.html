@@ -4,75 +4,55 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contact - Pauline Yvelin</title>
+  <meta name="description" content="Écrire à Pauline Yvelin, Product Designer : un projet, une alternance ou juste un café.">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="icon" type="image/webp" href="src/Logo.webp">
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="src/contact.css">
+  <link rel="stylesheet" href="src/site.css">
 </head>
 <body>
-  <main class="viewport"><div class="stage-outer"><div class="stage">
+  <main class="viewport"><div class="stage-outer"><div class="stage" data-mobile-w="390" data-mobile-h="1120">
     <div class="dots top" aria-hidden="true"></div><div class="dots bottom" aria-hidden="true"></div><div class="back-card" aria-hidden="true"></div>
     <section class="frame" aria-labelledby="contact-title">
-      <div class="contact-layout">
-        <form class="form-card" id="contact-form">
-          <h1 id="contact-title" class="brownhighlight">Créons ensemble</h1>
-          <div class="name-fields brownhighlight"><div class="form-field"><label for="first-name">Prénom</label><input id="first-name" name="firstName" placeholder="Janja" required></div><div class="form-field"><label for="last-name">Nom</label><input id="last-name" name="lastName" placeholder="Garnbret" required></div></div>
-          <div class="form-field brownhighlight"><label for="email">Email</label><input id="email" name="email" type="email" placeholder="janja.garnbret@arkose.com" required></div>
-          <div class="form-field brownhighlight"><label for="message">Message</label><textarea id="message" name="message" placeholder="Hello..." required></textarea></div>
+      <a class="button close reveal" href="index.html" aria-label="Retour à l’accueil"><img src="src/close button.svg" alt=""></a>
+
+      <div class="postcard-wrap reveal" style="--i:1">
+        <div class="postcard-back" aria-hidden="true"></div>
+        <form class="postcard" id="contact-form" data-send-delay="1300">
+          <div class="pc-left brownhighlight">
+            <h1 id="contact-title" class="pc-title" aria-label="Créons ensemble"><span aria-hidden="true"><span class="nw">Cr<span class="acc">e</span>ons</span> ensemble</span></h1>
+            <label class="pc-label" for="message">Votre message</label>
+            <textarea class="pc-message" id="message" name="message" placeholder="Hello Pauline, &#10;j’ai un projet qui pourrait vous plaire…" required></textarea>
+          </div>
+
+          <div class="pc-divider" aria-hidden="true"></div>
+
+          <div class="pc-right brownhighlight">
+            <div class="pc-stamp-zone" aria-hidden="true">
+              <div class="stamp"><img src="src/photo contact.webp" alt=""></div>
+            </div>
+
+            <p class="pc-to">À&nbsp;: <strong>Pauline Yvelin</strong>, Product designer</p>
+            <div class="pc-line"><label for="first-name">De la part de</label><div class="pc-inline"><input id="first-name" name="firstName" placeholder="Prénom" autocomplete="given-name" required><input id="last-name" name="lastName" placeholder="Nom" autocomplete="family-name" required></div></div>
+            <div class="pc-line"><label for="email">Pour vous répondre</label><input id="email" name="email" type="email" placeholder="janja.garnbret@arkose.com" autocomplete="email" required></div>
+
+            <button class="button pc-send" type="submit"><span>Poster la carte</span><img src="src/link arrow.svg" alt=""></button>
+          </div>
+
+          <img class="pc-smiley" src="src/bleu smlley.svg" alt="">
         </form>
-        <div class="media brownhighlight"><div class="controls"><button class="button send" type="submit" form="contact-form"><span class="send-label">Envoyer le message</span><img src="src/arrow.svg" alt=""></button><a class="button close" href="index.html" aria-label="Retour à la home"><img src="src/close button.svg" alt=""></a></div><div class="photo-frame"><img class="photo" src="src/photo contact.webp" alt="Deux cafés sur une table"><img class="smiley" src="src/bleu smlley.svg" alt=""></div></div>
+
+        <div class="pc-sent" role="status">
+          <p class="pc-sent-title" aria-label="Carte postée !"><span aria-hidden="true">Carte <span class="nw">post<span class="acc">e</span>e</span>&nbsp;!</span></p>
+          <p>Merci <span data-bind="firstName" data-empty=""></span>, votre boîte mail s’ouvre avec la carte prête à partir.</p>
+          <button type="button" class="button pc-again" data-reset><span>Écrire une autre carte</span></button>
+        </div>
       </div>
     </section>
   </div></div></main>
-  <script>
-    const stage = document.querySelector('.stage');
-    const outer = document.querySelector('.stage-outer');
-    const formCard = document.querySelector('.form-card');
-    const media = document.querySelector('.media');
-    const contactForm = document.querySelector('#contact-form');
-
-    contactForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const formData = new FormData(contactForm);
-      const firstName = formData.get('firstName');
-      const lastName = formData.get('lastName');
-      const email = formData.get('email');
-      const message = formData.get('message');
-      const subject = `Message de ${firstName} ${lastName}`;
-      const body = [
-        `Prénom : ${firstName}`,
-        `Nom : ${lastName}`,
-        `Email : ${email}`,
-        '',
-        'Message :',
-        message
-      ].join('\n');
-
-      window.location.href = `mailto:pauline.yvelin@mmibordeaux.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    });
-
-    function syncMediaHeight() {
-      if (innerWidth <= 640) {
-        media.style.height = '';
-        return;
-      }
-      media.style.height = `${formCard.offsetHeight}px`;
-    }
-
-    function fit() {
-      const mobile = innerWidth <= 640;
-      const width = mobile ? 390 : 1280;
-      const height = mobile ? 846 : 832;
-      const scale = mobile ? Math.min(innerWidth / width, 1) : Math.min(innerWidth / width, innerHeight / height, 1);
-      stage.style.transform = `scale(${scale})`;
-      outer.style.width = `${width * scale}px`;
-      outer.style.height = `${height * scale}px`;
-      syncMediaHeight();
-    }
-
-    addEventListener('resize', fit);
-    fit();
-  </script>
+  <script src="src/site.js"></script>
+  <script src="src/contact-form.js"></script>
 </body>
 </html>
