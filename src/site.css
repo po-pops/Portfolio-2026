@@ -97,12 +97,14 @@ img { -webkit-user-drag: none; }
 .page-extra > * { pointer-events: auto; }
 
 /* ---------- Changement de page : le cadre reste, le contenu change ---------- */
-.page.is-leaving,
-.page-extra.is-leaving {
+/* On fait disparaître les éléments un par un, pas le conteneur : animer l'opacité du conteneur
+   l'isolerait du ciel, et la dentelle (fusion color-dodge) virerait au brun pendant le passage. */
+.page.is-leaving > *,
+.page-extra.is-leaving > * {
   animation: page-out .26s ease-in forwards;
   pointer-events: none;
 }
-@keyframes page-out { to { opacity: 0; translate: 0 -10px; } }
+@keyframes page-out { to { opacity: 0; } }
 
 .reveal {
   animation: reveal .8s var(--ease-out) both;
@@ -169,36 +171,19 @@ img { -webkit-user-drag: none; }
 .btn.is-hovered img[src*="link"] { transform: translate(3px, -3px); }
 .btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 
-/* ---------- Bande de scotch (accueil) : crème pleine ---------- */
-.tape {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin: 0;
-  padding: 7px 30px 8px;
-  rotate: -1.4deg;
-  cursor: default;
-}
-.tape::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
+/* ---------- Les trois cases de l'accueil : fixes, « Product design » en brun ---------- */
+.label-chip {
+  padding: 0 4px;
   background: var(--cream);
-  clip-path: polygon(
-    0 6%, 2% 0, 4% 9%, 1.5% 22%, 3.5% 36%, 1% 50%, 3% 64%, 1% 78%, 3.5% 90%, 1.5% 100%,
-    98.5% 100%, 96.5% 91%, 99% 80%, 97% 66%, 99.5% 52%, 97% 38%, 99% 24%, 96.8% 10%, 99% 0, 97% 4%
-  );
-}
-.tape .label-chip {
   color: var(--ink);
-  font-size: 22px;
-  line-height: 30px;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 39px;
   white-space: nowrap;
+  cursor: default;
   user-select: none;
 }
-.tape .tape-sep { width: 11px; height: 11px; flex: none; opacity: .9; }
+.label-chip[data-cat="product"] { background: var(--ink); color: var(--sky); }
 
 /* ---------- Barre de défilement aux couleurs du site ---------- */
 .card-scroll { overscroll-behavior: contain; }
@@ -213,28 +198,32 @@ img { -webkit-user-drag: none; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
 .lenis.lenis-stopped { overflow: hidden; }
 
-/* ---------- Badge qui suit la souris sur les cartes projet ---------- */
-.cursor-badge {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 9999;
-  width: 90px;
-  height: 90px;
-  pointer-events: none;
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(0);
-  transition: transform .25s ease, opacity .25s ease;
-}
-.cursor-badge.is-active { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-.cursor-badge-ring { width: 100%; height: 100%; overflow: visible; animation: spin 14s linear infinite; }
-.cursor-badge-ring text {
-  fill: #fff;
-  font: 600 20px 'Manrope', sans-serif;
-  letter-spacing: .5px;
-  text-transform: uppercase;
-}
+
 @keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---------- Nom du projet : une étiquette posée sur chaque carte, sans effet au survol ---------- */
+.card-name {
+  position: absolute;
+  z-index: 2;
+  left: 26px;
+  top: -20px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0 4px 0 8px;
+  background: var(--cream);
+  color: var(--ink);
+  font: 400 24px/39px 'Manrope', sans-serif;
+  white-space: nowrap;
+  rotate: -3deg;
+  transform-origin: left center;
+  pointer-events: none;
+}
+.card-name svg { width: 22px; height: 22px; flex: none; fill: currentColor; }
+@media (max-width: 640px) {
+  .card-name { left: 10px; top: -13px; padding: 0 2px 0 5px; font-size: 15px; line-height: 25px; }
+  .card-name svg { width: 14px; height: 14px; }
+}
 
 /* ---------- Accents pour la police CS Melanie (la démo n'a pas les lettres accentuées) ---------- */
 .acc { position: relative; display: inline-block; }

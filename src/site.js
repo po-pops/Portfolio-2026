@@ -133,16 +133,16 @@
   function mountHome(page) {
     const cards = [...page.querySelectorAll('.float-card')];
     const fill = page.querySelector('.progress-bar-fill');
-    const badge = document.getElementById('cursorBadge');
-    const badgePath = document.getElementById('cursorBadgeTextPath');
     const ac = new AbortController();
     const on = (t, type, fn, opts = {}) => t.addEventListener(type, fn, { ...opts, signal: ac.signal });
 
-    // Trajets d'origine, cartes en quinconce (gauche / droite), décalées de 0,15.
-    // Un tour dure 0,6 = 4 × 0,15 : la carte entre en fondu par le bas puis monte d.un seul trait. Dès qu’une carte
-    // sort en haut, elle revient en bas : l'écart reste de 0,15 entre toutes les cartes.
+    // Trajets d'origine, cartes en quinconce, décalées de 0,15. Chaque carte traverse le cadre
+    // en 0,6 (entrée en fondu par le bas, puis montée d'un trait), puis attend cachée en haut.
+    // Le tour dure 0,9 : après la dernière carte, il reste un moment où aucune carte ne passe
+    // sur le titre, et on lit « Pauline Yvelin » en entier avant que la boucle ne reparte.
     const OFFSET = 0.15;
-    const PERIOD = 0.6;
+    const TRAVEL = 0.6;
+    const PERIOD = 0.9;
     const ENTER = 0.08;
     const defs = [
       { y0: 68, y1: -900, r0: -9.93, r1: -18 },
@@ -174,10 +174,10 @@
         const local = (((current + i * OFFSET) % PERIOD) + PERIOD) % PERIOD;
         // Une seule trajectoire continue, sans arrêt en bas : la carte part de sous le cadre,
         // apparaît en fondu pendant l'entrée, puis continue de monter à la même vitesse.
-        const t = local / PERIOD;                         // 0 → 1 sur tout le trajet
-        const enter = ENTER / PERIOD;                     // part du trajet en fondu
-        let opacity = t < enter ? easeOut(t / enter) : 1;
-        if (mobile && t > 0.9) opacity = 1 - (t - 0.9) / 0.1;
+        const t = Math.min(local / TRAVEL, 1);            // 0 → 1 sur la traversée
+        const enter = ENTER / TRAVEL;                     // part du trajet en fondu
+        let opacity = local >= TRAVEL ? 0 : t < enter ? easeOut(t / enter) : 1; // cachée en haut ensuite
+        if (mobile && t > 0.9 && local < TRAVEL) opacity = 1 - (t - 0.9) / 0.1;
         const rise = clamp((t - enter) / (1 - enter), 0, 1);
         if (mobile) {
           const y = lerp(90, -1100, t);
@@ -192,7 +192,7 @@
         card.style.zIndex = String(20 - i);
       });
 
-      if (fill) fill.style.height = `${((progress % PERIOD) / PERIOD * 100).toFixed(2)}%`;
+      if (fill) fill.style.height = `${(progress / PERIOD * 100).toFixed(2)}%`;
       raf = requestAnimationFrame(frame);
     }
     let raf = requestAnimationFrame(frame);
@@ -217,44 +217,21 @@
       if (step !== undefined) { e.preventDefault(); nudge(step); }
     });
 
-    // Badge qui suit la souris au survol d'une carte
-    const fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-    if (fine && badge && badgePath) {
-      let mx = 0, my = 0, bx = 0, by = 0;
-      const circ = 2 * Math.PI * 37;
-      const fillBadge = (label) => {
-        const unit = `${label} * `;
-        badgePath.textContent = unit;
-        const len = badgePath.getComputedTextLength() || 1;
-        const reps = Math.max(1, Math.floor(circ / len));
-        badgePath.textContent = ' ';
-        const space = badgePath.getComputedTextLength() || 1;
-        badgePath.textContent = `${label} *`;
-        const fixed = badgePath.getComputedTextLength() || 1;
-        const gap = ' '.repeat(Math.max(1, Math.round(Math.max(space, (circ - reps * fixed) / reps) / space)));
-        badgePath.textContent = `${label} *${gap}`.repeat(reps);
-      };
-      on(document, 'mousemove', (e) => { mx = e.clientX; my = e.clientY; });
-      cards.forEach((card) => {
-        on(card, 'mouseenter', () => { fillBadge(card.dataset.name || ''); badge.classList.add('is-active'); });
-        on(card, 'mouseleave', () => badge.classList.remove('is-active'));
-      });
-      let braf;
-      const follow = () => {
-        bx = lerp(bx, mx, 0.2);
-        by = lerp(by, my, 0.2);
-        badge.style.left = `${bx}px`;
-        badge.style.top = `${by}px`;
-        braf = requestAnimationFrame(follow);
-      };
-      braf = requestAnimationFrame(follow);
-      ac.signal.addEventListener('abort', () => cancelAnimationFrame(braf));
-    }
+    // Nom du projet : une étiquette posée sur chaque carte (fixe, sans survol)
+    const ARROW = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.25 19 5 17.74 15.18 7.55H9.93V6H18v8.08h-1.55V8.8L6.25 19Z"/></svg>';
+    cards.forEach((card) => {
+      if (card.querySelector('.card-name')) return;
+      const tag = document.createElement('span');
+      tag.className = 'card-name';
+      tag.setAttribute('aria-hidden', 'true');
+      tag.innerHTML = `<span></span>${ARROW}`;
+      tag.firstChild.textContent = card.dataset.name || '';
+      card.querySelector('.inner').appendChild(tag);
+    });
 
     return () => {
       ac.abort();
       cancelAnimationFrame(raf);
-      if (badge) badge.classList.remove('is-active');
     };
   }
 
