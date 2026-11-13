@@ -138,8 +138,13 @@
     const ac = new AbortController();
     const on = (t, type, fn, opts = {}) => t.addEventListener(type, fn, { ...opts, signal: ac.signal });
 
-    // Disposition et trajets d'origine (maquette de Pauline) : décalage de 0,15 entre les cartes
+    // Trajets d'origine, cartes en quinconce (gauche / droite), décalées de 0,15.
+    // Un tour dure 0,6 = 4 × 0,15 : entrée en bas (0,08) puis montée (0,52). Dès qu'une carte
+    // sort en haut, elle revient en bas : l'écart reste de 0,15 entre toutes les cartes.
     const OFFSET = 0.15;
+    const PERIOD = 0.6;
+    const ENTER = 0.08;
+    const RISE = 0.52;
     const defs = [
       { y0: 68, y1: -900, r0: -9.93, r1: -18 },
       { y0: 78, y1: -1050, r0: 4.57, r1: 12 },
@@ -147,11 +152,7 @@
       { y0: 148, y1: -950, r0: 10, r1: 18 }
     ];
     const mobileRot = [-8, 4, -6, 5];
-    // Retour : une fois passée en haut, la carte revient à sa place en bas en glissant,
-    // juste avant de reprendre son tour (même écart qu'au départ)
-    const BACK_START = 0.88;
     const easeOut = (t) => 1 - Math.pow(1 - t, 3);
-    const backIn = (cycle) => (cycle >= BACK_START ? easeOut((cycle - BACK_START) / (1 - BACK_START)) : 0);
 
     let target = 0;
     let current = 0;
@@ -166,27 +167,22 @@
     function frame() {
       current += (target - current) * 0.075;
       if (Math.abs(target - current) < 1e-5) current = target;
-      const progress = ((current % 1) + 1) % 1;
+      const progress = ((current % PERIOD) + PERIOD) % PERIOD;
       const mobile = isMobile();
 
       cards.forEach((card, i) => {
-        const cycle = (progress + i * OFFSET) % 1;
+        const local = (((current + i * OFFSET) % PERIOD) + PERIOD) % PERIOD;
         let rise = 0;
-        let opacity = 1;
-        let drop = 0; // décalage vers le bas pendant le retour
-        if (cycle < 0.2) {
-          // au repos en bas
-        } else if (cycle < (mobile ? 0.72 : 0.75)) {
-          rise = clamp((cycle - 0.2) / (mobile ? 0.52 : 0.55), 0, 1);
-        } else if (mobile && cycle < 0.82) {
-          rise = 1;
-          opacity = 1 - (cycle - 0.72) / 0.1;
-        } else if (cycle < BACK_START) {
-          opacity = 0; // passée en haut : cachée
-          rise = cycle < 0.8 ? 1 : 0;
-        } else {
-          opacity = backIn(cycle);
+        let opacity = 0;
+        let drop = 1;
+        if (local < ENTER) {
+          // entre par le bas en glissant
+          opacity = easeOut(local / ENTER);
           drop = 1 - opacity;
+        } else if (local < ENTER + RISE) {
+          rise = (local - ENTER) / RISE;
+          opacity = mobile && rise > 0.85 ? 1 - (rise - 0.85) / 0.15 : 1;
+          drop = 0;
         }
         if (mobile) {
           card.style.transform = `translate(0, ${-rise * 1100 + drop * 90}px) rotate(${mobileRot[i % 4]}deg)`;
@@ -200,14 +196,7 @@
         card.style.zIndex = String(20 - i);
       });
 
-      if (fill) {
-        let pct = 0;
-        if (progress < 0.2) pct = 0;
-        else if (progress < 0.75) pct = ((progress - 0.2) / 0.55) * 100;
-        else if (progress < 0.85) pct = 100;
-        else pct = ((1 - progress) / 0.15) * 100;
-        fill.style.height = `${pct.toFixed(2)}%`;
-      }
+      if (fill) fill.style.height = `${((progress % PERIOD) / PERIOD * 100).toFixed(2)}%`;
       raf = requestAnimationFrame(frame);
     }
     let raf = requestAnimationFrame(frame);

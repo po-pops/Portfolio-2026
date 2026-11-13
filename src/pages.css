@@ -36,7 +36,7 @@
 
 .page-home .about-cta {
   position: absolute;
-  z-index: 5;
+  z-index: 30; /* toujours au-dessus des cartes : c'est un lien */
   left: calc(50% - 358px);
   top: 360px;
   width: 130px;
@@ -121,10 +121,11 @@
 }
 .page-home .float-card:hover .inner::after { opacity: 1; }
 .page-home .float-card .inner img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
-.page-home .card-1 { left: calc(50% - 309px); top: 501px; width: 426px; height: 361px; }
-.page-home .card-2 { left: calc(50% - 93px); top: 591px; width: 403px; height: 329px; }
-.page-home .card-3 { left: calc(50% - 333px); top: 470px; width: 440px; height: 370px; }
-.page-home .card-4 { left: calc(50% - 58px); top: 620px; width: 390px; height: 310px; }
+/* en quinconce : une à gauche, une à droite */
+.page-home .card-1 { left: calc(50% - 470px); top: 501px; width: 426px; height: 361px; }
+.page-home .card-2 { left: calc(50% + 50px); top: 591px; width: 403px; height: 329px; }
+.page-home .card-3 { left: calc(50% - 480px); top: 470px; width: 440px; height: 370px; }
+.page-home .card-4 { left: calc(50% + 55px); top: 620px; width: 390px; height: 310px; }
 
 .page-home .progress-bar {
   position: absolute;
