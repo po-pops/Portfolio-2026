@@ -121,11 +121,10 @@
 }
 .page-home .float-card:hover .inner::after { opacity: 1; }
 .page-home .float-card .inner img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
-.page-home .float-card { top: 520px; width: 410px; height: 340px; }
-.page-home .card-1 { left: calc(50% - 300px); }
-.page-home .card-2 { left: calc(50% - 90px); }
-.page-home .card-3 { left: calc(50% - 320px); }
-.page-home .card-4 { left: calc(50% - 70px); }
+.page-home .card-1 { left: calc(50% - 309px); top: 501px; width: 426px; height: 361px; }
+.page-home .card-2 { left: calc(50% - 93px); top: 591px; width: 403px; height: 329px; }
+.page-home .card-3 { left: calc(50% - 333px); top: 470px; width: 440px; height: 370px; }
+.page-home .card-4 { left: calc(50% - 58px); top: 620px; width: 390px; height: 310px; }
 
 .page-home .progress-bar {
   position: absolute;
@@ -298,12 +297,12 @@
 .page-project .step-copy h3 { margin: 0 0 4px; color: var(--black); font-size: 24px; font-weight: 500; line-height: 1.25; }
 .page-project .step-copy p { margin: 0; color: var(--black); font-size: 18px; line-height: 1.43; }
 
-/* « Défiler » centré en bas de la fiche, loin de la barre de défilement */
+/* flèche de défilement centrée en bas de la fiche, loin de la barre */
 .page-project .scroll-hint {
   position: absolute;
   z-index: 3;
   left: calc(50% - 6px);
-  bottom: 20px;
+  bottom: 18px;
   translate: -50% 0;
   display: flex;
   align-items: center;
@@ -338,18 +337,7 @@
   stroke-linejoin: round;
   animation: hint-bob 1.6s var(--ease-in-out) infinite;
 }
-.page-project .scroll-hint-label {
-  position: absolute;
-  right: calc(100% + 10px);
-  top: 50%;
-  translate: 0 -50%;
-  white-space: nowrap;
-  padding: 1px 6px;
-  background: var(--cream);
-  rotate: -3deg;
-  transition: opacity .4s ease;
-}
-.page-project .info-card.is-scrolled .scroll-hint-label { opacity: 0; }
+
 .page-project .scroll-hint.is-up svg { transform: rotate(180deg); }
 .page-project .scroll-hint.is-up .scroll-hint-arrow { animation: none; }
 .page-project .scroll-hint:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; border-radius: 30px; }
@@ -534,7 +522,7 @@
           mask: radial-gradient(circle 4.5px, #0000 96%, #000) -7px -7px / 14px 14px, linear-gradient(#000 0 0) content-box;
 }
 .page-contact .stamp img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.page-contact .waves { position: absolute; top: 96px; right: 150px; width: 170px; height: 52px; }
+.page-contact .waves { position: absolute; top: 96px; right: 210px; width: 170px; height: 52px; }
 .page-contact .waves path { fill: none; stroke: var(--ink); stroke-width: 1.4; opacity: .6; }
 .page-contact .pc-to { margin: 4px 0 22px; font-size: 17px; }
 .page-contact .pc-line { display: flex; flex-direction: column; gap: 2px; margin-bottom: 20px; }
@@ -593,7 +581,7 @@
   .page-contact .pc-divider { height: 1px; background: repeating-linear-gradient(90deg, var(--ink) 0 6px, transparent 6px 12px); }
   .page-contact .pc-stamp-zone { height: 160px; margin-bottom: 4px; }
   .page-contact .stamp { width: 126px; height: 154px; }
-  .page-contact .waves { top: 70px; right: 140px; width: 120px; height: 40px; }
+  .page-contact .waves { top: 66px; right: 168px; width: 120px; height: 40px; }
   .page-contact .pc-inline { grid-template-columns: 1fr; gap: 6px; }
   .page-contact .pc-smiley { left: auto; right: -10px; bottom: -34px; width: 70px; }
 }

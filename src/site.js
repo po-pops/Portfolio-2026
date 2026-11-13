@@ -138,24 +138,23 @@
     const ac = new AbortController();
     const on = (t, type, fn, opts = {}) => t.addEventListener(type, fn, { ...opts, signal: ac.signal });
 
-    // Les 4 cartes sont réparties à intervalles égaux sur le cycle
-    const COUNT = cards.length;
-    const SPACING = 1 / COUNT;
-    // Cycle d'une carte : apparition en bas → montée → disparition en haut → retour caché
-    const APPEAR = 0.12;  // remontée depuis le bas en fondu
-    const RISE_END = 0.72;
-    // même départ et même trajet pour toutes : l'écart entre deux cartes reste constant
+    // Disposition et trajets d'origine (maquette de Pauline) : décalage de 0,15 entre les cartes
+    const OFFSET = 0.15;
     const defs = [
-      { y0: 20, y1: -960, r0: -9.93, r1: -18 },
-      { y0: 20, y1: -960, r0: 4.57, r1: 12 },
-      { y0: 20, y1: -960, r0: -8, r1: -16 },
-      { y0: 20, y1: -960, r0: 10, r1: 18 }
+      { y0: 68, y1: -900, r0: -9.93, r1: -18 },
+      { y0: 78, y1: -1050, r0: 4.57, r1: 12 },
+      { y0: 125, y1: -850, r0: -14, r1: -18 },
+      { y0: 148, y1: -950, r0: 10, r1: 18 }
     ];
     const mobileRot = [-8, 4, -6, 5];
+    // Retour : une fois passée en haut, la carte revient à sa place en bas en glissant,
+    // juste avant de reprendre son tour (même écart qu'au départ)
+    const BACK_START = 0.88;
     const easeOut = (t) => 1 - Math.pow(1 - t, 3);
+    const backIn = (cycle) => (cycle >= BACK_START ? easeOut((cycle - BACK_START) / (1 - BACK_START)) : 0);
 
-    let target = 0.06;
-    let current = target;
+    let target = 0;
+    let current = 0;
     const nudge = (d) => { target += d; };
 
     cards.forEach((card) => {
@@ -168,34 +167,47 @@
       current += (target - current) * 0.075;
       if (Math.abs(target - current) < 1e-5) current = target;
       const progress = ((current % 1) + 1) % 1;
+      const mobile = isMobile();
 
       cards.forEach((card, i) => {
-        const cycle = (((progress + i * SPACING) % 1) + 1) % 1;
-        let appear = 0;
+        const cycle = (progress + i * OFFSET) % 1;
         let rise = 0;
-        if (cycle < APPEAR) {
-          appear = easeOut(cycle / APPEAR);
-        } else if (cycle < RISE_END) {
-          appear = 1;
-          rise = (cycle - APPEAR) / (RISE_END - APPEAR);
-        } else if (cycle < RISE_END + 0.06) {
-          // s'efface en haut
+        let opacity = 1;
+        let drop = 0; // décalage vers le bas pendant le retour
+        if (cycle < 0.2) {
+          // au repos en bas
+        } else if (cycle < (mobile ? 0.72 : 0.75)) {
+          rise = clamp((cycle - 0.2) / (mobile ? 0.52 : 0.55), 0, 1);
+        } else if (mobile && cycle < 0.82) {
           rise = 1;
-          appear = 1 - (cycle - RISE_END) / 0.06;
-        }
-        const d = defs[i % defs.length];
-        if (isMobile()) {
-          const y = -rise * 1100 + (1 - appear) * 90;
-          card.style.transform = `translate(0, ${y}px) rotate(${mobileRot[i % 4]}deg)`;
+          opacity = 1 - (cycle - 0.72) / 0.1;
+        } else if (cycle < BACK_START) {
+          opacity = 0; // passée en haut : cachée
+          rise = cycle < 0.8 ? 1 : 0;
         } else {
-          const y = lerp(d.y0, d.y1, rise) - rise * 40 + (1 - appear) * 140;
+          opacity = backIn(cycle);
+          drop = 1 - opacity;
+        }
+        if (mobile) {
+          card.style.transform = `translate(0, ${-rise * 1100 + drop * 90}px) rotate(${mobileRot[i % 4]}deg)`;
+        } else {
+          const d = defs[i % defs.length];
+          const y = lerp(d.y0, d.y1, rise) - rise * 40 + drop * 160;
           card.style.transform = `translate(0, ${y}px) rotate(${lerp(d.r0, d.r1, rise)}deg) scale(${lerp(0.82, 1.04, rise)})`;
         }
-        card.style.opacity = appear.toFixed(3);
-        card.style.pointerEvents = appear > 0.3 ? 'auto' : 'none';
-        card.style.zIndex = String(10 + Math.round((1 - cycle) * 10));
+        card.style.opacity = opacity.toFixed(3);
+        card.style.pointerEvents = opacity > 0.3 ? 'auto' : 'none';
+        card.style.zIndex = String(20 - i);
       });
-      if (fill) fill.style.height = `${(progress * 100).toFixed(2)}%`;
+
+      if (fill) {
+        let pct = 0;
+        if (progress < 0.2) pct = 0;
+        else if (progress < 0.75) pct = ((progress - 0.2) / 0.55) * 100;
+        else if (progress < 0.85) pct = 100;
+        else pct = ((1 - progress) / 0.15) * 100;
+        fill.style.height = `${pct.toFixed(2)}%`;
+      }
       raf = requestAnimationFrame(frame);
     }
     let raf = requestAnimationFrame(frame);
@@ -203,7 +215,7 @@
     on(window, 'wheel', (e) => {
       e.preventDefault();
       const dy = e.deltaMode === 1 ? e.deltaY * 32 : e.deltaY;
-      nudge(clamp(dy, -140, 140) * 0.0006);
+      nudge(clamp(dy, -140, 140) * 0.0007);
     }, { passive: false });
     let touchY = null;
     on(window, 'touchstart', (e) => { touchY = e.touches[0].clientY; }, { passive: true });
@@ -211,7 +223,7 @@
       if (touchY === null) return;
       e.preventDefault();
       const y = e.touches[0].clientY;
-      nudge((touchY - y) * 0.0022);
+      nudge((touchY - y) * 0.0025);
       touchY = y;
     }, { passive: false });
     on(window, 'touchend', () => { touchY = null; });
@@ -262,7 +274,7 @@
   }
 
   /* ------------------------------------------------------------------
-     4b. Projet : défilement doux de la fiche + bouton « Défiler »
+     4b. Projet : défilement doux de la fiche + flèche de défilement
      ------------------------------------------------------------------ */
   function mountProject(page) {
     const card = page.querySelector('.info-card');
@@ -281,7 +293,6 @@
     hint.type = 'button';
     hint.className = 'scroll-hint';
     hint.innerHTML = `
-      <span class="scroll-hint-label">Défiler</span>
       <svg viewBox="0 0 48 48" aria-hidden="true">
         <circle class="scroll-hint-track" cx="24" cy="24" r="22" />
         <circle class="scroll-hint-ring" cx="24" cy="24" r="22" pathLength="100" />
