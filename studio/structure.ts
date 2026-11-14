@@ -14,7 +14,7 @@ export const structure: StructureResolver = (S) =>
         .id('projets')
         .title('Projets')
         .icon(DocumentsIcon)
-        .child(S.documentList().title('Projets').schemaType('projet').filter('_type == "projet"').defaultOrdering([{field: 'page', direction: 'asc'}]).canHandleIntent(() => false)),
+        .child(S.documentTypeList('projet').title('Projets').defaultOrdering([{field: 'ordre', direction: 'asc'}, {field: '_createdAt', direction: 'desc'}])),
       S.listItem().id('aPropos').title('À propos').icon(UserIcon).child(S.document().schemaType('aPropos').documentId('aPropos').title('À propos')),
       S.listItem().id('contact').title('Contact').icon(EnvelopeIcon).child(S.document().schemaType('contact').documentId('contact').title('Contact')),
     ])

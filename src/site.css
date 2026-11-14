@@ -266,3 +266,7 @@ img { -webkit-user-drag: none; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
+
+/* Page projet commune (projet.html?p=…) : rien ne s'affiche tant que le contenu Sanity n'est pas arrivé */
+.page[data-cms-wait] > * { visibility: hidden; }
+.page-project .preview.is-empty { display: none; }

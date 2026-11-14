@@ -39,7 +39,8 @@ const accueil = defineType({
   preview: {prepare: () => ({title: 'Accueil'})},
 })
 
-/* ---------- Projets (4, un par page project-1.html à project-4.html) ---------- */
+/* ---------- Projets : autant qu'on veut. Les quatre premiers ont leur page project-1 à project-4.html,
+   les suivants s'affichent sur projet.html?p=<adresse>. ---------- */
 const projet = defineType({
   name: 'projet',
   title: 'Projet',
@@ -52,6 +53,15 @@ const projet = defineType({
   ],
   fields: [
     defineField({name: 'nom', title: 'Nom du projet', type: 'string', group: 'fiche', validation: (r) => r.required()}),
+    defineField({
+      name: 'slug',
+      title: 'Adresse de la page',
+      type: 'slug',
+      group: 'fiche',
+      options: {source: 'nom', maxLength: 60},
+      description: 'Cliquer sur « Générer » : la page du projet sera …/projet.html?p=cette-adresse.',
+      validation: (r) => r.required(),
+    }),
     defineField({
       name: 'etiquettes',
       title: 'Étiquettes',
@@ -115,11 +125,22 @@ const projet = defineType({
       group: 'accueil',
       description: 'Le nom court posé sur la carte qui défile.',
     }),
-    defineField({name: 'vignette', title: 'Image de la carte', type: 'photo', group: 'accueil'}),
+    defineField({name: 'vignette', title: 'Image de la carte', type: 'photo', group: 'accueil', validation: (r) => r.required()}),
+    defineField({
+      name: 'ordre',
+      title: "Position sur l'accueil",
+      type: 'number',
+      group: 'accueil',
+      description: "1 = la carte qu'on voit en arrivant sur le site, puis 2, 3… Les projets sans numéro passent après, du plus récent au plus ancien.",
+      validation: (r) => r.integer().min(1),
+    }),
     defineField({name: 'page', title: 'Page', type: 'number', hidden: true, readOnly: true}),
   ],
-  orderings: [{title: 'Ordre des pages', name: 'page', by: [{field: 'page', direction: 'asc'}]}],
-  preview: {select: {title: 'nom', media: 'vignette'}},
+  orderings: [{title: "Ordre sur l'accueil", name: 'ordre', by: [{field: 'ordre', direction: 'asc'}, {field: '_createdAt', direction: 'desc'}]}],
+  preview: {
+    select: {title: 'nom', media: 'vignette', ordre: 'ordre'},
+    prepare: ({title, media, ordre}) => ({title, media, subtitle: ordre ? `Carte n° ${ordre} sur l'accueil` : "Après les cartes numérotées"}),
+  },
 })
 
 /* ---------- À propos ---------- */
@@ -178,5 +199,5 @@ const contact = defineType({
 })
 
 export const schemaTypes = [photo, accueil, projet, aPropos, contact]
-// Rien ne se crée ni ne se supprime : chaque fiche correspond à une page du site.
-export const FIXES = ['accueil', 'projet', 'aPropos', 'contact']
+// Pages uniques : rien ne se crée ni ne se supprime. Les projets, eux, s'ajoutent librement.
+export const FIXES = ['accueil', 'aPropos', 'contact']

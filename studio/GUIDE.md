@@ -9,7 +9,7 @@ Tu t'y connectes avec le compte qui a reçu l'invitation Sanity. Une modificatio
 | Dans le menu | Ce qu'on y trouve |
 |---|---|
 | **Accueil** | Le texte qui tourne autour du smiley, le bouton « Ça vous dit un café ? » |
-| **Projets** | Les quatre projets. Onglet **Fiche** : nom, étiquettes, bouton du haut (texte et adresse), « Le projet », « La conception » (4 étapes au plus). Onglet **Images** : la grande image et les deux du dessous. Onglet **Sur l'accueil** : l'étiquette et l'image de la carte qui défile |
+| **Projets** | Tous les projets (le bouton **+** en ajoute un). Onglet **Fiche** : nom, étiquettes, bouton du haut (texte et adresse), « Le projet », « La conception » (4 étapes au plus). Onglet **Images** : la grande image et les deux du dessous. Onglet **Sur l'accueil** : l'étiquette et l'image de la carte qui défile |
 | **À propos** | Titre, sous-titre, texte, photo, CV (PDF), bouton et playlist de musique |
 | **Contact** | L'adresse qui reçoit les messages, le nom et le métier sur la carte postale, le texte d'exemple, la photo du timbre |
 
@@ -17,7 +17,9 @@ Tu t'y connectes avec le compte qui a reçu l'invitation Sanity. Une modificatio
 
 - **Images** : remplace-les par glisser-déposer. Remplis la « Description de l'image » (une phrase sur ce qu'on voit).
 - **Accents dans les titres** : la police des titres n'a pas d'accents ; le site les dessine lui-même pour é, è, à et ù. Écris normalement.
-- **Ajouter un cinquième projet** : ça demande une page en plus dans le code, le Studio ne le fait pas seul.
+- **Ajouter un projet** : dans **Projets**, bouton **+**. Remplir le nom, cliquer « Générer » à côté de l'adresse, mettre l'image de la carte (onglet « Sur l'accueil »), puis Publier. Il prend sa place dans la boucle de l'accueil et a sa page (`…/projet.html?p=son-adresse`).
+- **Ordre des cartes** : « Position sur l'accueil » (onglet « Sur l'accueil ») : 1 = la carte qu'on voit en arrivant, puis 2, 3… Les projets sans numéro passent après, du plus récent au plus ancien.
+- **Supprimer un projet** : menu « ⋯ » de la fiche, Supprimer. Il disparaît de l'accueil.
 - **Le reste** (couleurs, mise en page, animations, cases « Direction artistique / Product design / Branding ») est dans le code : `src/site.css`, `src/pages.css`, `src/site.js`. Le lien avec Sanity est dans `src/cms.js`.
 
 ## Pour le code

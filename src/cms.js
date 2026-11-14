@@ -11,7 +11,7 @@
   const img = '{alt, "url": asset->url}';
   const QUERY = `{
     "accueil": *[_id == "accueil"][0]{texteRond, boutonCafe},
-    "projets": *[_type == "projet"] | order(page asc){page, nom, nomCourt, etiquettes, lien, introduction,
+    "projets": *[_type == "projet" && defined(slug.current)] | order(coalesce(ordre, 9999) asc, _createdAt desc){page, "slug": slug.current, nom, nomCourt, etiquettes, lien, introduction,
       etapes[]{titre, texte}, "grande": grandeImage${img}, "petites": petitesImages[]${img}, "vignette": vignette${img}},
     "aPropos": *[_id == "aPropos"][0]{titre, sousTitre, paragraphes, boutonCv, "photo": photo${img}, "cv": cv.asset->url,
       "musique": musique{texte, url, "image1": image1${img}, "image2": image2${img}}},
@@ -44,7 +44,19 @@
     }).join('');
   }
 
-  const projectNumber = () => Number((location.pathname.match(/project-(\d+)/) || [])[1]);
+  // Les quatre premiers projets gardent leur page project-1 à 4.html ; les suivants passent par projet.html?p=…
+  const projectHref = (p) => (p.page ? `project-${p.page}.html` : `projet.html?p=${encodeURIComponent(p.slug)}`);
+  const currentProject = (list) => {
+    const slug = new URLSearchParams(location.search).get('p');
+    if (slug) return list.find((x) => x.slug === slug);
+    const n = Number((location.pathname.match(/project-(\d+)/) || [])[1]);
+    return list.find((x) => x.page === n);
+  };
+  const BLANK = 'data:image/gif;base64,R0lGODlhAQABAAAAACw=';
+  // Dans la boucle, la dernière carte du HTML passe en premier : on les range à l'envers.
+  // La place d'une carte (card-1 à 4) suit son rang, pour garder l'enchaînement d'origine
+  // (1re : Tcheen en card-4, 2e : card-3… puis on recommence à card-4).
+  const cardsSignature = (list) => list.map(projectHref).reverse().join('|');
 
   const APPLY = {
     home(page, extra, d) {
@@ -55,8 +67,23 @@
         setText(tp, t + t);
       }
       setText(extra && extra.querySelector('.cafe-cta > span'), a.boutonCafe);
-      (d.projets || []).forEach((p) => {
-        const card = page.querySelector(`a.float-card[href="project-${p.page}.html"]`);
+      const list = d.projets || [];
+      // Les cartes suivent la liste des projets de Sanity (ordre, ajouts, suppressions).
+      const cards = [...page.querySelectorAll('a.float-card')];
+      if (list.length && cards.map((c) => c.getAttribute('href')).join('|') !== cardsSignature(list)) {
+        cards.forEach((c) => c.remove());
+        const anchor = page.querySelector('.progress-bar');
+        [...list].map((p, rank) => ({ p, rank })).reverse().forEach(({ p, rank }) => {
+          const a = document.createElement('a');
+          a.className = `float-card card-${4 - (rank % 4)}`;
+          a.href = projectHref(p);
+          a.dataset.name = p.nomCourt || p.nom || '';
+          a.innerHTML = '<span class="inner"><img alt=""></span>';
+          page.insertBefore(a, anchor);
+        });
+      }
+      list.forEach((p) => {
+        const card = page.querySelector(`a.float-card[href="${projectHref(p)}"]`);
         if (!card) return;
         setImg(card.querySelector('.inner > img'), p.vignette, 900);
         if (p.nomCourt) {
@@ -67,8 +94,12 @@
     },
 
     project(page, extra, d) {
-      const p = (d.projets || []).find((x) => x.page === projectNumber());
-      if (!p) return;
+      const p = currentProject(d.projets || []);
+      if (!p) {
+        if (page.hasAttribute('data-cms-wait')) location.replace('index.html'); // projet supprimé ou adresse fausse
+        return;
+      }
+      if (page.hasAttribute('data-cms-wait')) document.title = `${p.nom} - Pauline Yvelin`;
       const h1 = page.querySelector('h1.card-title');
       if (h1 && p.nom && h1.getAttribute('aria-label') !== p.nom) {
         h1.setAttribute('aria-label', p.nom);
@@ -96,8 +127,14 @@
       }
 
       const imgs = page.querySelectorAll('.bento img');
-      setImg(imgs[0], p.grande, 1800);
-      (p.petites || []).forEach((im, i) => setImg(imgs[i + 1], im, 1000));
+      const wanted = [p.grande, ...(p.petites || []).slice(0, 2)];
+      imgs.forEach((el, i) => {
+        const im = wanted[i];
+        if (im && im.url) setImg(el, im, i ? 1000 : 1800);
+        const empty = !(im && im.url) && (el.getAttribute('src') || '').startsWith('data:');
+        el.closest('.preview').classList.toggle('is-empty', empty || el.getAttribute('src') === BLANK);
+      });
+      page.removeAttribute('data-cms-wait');
     },
 
     about(page, extra, d) {
@@ -149,10 +186,17 @@
       if (fresh === JSON.stringify(data)) return;
       data = result;
       try { localStorage.setItem(STORE, fresh); } catch (e) { /* navigation privée */ }
-      apply();
+      // L'accueil se remonte (le nombre de cartes a pu changer) ; les autres pages se mettent à jour sur place.
+      const page = document.getElementById('page');
+      if (page && page.dataset.page === 'home' && window.remountPage) window.remountPage();
+      else apply();
       window.dispatchEvent(new Event('stage:fit'));
     })
-    .catch(() => { /* hors ligne : le contenu du HTML reste */ });
+    .catch(() => {
+      // hors ligne : le contenu du HTML reste ; la page commune n'a rien à montrer sans Sanity
+      const page = document.getElementById('page');
+      if (page && page.hasAttribute('data-cms-wait') && !data) location.replace('index.html');
+    });
 
   window.CMS = {
     apply,

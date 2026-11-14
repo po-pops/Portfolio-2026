@@ -138,11 +138,12 @@
 
     // Trajets d'origine, cartes en quinconce, décalées de 0,15. Chaque carte traverse le cadre
     // en 0,6 (entrée en fondu par le bas, puis montée d'un trait), puis attend cachée en haut.
-    // Le tour dure 0,9 : après la dernière carte, il reste un moment où aucune carte ne passe
-    // sur le titre, et on lit « Pauline Yvelin » en entier avant que la boucle ne reparte.
+    // Le tour dure 0,15 par carte + 0,3 (0,9 pour quatre projets) : après la dernière carte,
+    // aucune carte ne passe sur le titre et on lit « Pauline Yvelin » en entier.
+    // Autant de cartes que de projets dans Sanity : les positions et trajets se répètent par quatre.
     const OFFSET = 0.15;
     const TRAVEL = 0.6;
-    const PERIOD = 0.9;
+    const PERIOD = Math.max(cards.length, 1) * OFFSET + 0.3;
     const ENTER = 0.08;
     const defs = [
       { y0: 68, y1: -900, r0: -9.93, r1: -18 },
@@ -151,10 +152,11 @@
       { y0: 148, y1: -950, r0: 10, r1: 18 }
     ];
     const mobileRot = [-8, 4, -6, 5];
+    const slot = (card) => (Number((card.className.match(/card-(\d)/) || [])[1]) || 1) - 1; // place card-1 à 4
     const easeOut = (t) => 1 - Math.pow(1 - t, 3);
 
     // Au départ, le nom se lit en entier : seule Tcheen dépasse en bas, la suivante arrive au défilement.
-    const START = 0.6;
+    const START = (((0.15 - (cards.length - 1) * OFFSET) % PERIOD) + PERIOD) % PERIOD; // 0,6 pour quatre projets
     let target = START;
     let current = START;
     const nudge = (d) => { target += d; };
@@ -183,9 +185,9 @@
         const rise = clamp((t - enter) / (1 - enter), 0, 1);
         if (mobile) {
           const y = lerp(90, -1100, t);
-          card.style.transform = `translate(0, ${y}px) rotate(${mobileRot[i % 4]}deg)`;
+          card.style.transform = `translate(0, ${y}px) rotate(${mobileRot[slot(card)]}deg)`;
         } else {
-          const d = defs[i % defs.length];
+          const d = defs[slot(card)];
           const y = lerp(d.y0 + 160, d.y1 - 40, t);
           card.style.transform = `translate(0, ${y}px) rotate(${lerp(d.r0, d.r1, rise)}deg) scale(${lerp(0.82, 1.04, rise)})`;
         }
@@ -369,7 +371,7 @@
   async function go(href, push) {
     if (busy) return;
     const target = new URL(href, location.href);
-    if (target.pathname === location.pathname && push) return;
+    if (target.pathname + target.search === location.pathname + location.search && push) return;
     busy = true;
     try {
       const docPromise = loadDoc(target.href);
@@ -413,6 +415,8 @@
     if (isInternalPage(a)) loadDoc(new URL(a.href, location.href).href).catch(() => {});
   });
   window.addEventListener('popstate', () => go(location.href, false));
+  // Appelé par src/cms.js quand le contenu de Sanity change la page (nombre de cartes, etc.)
+  window.remountPage = () => { unmount(); mount(); };
 
   fitStage();
   mount();
